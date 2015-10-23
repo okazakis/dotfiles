@@ -1,0 +1,102 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+\documentclass[a4j,12pt,openbib,oneside,report]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{ascmac}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{fancybox} 
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{fancyhdr}
+\usepackage{emathPh}
+\usepackage{EMproof}
+\resettagform
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%    New Command Definition     %%%%%%%%
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\D}{\mathrm{D}}
+\newcommand{\bnabla}{\bm{\nabla}}
+\newcommand{\DD}[3][]{\frac{\dd^{#1} #2}{\dd #3^{#1}}}
+\newcommand{\DDD}[3][]{\frac{\mathrm{D}^{#1} #2}{\mathrm{D} #3^{#1}}}
+\newcommand{\DP}[3][]{\frac{\partial^{#1} #2}{\partial #3^{#1}}}
+\renewcommand\thefootnote{\dag\arabic{footnote}}
+\def\proofcmd{\gtfamily}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%       Title, Author and date       %%%%%%%%
+\title{惑星学要論 課題レポート (4/13 出題分)}
+\author{理学研究科惑星学専攻 岡崎 正悟 \\\small{学籍番号: 153s401s}}
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%      Header and Footer          %%%%%%%%
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{\textbf{惑星学要論 課題レポート (4/13 出題分)}}
+\chead{}
+\rhead{\leftmark\textbf{\thepage}}
+\lfoot{}
+\cfoot{}
+\rfoot{{\small \today (153s401s: 岡崎 正悟)}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+%%\begin{document}
+
+\maketitle
+
+\begin{itembox}[l]{問題1}
+ 太陽系の年齢 45.7 億年はどのように推定されるか?
+\end{itembox}
+
+太陽系の年齢は, 岩石の中に含まれる放射性同位体の量を調べる「放射年代測定」
+によって求められる. 特に, 半減期の長い放射性同位体の壊変を利用すれば精度
+良く求まる.同位体の測定は質量分析計によって行う. 試料に電流を流すことで,
+測定する元素を真空中にイオンとして放出させ, 放出されたイオンを高圧の電場
+で加速する. 電磁石の中を通すと, 磁場からの力でイオンは曲がる. 曲がりやす
+さはイオンの重さで変わるので, 同じ元素でも重さの違う同位体が分かれる. 到
+達したイオンの量を電流として測定することにより, 同位体の量比を求めること
+ができる.
+
+\begin{itembox}[l]{問題2}
+ ケプラーの法則を用いて, 太陽を公転する以下の軌道長半径の公転周期を計算
+ せよ. 軌道長半径: 1.5 AU, 15 AU, 150 AU
+\end{itembox}
+
+惑星の軌道長半径を$a$, 公転周期を$T$とすると, ケプラーの第三法則により,
+\begin{equation}
+ \frac{T^2}{a^3} = k \hspace{10pt}(k は定数)
+\end{equation}
+である. ここで, 地球の場合を当てはめてみる; $a=1$[AU], $T=1$[year]より,
+$k=1$と出せる. よって,
+\begin{equation}
+ T=\sqrt{a^3}
+\end{equation}
+である. これに, 各軌道長半径を当てはめると,
+\begin{description}
+ \item [1.5 AU の場合] $T=\sqrt{(1.5)^3} \sim 1.84$
+ \item [15 AU の場合] $T=\sqrt{(15)^3} \sim 58.1$
+ \item [150 AU の場合] $T=\sqrt{(150)^3} \sim 1.84\times10^{3}$ 
+\end{description}
+
+\begin{itembox}[l]{問題3}
+ 授業の感想
+\end{itembox}
+
+普段, 数学や物理寄りな勉強をしている私にとっては, 元素の話や観測データの
+話を聞くのは新鮮だった. 配られた資料の中で一部, 観測データの図が観にくかっ
+たのは残念だが, スライドでは丁寧に説明してもらえたのでわかりやすかった.
+最新の研究の話題などは少し駆け足気味に通りすぎた気がしてあまり理解はでき
+ていなかったが, 導入部分など「大学院生として知っておくべき教養」の範囲の
+話は理解できたと思う.
+
+\end{document}

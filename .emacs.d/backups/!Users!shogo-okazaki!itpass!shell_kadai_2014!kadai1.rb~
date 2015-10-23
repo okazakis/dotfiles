@@ -1,0 +1,3 @@
+str = File.open(kadai1.dat)
+p str
+

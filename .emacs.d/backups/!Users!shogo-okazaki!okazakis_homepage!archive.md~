@@ -1,0 +1,28 @@
+---
+layout: page
+title: 資料庫
+permalink: /archive/
+group: navigation
+header: archive
+---
+
+# 高校数学
+
+* [数列]({{ site.baseurl }}/pdf/suuretsu.pdf)
+
+# 発表資料
+
+私が公の場で発表した内容の資料です.
+
+## ITPASS
+
+### ITPASS 実習
+
+* 2014年 8月 6日 [「利用者によるセキュリティ --- アカウントとパスワード」](https://itpass.scitec.kobe-u.ac.jp/exp/fy2014/140806/lecture_account/pub/)
+
+### ITPASS セミナー
+
+* 2014年 2月21日 [「コンピュータが画像を保存する方法について」](https://itpass.scitec.kobe-u.ac.jp/seminar/lecture/fy2013/140221/pub/) (共同発表者:藤島美保)
+* 2014年 5月30日 [「利用者によるセキュリティ --- アカウントとパスワード」](https://itpass.scitec.kobe-u.ac.jp/seminar/lecture/fy2014/140530/pub/)
+* 2014年10月30日 [「WWW のおはなし」](https://itpass.scitec.kobe-u.ac.jp/seminar/lecture/fy2014/141030/pub/) (共同発表者:藤島美保)
+* 2015年 1月30日 [「Ruby, 基本の『き』」](https://itpass.scitec.kobe-u.ac.jp/seminar/lecture/fy2014/150130/pub/)

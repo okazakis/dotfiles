@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+pattern = Regexp.new(ARGV[0])
+count = ARGV[0].size
+pi = File.read("kadai1_data.dat")
+
+case ARGV[0]
+when /[0-9][0-9][0-9][0-9]/
+  number = pi.index(pattern) + 1  
+  print "#{ARGV[0]} は円周率の小数点以下 #{number} 桁目から始まります" 
+end
+
+#if count == 4
+#else
+#  print "4文字の数字列を入力してください"
+#end
+

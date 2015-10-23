@@ -1,0 +1,10 @@
+Host login
+     User         okazakis
+     HostName     joho14-itpass
+     IdentityFile ~/.ssh/id_rsa_for_login
+
+Host server
+     User	  okazakis
+     HostName	  itpass.scitec.kobe-u.ac.jp
+     IdentityFile ~/.ssh/id_rsa_for_server
+     ProxyCommand ssh login -W %h:%p

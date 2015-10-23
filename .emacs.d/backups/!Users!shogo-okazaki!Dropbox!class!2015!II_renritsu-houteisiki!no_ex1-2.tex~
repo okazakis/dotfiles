@@ -1,0 +1,196 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,12pt,openbib,oneside]{jsbook}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{emathPh}
+\usepackage{emathPk}
+\usepackage{emathMw}
+\usepackage{emathCap}
+\usepackage{emathQf}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{EMproof}
+\usepackage{EMxymatrix}
+\usepackage{EMboutyuu}
+\usepackage{EMminipages}
+\usepackage{emathEy}
+\usepackage{ulem}
+\usepackage{hako}
+\usepackage{empheq}
+%\usepackage{multido}
+\resettagform
+\newtheorem{prob}{問題}
+% \newtheorem{thm}[dfn]{定理}
+% \newtheorem{exm}[dfn]{例}
+% \newtheorem{fmr}[dfn]{公式}
+% \newtheorem{exe}[dfn]{練習}
+% \newtheorem{dfnop}{*定義}[chapter]
+% \newtheorem{thmop}[dfn]{*定理}
+% \newtheorem{exmop}[dfn]{*例}
+% \newtheorem{frmop}[dfn]{*公式}
+\newtheorem{probop}[prob]{*問題}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+\newenvironment{tagcases}[1][]
+  {\empheq[left={#1\empheqlbrace}]{alignat=2}}
+  {\endempheq}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\setlength{\footskip}{30pt}
+\lhead{2 年生 数学$\alpha$}
+\chead{第 2 章《連立方程式》}
+\rhead{No.\thepage}
+\lfoot{}
+\cfoot{}
+\rfoot{担当：岡崎正悟}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   Set Counter (chapter, section etc. ) %%%%%%%%
+% \setcounter{chapter}{2}
+% \setcounter{section}{2}    % 節番号
+% \setcounter{subsection}{4}
+\setcounter{equation}{1}   % 式番号
+\setcounter{page}{1}     % 必ず開始ページは明記する
+\setcounter{figure}{0}     % 図番号
+\setcounter{table}{0}      % 表番号
+\setcounter{prob}{0}
+\setcounter{footnote}{0}
+
+%\def\labelitemi{$\clubsuit$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%        Counter Output Format           %%%%%%%%
+\def\thechapter{\arabic{chapter}}
+\def\thesection{\arabic{chapter}.\arabic{section}}
+\def\thesubsection{\arabic{subsection}}
+\def\theequation{\arabic{equation}}
+\def\thepage{演習-\arabic{page}}
+\def\thefigure{\arabic{chapter}.\arabic{figure}}
+\def\thetable{\arabic{chapter}.\arabic{section}.\arabic{table}}
+\def\thefootnote{$\dagger$\arabic{footnote}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\section*{演習問題}
+% \noindent
+% ドリル: 本当に基本の基本から確認したい人向け \\
+% A 問題: 最低限これだけは中間テストまでにできるようになってほしい問題(授
+% 業で主に取り上げる) \\
+% B 問題: 余裕がある人向け
+
+\subsection*{ドリル}
+
+次の連立方程式を解きなさい.
+
+ \begin{edaenumerate}<3>[(1)]
+  \item\[
+	\begin{cases}
+	 5x+3y=29\\
+	 2x+3y=26
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 5x+2y=-7\\
+	 x=3y
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 12x-5y=-19\\
+	 y=3+2x
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 -5x+3y=-13\\
+	 5x-9y=19
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 x+5y=21\\
+	 2x+7y=27
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 2x-7y=-60\\
+	 -x+5y=42
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 9x-2y=-8\\
+	 3x+5y=-31
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 x+7y=6\\
+	 3x-2y=18
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 5x+8y=33\\
+	 3x-4y=-33
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 7x+2y=33\\
+	 4x+5y=15
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 x+6y=-2\\
+	 3x-4y=5
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 7x+3y=9\\
+	 2x-5y=26
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 x=17-5y\\
+	 x=8-2y
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 3x-4y=-68\\
+	 7x+3y=-60
+	\end{cases}
+       \]
+  \item\[
+	\begin{cases}
+	 3x=-2y+12\\
+	 3x+5y=21
+	\end{cases}
+       \]
+ \end{edaenumerate}
+
+
+\end{document}

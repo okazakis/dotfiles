@@ -1,0 +1,185 @@
+! The governing equation(支配方程式): 
+!
+!      d\nabla^2\psi/dt 
+!          = -J(\psi,\nabla^2\psi) - beta d\psi/dx
+!            +(-1)^{p+1}\nu_{2p}\nabla^2p \nabla^2\psi
+!
+program calc_enstrophy_spectrum
+
+!== モジュール引用宣言 ================================================
+  use ee_module 
+  use gt4_history, only : GT_HISTORY, HistoryCreate, HistoryPut, HistoryGet, &
+                          HistoryAddVariable, HistoryClose, HistoryAddAttr
+  use dc_trace,    only : SetDebug, BeginSub, EndSub, DbgMessage
+  use dc_message,  only : MessageNotify
+  use dc_types
+  use dc_string,   only : StoA
+  use dc_args
+  implicit none
+
+!== 宣言部 ============================================================
+ !---- 空間解像度設定 ----
+  integer, parameter :: im=128                ! 格子点の設定
+  integer, parameter :: km=42                 ! 切断波数の設定
+  
+ !---- 変数(格子点データ) ----
+  real(8) :: q_C(-im/2:im/2,-im/2,im/2)
+  real(8) :: q_S(-im/2,im/2,-im/2,im/2)
+  real(8) :: EnsSp_1d(im/2)
+
+  real(8), allocatable :: yx_VelX(:,:)        ! 速度経度成分
+  real(8), allocatable :: yx_VelY(:,:)        ! 速度緯度成分
+  real(8), allocatable :: yx_Vor(:,:)         ! 渦度(鉛直成分)
+  real(8), allocatable :: yx_StrFunc(:,:)     ! 流線関数
+
+ !---- 変数(スペクトルデータ) ----
+  real(8), allocatable :: ee_Vor(:,:)         ! 渦度(鉛直成分)
+  real(8), allocatable :: ee_StrFunc(:,:)     ! 流線関数
+
+  real(8), allocatable :: ee_ESp(:,:)         ! エネルギースペクトル
+  real(8), allocatable :: ee_EnsSp(:,:)       ! エンストロフィースペクトル
+
+  real(8), allocatable :: ESp_1d(:)         ! 1次元エネルギースペクトル
+  real(8), allocatable :: EnsSp_1d(:)       ! 1次元エネルギースペクトル
+
+ !---- 固定パラメタ -----
+  real(8), parameter  :: pi = 3.141592653589793D0 ! 円周率
+  character(len=20)   :: DbgMessageFmt='*** DbgMESSAGE ***'
+  real(8), parameter  :: vmiss = -999.0       ! 欠損値
+
+                                                 ! -- ヒストリー出力 --
+  character(len=100) :: hst_file=   ''           ! ヒストリーファイル名
+  character(len=100) :: title = &                ! タイトル
+   'Test of linear terms of 2-dim barotropic model on a double-cyclic domain'
+
+  integer :: hst_intstep=200                     ! ヒストリー出力間隔ステップ数
+  namelist /history/    hst_file, title, hst_intstep
+
+ !---- 作業変数 ----
+  integer :: it=0                            ! 時間ステップ
+  real(8) :: time                            ! モデル内時間
+  integer :: k                               ! 波数ベクトルの長さ
+
+  type(GT_HISTORY) :: hst_rst                ! リスタート GT_HISTORY 変数
+
+ !---------------- デバッグ出力制御設定 -----------------
+  if (DebugOn) then
+    call SetDebug
+  end if
+
+ !------------------ 変数の割り付け ---------------------
+  allocate(yx_VelX(0:jm-1,0:im-1),yx_VelY(0:jm-1,0:im-1))
+  allocate(yx_Vor(0:jm-1,0:im-1),yx_StrFunc(0:jm-1,0:im-1))
+
+  allocate(ee_Vor(-lm:lm,-km:km),ee_StrFunc(-lm:lm,-km:km))
+
+  allocate(ee_Vortmp(-lm:lm,-km:km))
+  allocate(ee_Xi(-lm:lm,-km:km))
+  allocate(ee_k1(-lm:lm,-km:km),ee_k2(-lm:lm,-km:km))
+  allocate(ee_k3(-lm:lm,-km:km),ee_k4(-lm:lm,-km:km))
+
+  allocate(ee_HVisc(-lm:lm,-km:km))
+  allocate(ee_OmegaR(-lm:lm,-km:km))
+  allocate(ee_ESp(-lm:lm,-km:km),ee_EnsSp(-lm:lm,-km:km))
+
+ !------------------ 座標値の設定 -----------------------
+  call DbgMessage(fmt='call %c', c1='ee_initial') 
+  call ee_Initial(im,jm,km,lm,0.0D0,XLength,0.0D0,YLength)
+
+ !------------------ 物理係数の設定 -----------------------
+  ee_Vor = 1.0D0
+  ee_HVisc = (-1)**HVOrder * HVisc*(ee_Lapla_ee(ee_Vor))**HVOrder
+
+
+  do k=-km,km
+     do l=-lm,lm
+        if ( k**2+l**2 .NE. 0 ) then
+           ee_OmegaR(l,k) = - Beta * (2*PI*k/XLength) &
+                        / ( (2*PI*k/XLength)**2 + (2*PI*l/YLength)**2 )
+        else
+           ee_OmegaR(l,k) = vmiss
+        endif
+     enddo
+  enddo
+
+ !------------------- 初期値設定 ----------------------
+  time = initial_time
+
+  if ( initial_file == "") then
+     ! リスタートファイルを指定しない場合内部で ee_Vor を与える. 
+     call set_initial_values
+  else
+     !  初期値設定(リスタートファイルからの読みこみ)
+     call HistoryGet( trim(initial_file), 'ee_vor', ee_Vor,  time )
+  endif
+
+  ee_Strfunc = ee_LaplaInv_ee(ee_Vor)
+
+ !---------------- 時間積分(Runge-Kutta + exp 変換法) -----------------
+  call output_restart_init
+  call output_history_init
+
+  if ( initial_file == '' ) call output_history    ! 内部で与えた初期値は出力
+
+  call DbgMessage(fmt='%c %c', &
+&                 c1=DbgMessageFmt, &
+&                 c2='Time integration starts.') 
+
+  do it=1,nstep
+     time = initial_time + it * delta_t
+
+     !---- 1 段目 [ k1 = f( x_n, t_n) ] ----
+     ee_k1 = ee_DXiDt_ee_ee(ee_Vor,ee_Strfunc,0.0D0)
+
+     !---- 2 段目 [ k2 = f( x_n+k1*dt/2, t_n+dt/2 ) ] ----
+     ee_Xi = ee_Vor + ee_k1*delta_t/2.0D0
+     ee_Vortmp = ee_Xi2Vor_ee(ee_Xi,delta_t/2.0D0)
+     ee_StrFunc = ee_LaplaInv_ee(ee_Vortmp)
+     ee_k2 = ee_DXiDt_ee_ee(ee_Vortmp,ee_Strfunc,delta_t/2.0D0)
+
+     !---- 3 段目 [ k3 = f( x_n+k2*dt/2, t_n+dt/2 ) ] ----
+     ee_Xi = ee_Vor + ee_k2*delta_t/2.0D0
+     ee_Vortmp = ee_Xi2Vor_ee(ee_Xi,delta_t/2.0D0)
+     ee_StrFunc = ee_LaplaInv_ee(ee_Vortmp)
+     ee_k3 = ee_DXiDt_ee_ee(ee_Vortmp,ee_Strfunc,delta_t/2.0D0)
+
+     !---- 4 段目 [ k4 = f( x_n+k3*dt, t_n+dt ) ] ----
+     ee_Xi = ee_Vor + ee_k3*delta_t
+     ee_Vortmp = ee_Xi2Vor_ee(ee_Xi,delta_t)
+     ee_StrFunc = ee_LaplaInv_ee(ee_Vortmp)
+     ee_k4 = ee_DXiDt_ee_ee(ee_Vortmp,ee_Strfunc,delta_t)
+
+     !---- 積分 ----
+     ee_Xi =ee_Vor + delta_t * (   ee_k1/6.0D0 + ee_k2/3.0D0 &
+                                 + ee_k3/3.0D0 + ee_k4/6.0D0    )
+     ee_Vor = ee_Xi2Vor_ee(ee_Xi,delta_t)
+
+     ! 渦度から流線関数を計算
+     ee_StrFunc = ee_LaplaInv_ee(ee_Vor)
+
+     if(mod(it,hst_intstep) .eq. 0)then                    ! ヒストリー出力
+        call output_history
+     endif
+
+     if(mod(it,rst_intstep) .eq. 0)then                    ! リスタート出力
+        call output_restart
+     endif
+  enddo
+
+  call DbgMessage(fmt='%c %c',      &
+&                 c1=DbgMessageFmt, &
+&                 c2='Time integration end.') 
+
+  if(.not. mod(it-1,rst_intstep) .eq. 0)then                    ! 最終出力
+     call output_restart
+  endif
+
+  call output_restart_close
+  call output_history_close
+
+! 以上 メインプログラム 
+!-----------------------------------------------------------------------------
+! 以下 サブルーチン
+  
+  
+end program calc_enstrophy_spectrum

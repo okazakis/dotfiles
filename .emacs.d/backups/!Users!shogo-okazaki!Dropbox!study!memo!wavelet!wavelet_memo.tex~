@@ -1,0 +1,56 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,papersize,11pt,openbib,twoside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{amsmath}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+\newenvironment{tagcases}[1][]
+  {\empheq[left={#1\empheqlbrace}]{alignat=2}}
+  {\endempheq}
+%---------- タイトル・日付等 ----------
+\title{ウェーブレット解析に関するメモ}
+\author{岡崎 正悟}
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\setlength{\footskip}{30pt}
+\lhead[\rightmark]{No.\thepage}
+\chead{}
+\rhead[No.\thepage]{\leftmark}
+\lfoot[\today]{岡崎 正悟}
+\cfoot{ウェーブレット解析に関するメモ}
+\rfoot[岡崎 正悟]{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+\maketitle
+\section{テスト}
+hoge
+\subsection{なんとかかんとか}
+
+\newpage
+
+hogehoge
+
+\newpage
+
+hoghogehpge
+
+\end{document} 

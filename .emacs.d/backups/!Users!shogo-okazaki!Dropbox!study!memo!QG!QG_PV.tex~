@@ -1,0 +1,76 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,papersize,11pt,openbib,twoside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{amsmath}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+\newenvironment{tagcases}[1][]
+  {\empheq[left={#1\empheqlbrace}]{alignat=2}}
+  {\endempheq}
+%---------- タイトル・日付等 ----------
+\title{ウェーブレット解析に関するメモ}
+\author{岡崎 正悟}
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%         New Command Definition        %%%%%%%%
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\bnabla}{\bm{\nabla}}
+\newcommand{\DD}[3][]{\frac{\dd^{#1} #2}{\dd #3^{#1}}}
+\newcommand{\DDD}[3][]{\frac{\mathrm{D}^{#1} #2}{\mathrm{D} #3^{#1}}}
+\newcommand{\DP}[3][]{\frac{\partial^{#1} #2}{\partial #3^{#1}}}
+%------------------------------------------------------
+% \aboxed{A}{=B} で数式を四角で囲むコマンド
+%------------------------------------------------------
+\newcommand{\aboxed}[2]{%
+  \rlap{\boxed{#1#2}}%
+  \phantom{\hskip\fboxrule\hskip\fboxsep #1}&\phantom{#2}%
+}
+% ----- 定理環境の設定 -----
+\newtheorem{dfn}{定義}[section]
+\newtheorem{thm}[dfn]{定理}
+\newtheorem{lem}[dfn]{補題}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%        Set Header & Footer    %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\setlength{\footskip}{30pt}
+\lhead[\rightmark]{No.\thepage}
+\chead{}
+\rhead[No.\thepage]{\leftmark}
+\lfoot[\today]{岡崎 正悟}
+\cfoot{準地衡渦位の導出}
+\rfoot[岡崎 正悟]{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\maketitle
+
+\section{問題設定}
+
+考える流体はブシネスク流体である;
+\begin{align}
+ \DP{u}{t}+u\DP{u}{x}+v\DP{u}{y}+w\DP{u}{z}-fv=-\frac{1}{\bar{\rho}}\DP{p}{x}
+\end{align}
+
+\end{document}
+%%%%%%%%               Text End                 %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

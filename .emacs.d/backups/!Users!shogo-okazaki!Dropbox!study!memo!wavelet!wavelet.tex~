@@ -1,0 +1,68 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,papersize,11pt,openbib,twoside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+%---------- emath ----------
+%\usepackage{emathPh}
+% \usepackage{emathPk}
+% \usepackage{emathMw}
+% \usepackage{emathCap}
+% \usepackage{emathQf}
+% \usepackage{EMproof}
+% \usepackage{EMxymatrix}
+% \usepackage{EMboutyuu}
+% \usepackage{EMminipages}
+% \usepackage{emathEy}
+% \usepackage{ulem}
+% \usepackage{hako}
+% \usepackage{empheq}
+% \usepackage{emathPl}
+% \usepackage{emathPp}
+%----------------------------
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+
+%\usepackage{multido}
+%\resettagform
+
+%\renewcommand{\labelenumii}{(\arabic{enumii})}
+%\newenvironment{tagcases}[1][]
+%  {\empheq[left={#1\empheqlbrace}]{alignat=2}}
+%  {\endempheq}
+
+%---------- タイトル・日付等 ----------
+\title{第2学年 数学科 春学期期末考査 解説と講評}
+\author{岡崎 正悟}
+\date{2015/10/06}
+
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\setlength{\footskip}{30pt}
+\lhead[2 年生 数学$\alpha$ \& $\beta$]{No.\thepage}
+\chead{2015 年前期 期末考査《解答・解説》}
+\rhead[No.\thepage]{2 年生 数学$\alpha$ \& $\beta$}
+\lfoot[2015/10/06]{担当:岡崎 正悟}
+\cfoot{}
+\rfoot[担当:岡崎 正悟]{2015/10/06}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+\maketitle
+
+\end{document} 

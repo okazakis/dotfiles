@@ -1,0 +1,106 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+\documentclass[a4j,12pt,openbib,oneside,report]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{ascmac}
+\usepackage{tabularx}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{fancybox} 
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{fancyhdr}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%    New Command Definition     %%%%%%%%
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\D}{\mathrm{D}}
+\newcommand{\bnabla}{\bm{\nabla}}
+\newcommand{\DD}[3][]{\frac{\dd^{#1} #2}{\dd #3^{#1}}}
+\newcommand{\DDD}[3][]{\frac{\mathrm{D}^{#1} #2}{\mathrm{D} #3^{#1}}}
+\newcommand{\DP}[3][]{\frac{\partial^{#1} #2}{\partial #3^{#1}}}
+\renewcommand\thefootnote{\dag\arabic{footnote}}
+\def\proofcmd{\gtfamily}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%       Title, Author and date       %%%%%%%%
+\title{実験惑星科学特論 I \\ 課題レポート (9/11 出題分)}
+\author{理学研究科惑星学専攻 岡崎 正悟 \\\small{学籍番号: 153s401s}}
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%      Header and Footer          %%%%%%%%
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{\textbf{実験惑星科学特論 I 課題レポート (9/11 出題分)}}
+\chead{}
+\rhead{{\footnotesize\leftmark}\textbf{\thepage}}
+\lfoot{}
+\cfoot{}
+\rfoot{{\small \today (153s401s: 岡崎 正悟)}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   Text Start    %%%%%%%%
+\begin{document}
+
+\maketitle
+
+\section{実習のまとめ}
+
+\subsection{微分回路}
+
+微分回路に繰り返し周期の短形波を加え, 出力波形を観測した. 下の図では, コ
+ンデンサの静電容量 C$=0.01\mu$F, 抵抗 R$=10$K$\Omega$, 周期 T$=10$ms の
+場合である. 図の時は出力波形は入力波形(水色)の微分波形(黄色)が出力されて
+いるが, 少し精度が悪い. 周波数を上げると精度が良くなった.
+
+\begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale=.05,clip]{fig1.pdf}
+  \caption{微分回路に短形波(水色)を与えたときの出力波形(黄色)}
+ \end{center} 
+\end{figure}
+
+\subsection{積分回路}
+
+積分回路に繰り返し周期の短形波を与え, 出力波形を観測した. 微分回路と同様
+に,  コンデンサの静電容量 C$=0.01\mu$F, 抵抗 R$=10$K$\Omega$, 周期
+T$=10$ms で実験した(下図). 微分回路の時と同様, 周波数を上げると精度が良
+くなった.
+
+\begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale=.05,clip]{fig2.pdf}
+  \caption{積分回路に短形波(水色)を与えたときの出力波形(黄色)}
+ \end{center} 
+\end{figure}
+
+\subsection{フィルター回路}
+
+コンデンサの静電容量 C$=0.01\mu$F, 抵抗 R$=10$K$\Omega$ の RC 回路に正弦
+波を入力した. まず, 抵抗 R の両端を出力とした場合には, 低周波側 の振幅を
+大幅減少させる「ハイパスフィルター」として働くことを観察した. 次に, コン
+デンサ C の両端を出力とした場合には, 高周波側の振幅を大幅減少させる「ロー
+パスフィルター」として働くことを観察した. この両者において周波数を様々に
+変え, 周波数依存性を調べた. 入力信号とそれぞれの出力信号との振幅比を縦軸
+に, 周波数を横軸にしたグラフをかき, 2つの曲線が C$\times$R=10000 Hz のと
+ころで交差していることを確認した. 
+
+\subsection{トランジスターによる増幅器}
+
+\subsection{OP-Amp}
+
+\subsubsection{反転増幅器}
+
+\subsubsection{非反転増幅器}
+
+
+\end{document}
+%%%%%%%%   Text End      %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

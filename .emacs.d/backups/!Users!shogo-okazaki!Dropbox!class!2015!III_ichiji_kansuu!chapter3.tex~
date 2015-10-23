@@ -1,0 +1,388 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,12pt,openbib,oneside]{jsbook}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{emathPh}
+\usepackage{emathPk}
+\usepackage{emathMw}
+\usepackage{emathCap}
+\usepackage{emathQf}
+\usepackage{emathPl}
+\usepackage{emathPp}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{EMproof}
+\usepackage{EMxymatrix}
+\usepackage{EMboutyuu}
+\usepackage{EMminipages}
+\usepackage{emathEy}
+\usepackage{ulem}
+\usepackage{hako}
+\usepackage{empheq}
+%\usepackage{multido}
+\resettagform
+% ----- 定理環境の設定 -----
+\newtheorem{dfn}{定義}[chapter]
+\newtheorem{thm}[dfn]{定理}
+\newtheorem{exm}[dfn]{例}
+\newtheorem{fmr}[dfn]{公式}
+\newtheorem{exe}[dfn]{練習}
+\newtheorem{dfnop}{*定義}[chapter]
+\newtheorem{thmop}[dfn]{*定理}
+\newtheorem{exmop}[dfn]{*例}
+\newtheorem{frmop}[dfn]{*公式}
+\newtheorem{exeop}[dfn]{*練習}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+\newenvironment{tagcases}[1][]
+  {\empheq[left={#1\empheqlbrace}]{alignat=2}}
+  {\endempheq}
+% ----- \aboxed{A=}{B} で数式を四角で囲む
+\newcommand{\aboxed}[2]{%
+  \rlap{\boxed{#1#2}}%
+  \phantom{\hskip\fboxrule\hskip\fboxsep #1}&\phantom{#2}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\setlength{\footskip}{20pt}
+\lhead{2 年生 数学$\alpha$}
+\chead{第 3 章《1 次関数》}
+\rhead{No.\thepage}
+\lfoot{}
+\cfoot{}
+\rfoot{担当：岡崎正悟}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   Set Counter (chapter, section etc. ) %%%%%%%%
+\setcounter{chapter}{2}
+\setcounter{section}{0}    % 節番号
+\setcounter{subsection}{0}
+\setcounter{equation}{0}   % 式番号
+\setcounter{page}{31}     % 必ず開始ページは明記する
+\setcounter{figure}{0}     % 図番号
+\setcounter{table}{0}      % 表番号
+\setcounter{dfn}{0}
+\setcounter{footnote}{0}
+
+%\def\labelitemi{$\clubsuit$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%        Counter Output Format           %%%%%%%%
+\def\thechapter{\arabic{chapter}}
+\def\thesection{\arabic{chapter}.\arabic{section}}
+\def\thesubsection{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\def\theequation{\arabic{chapter}.\arabic{equation}}
+\def\thepage{\arabic{page}}
+\def\thefigure{\arabic{chapter}.\arabic{figure}}
+\def\thetable{\arabic{chapter}.\arabic{section}.\arabic{table}}
+\def\thefootnote{$\dagger$\arabic{footnote}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\chapter{1 次関数}
+
+1 年生のときに学習した「比例」「反比例」のように, 数どうしの関係を数学で
+は「関数」という. この章では, その中の「1 次関数」と呼ばれるものを扱う.
+関数とは何か, という話からはじめて, 1 次関数の性質を勉強する. 
+
+\section{関数}
+
+\begin{shadebox}
+ \begin{dfn}
+ 2 つの変数$x, y$があって, $x$の値を決めると, それに対応して$y$の値が
+ \underline{ただ一つ}決まるとき, $y$は$x$の\textbf{関数}である, という.
+ $y$が$x$の関数であることを$y=f(x)$のように表す.
+\end{dfn} 
+\end{shadebox}
+
+一般に, 関数の定義は上のようになっているのだが, 少しイメージがしにくいと
+思うので, 次のように考えてみよう; 「関数\footnote{「関数」という言葉は,
+英語の「function」が中国に入ったときに「函数」という漢字が当てられ, 日本
+に入ってきたのだが, 「函」の字が常用漢字から外れたため, 戦後, 教科書に載
+る漢字としては「関数」となった. 「函」は地名の「函館」に使われているが,
+その読みの通り「箱」の意味がある. そのようなことから, 以下のようなイメー
+ジは漢字とマッチしてるとも言える.}」は以下のような『箱』であると考えてみ
+よう. 
+
+\begin{figure}[htbp]
+  \begin{center}
+    \begin{tabular}{c}
+      % 1
+      \begin{minipage}{0.5\hsize}
+       \begin{center}
+	\includegraphics[scale=.3,clip]{./kansuu.eps}
+       \end{center}
+      \end{minipage}
+      % 2
+      \begin{minipage}{0.5\hsize}
+        \begin{center}
+	\includegraphics[scale=.3,clip]{./kansuu.eps}
+       \end{center}
+      \end{minipage}
+    \end{tabular}
+  \end{center}
+\end{figure}
+
+つまり, 左からある数$x$を入れると, 箱の中で関数$f$が作用して, 右から
+$y=f(x)$が出てくる, というものである. ここまでの話は, 「関数」という概念
+が抽象的でわかりにくい, という人向けの補足的な説明なので, 特に理解してい
+ないと困る, というものではない.
+
+\newpage
+
+\section{1 次関数の性質}
+
+\subsection{1 次関数}
+
+数学では様々な関数が登場する. 1 次関数もその 1 つである. どのような関数
+か見てみよう.
+
+\begin{exm}
+ 深さ 30 cm の水そうに, 3 cm の高さまで水が入っている. この水そうに, 毎
+ 分 2 cm の割合で水面が高くなるように水を入れるとき, 水を入れ始めてから
+ 5 分後の水面の高さは何 cm になるでしょうか.
+\end{exm}
+
+水を入れ始めてから $x$ 分後の水そうの高さを $y$ cm であるとしよう. この
+とき, $x$ がひとつ決まると, 対応する $y$ の値はただ一つに決まるので, $y$
+ は $x$ の関数である, といえる. 具体的に図にして考えてみよう(板書参照).
+
+\hrulefill
+
+$x$ と $y$ の関係は, 次のようになっている;
+\begin{equation}
+ y=3+2x
+\end{equation}
+これは, 分解して考えると, 「(最初の水の高さ)+($x$ 分後までに増えた高さ)」
+となっている.
+
+\begin{exe}
+ 水そうに 30 cm の高さまで水が入っている. この水そうから, 毎分 2 cm の割
+ 合で高さが低くなるように水を抜く. 水を抜き始めてから $x$ 分後の水面の高
+ さを $y$ cm とするとき, $y$ を $x$ の式で表しなさい.
+\end{exe}
+
+\newpage
+
+\begin{dfn}
+ $y$ が $x$ の関数で, $y$ が $x$ の 1 次式であるとき, $y$ は $x$ の
+ \textbf{1 次関数}であるという. 一般に, 1 次関数は
+ \begin{equation}\label{eq:def}
+  {\bf y=ax+b} \hspace{3em} (a, b は定数)
+ \end{equation}
+ と書ける. 
+\end{dfn}
+
+(\ref{eq:def}) で $b=0$ とすると, $y=ax$ となり, 以前学習した比例の関係
+式となる. つまり, \underline{比例は 1 次関数の特別な場合である}.
+
+\begin{exm}
+ 気温は, 地上 10 km までは, 高度が 1 km 高くなるごとに 6 $^{\circ}$C 低
+ くなる. 地上の気温が 20 $^{\circ}$C のとき, 地上から $x$ km 上空の気温
+ を $y$ $\circ$C とする. これを表にまとめてみると以下のようになる;
+ \begin{table}[h]
+  \begin{center}
+   \begin{tabular}[t]{|c||c|c|c|c|c|c|} \hline
+   高度 $x$ km        & 0 & 2 & 4 & 6 & 8 & 10 \\ \hline
+   気温 $y$ $^\circ$C & \hspace{1.5em} &\hspace{1.5em}   & \hspace{1.5em}  & \hspace{1.5em}  & \hspace{1.5em}  & \hspace{1.5em}   \\ \hline 
+  \end{tabular}
+  \end{center}
+ \end{table}
+\end{exm}
+\noindent $\clubsuit$ $x$ と $y$ の関係を数式で表すと, どうなるだろうか?
+その数式から, この $x$ と $y$ の関係は 1 次関数であると言えるだろうか??
+
+\begin{exe}
+ 次の $x$ と $y$ の関係について, $y$ を $x$ の式で表し, $y$ が $x$ の関
+ 数であるものを選びなさい.
+ \begin{enumerate}[(ア)]
+  \item 1 本 5 g の鉛筆 $x$ 本と, 1 個 10 g の消しゴム 1 個を合わせた重
+	さは $y$ g である.
+  \item 160 ページの本を $x$ ページ読んだときの残りのページ数は $y$ ペー
+	ジである.
+  \item 縦が $x$ cm, 横が $y$ cm の長方形の面積は 10 cm$^{2}$ である.
+ \end{enumerate}
+\end{exe}
+
+\subsection{1 次関数の値の変化}
+
+1 次関数 $y=2x+3$ の $x$ に対する $y$ の値を表にまとめてみよう.
+\vspace{2em}
+\begin{table}[h]
+ \begin{center}
+  \begin{tabular}[t]{|c||c|c|c|c|c|c|c|c|c|} \hline
+   $x$ & $\cdots$ & $-3$ & $-2$ & $-1$ & 0 & 1 & 2 & 3 & $\cdots$ \\ \hline
+   $y$ & $\cdots $& \hspace{1.5em} & \hspace{1.5em} &\hspace{1.5em} & \hspace{1.5em}  & \hspace{1.5em}  & \hspace{1.5em}  & \hspace{1.5em}  & $\cdots$\\ \hline
+  \end{tabular}
+ \end{center}
+\end{table}
+\vspace{2em}
+
+この表から分かることは, $x$ の増加量が一定であるとき, $y$ の増加量も一定
+であることである. また, $x$ の増加量に対する $y$ の増加量の割合は, すべ
+て 2 である;
+\begin{equation*}
+ \frac{(y の増加量)}{(x の増加量)} \cdots \frac{2}{1}=2,\hspace{1em}
+  \frac{4}{2}=2, \hspace{1em} \frac{6}{3}=2
+\end{equation*}
+比例のときに学習したのと同じく, $x$ の増加量に対する $y$ の増加量の割合
+を\textbf{変化の割合}という;
+\begin{align*}
+ \aboxed{(変化の割合)}{=\frac{(y の増加量)}{(x の増加量)}}
+\end{align*}
+別の言い方をすれば, 変化の割合とは, \uwave{$x$ が 1 増えたときに, $y$ は
+いくつ増えるか}を表す量である.
+
+\begin{exm}
+ 1 次関数 $y=4x-1$ について, $x$ の値が $-1$ から 3 まで増加するときの変
+ 化の割合を求めよう.
+\end{exm}
+
+\begin{exe}
+ 1 次関数 $y=-3x-5$ について, $x$ の値が次のように増加するときの変化の割
+ 合を求めなさい.
+ \begin{edaenumerate}[(1)]
+  \item 1 から 2
+  \item $-1$ から $2$
+ \end{edaenumerate}
+\end{exe}
+
+以上のことから, 次のことが言える;
+\begin{screen}
+ \begin{fmr}
+ 1 次関数 $y=ax+b$ の変化の割合は, $x$ の増加量にかかわらず一定で, その
+ 値は $a$ に等しい:
+ \begin{align*}
+  \aboxed{\frac{(y の増加量)}{(x の増加量)}}{=a}
+ \end{align*}
+\end{fmr}
+\end{screen}
+
+\begin{exe}
+ 次の 1 次関数の変化の割合を答えなさい.
+ \begin{edaenumerate}[(1)]
+  \item $y=3x-2$
+  \item $\displaystyle y=-\frac{1}{2}x+5$
+ \end{edaenumerate}
+\end{exe}
+
+反比例の場合の変化の割合はどうなのかも調べてみよう.
+
+\begin{exe}
+ 反比例$\displaystyle y=\frac{6}{x}$について, $x$ の値が次のように増加す
+ るときの変化の割合をそれぞれ求めなさい.
+ \begin{edaenumerate}[(1)]
+  \item 2 から 6
+  \item $-3$ から $-1$
+ \end{edaenumerate}
+\end{exe}
+
+\newpage
+
+\subsection{1 次関数のグラフ}
+
+比例や反比例のグラフは特徴のある形をしており, 値の変化の様子がパッと見て
+わかりやすくなった. 1 次関数もグラフをかくことで, 値の変化の様子を捉えら
+れるようにしよう.
+
+\subsubsection{比例のグラフ}
+
+まずは, グラフのかき方とそもそもグラフとは何だったのかということを比例の
+グラフをかくことでおさらいしよう.
+
+\begin{exm}
+ 関数$y=2x$のグラフをかいてみよう.
+\end{exm}
+最も原始的な方法で, まず, $y=2x$の対応する$x$と$y$の値を表にまとめよう;
+\begin{table}[h]
+ \begin{center}
+  \begin{tabular}[t]{|c||c|c|c|c|c|c|c|c|c|}\hline
+   $x$ & $\cdots$ &$-3$ &$-2$ &$-1$ &0 &1 &2 &3 &$\cdots$ \\ \hline
+   $y$&$\cdots$ &\hspace{1.5em} &\hspace{1.5em} &\hspace{1.5em}
+		   &\hspace{1.5em} &\hspace{1.5em} &\hspace{1.5em}
+			       &\hspace{1.5em} &$\cdots$ \\ \hline
+  \end{tabular}
+ \end{center}
+\end{table}
+次に, 表を元に$y=2x$を満たす$(x,y)$の組を座標に点を打ち, それらを結んで
+グラフをかこう.
+\begin{center}
+ \begin{zahyou}[%
+  ul=22pt,%
+  zikusensyu=\thicklines\arrowdrawline,%
+  arrowheadsize=2]
+  (-6,6)(-3,9)
+  \zahyouMemori[g]<sensyu=\drawline>%
+  \zahyouMemori[g][n]<0.5>%
+ \end{zahyou} 
+\end{center}
+
+\newpage
+
+座標平面(グラフ用紙)には, 表に書いた$(x,y)$の組み合わせの点しか打たなかっ
+たが, それ以外にも$y=2x$を満たす$(x,y)$の組み合わせは無数にあることは知っ
+ているだろう. それらの点は, すべて今書いたグラフ上にあるはずである. 逆に
+言えば, \uwave{$y=2x$のグラフとは, $y=2x$を満たす$(x,y)$の組を表す座標平面上の
+点を集めたもの(集合)}である\footnote{「集合」という言葉は立派な数学用語で, いろ
+いろな分野で幅広く使われる概念であるが, 少し難しい. いまは, 「ある規則で
+ものを集めてきたときのまとまり」とだけ考えておこう.}. 一般的に
+言えば, 次のように言える; 
+\begin{screen}
+ 関数$y=f(x)$のグラフとは, $y=f(x)$を満たす$(x,y)$の座標平面上の点の集合
+ である.
+\end{screen}
+
+では, 次は 1 次関数のグラフをかいてみよう.
+
+\begin{exe}
+ 先程と同様に, まずは表を書いて, $y=2x+3$のグラフを先ほどのグラフ用紙に
+ 書きなさい. 
+\end{exe}
+
+\begin{table}[h]
+ \begin{center}
+  \begin{tabular}[t]{|c||c|c|c|c|c|c|c|c|c|}\hline
+   $x$ & $\cdots$ &$-3$ &$-2$ &$-1$ &0 &1 &2 &3 &$\cdots$ \\ \hline
+   $y=2x$&$\cdots$ & $-6$ & $-4$ & $-2$ & 0 & 2 & 4 & 6 &$\cdots$ \\ \hline
+   $y=2x+3$&$\cdots$ &\hspace{1.5em} &\hspace{1.5em} &\hspace{1.5em}
+		   &\hspace{1.5em} &\hspace{1.5em} &\hspace{1.5em}
+			       &\hspace{1.5em} &$\cdots$ \\ \hline
+  \end{tabular}
+ \end{center}
+\end{table}
+
+表からわかるように, $y=2x+3$の$y$の値は, 同じ$x$に対応する$y$の値より,
+いつでも 3 だけ大きい. よって, グラフで見ても, $y=2x+3$上の点は$y=2x$の
+すべての点を$y$軸に平行に上に 3 だけずらした点になっている\footnote{$y$
+軸に平行な線上の点はすべて$x$の値が等しいことに注意しよう.}.
+
+一般には, 次のように言える;
+
+\begin{screen}
+ 1 次関数$y=ax+b$のグラフは, 比例のグラフ$y=ax$のグラフを, $y$軸正の方向
+ に$b$だけ平行移動した直線である\footnote{$b$の値が負の場合は, $y$軸負の
+ 方向にずらすことに注意.}.
+\end{screen}
+
+\calcval[s]{sqrt(2)}\foo
+\foo
+
+\end{document}

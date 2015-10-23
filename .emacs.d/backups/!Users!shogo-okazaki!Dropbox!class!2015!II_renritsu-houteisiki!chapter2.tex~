@@ -1,0 +1,195 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,12pt,openbib,oneside]{jsbook}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{emathPh}
+\usepackage{emathPk}
+\usepackage{emathMw}
+\usepackage{emathCap}
+\usepackage{emathQf}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{EMproof}
+\usepackage{EMxymatrix}
+\usepackage{EMboutyuu}
+\usepackage{EMminipages}
+\usepackage{emathEy}
+\usepackage{ulem}
+\usepackage{hako}
+\usepackage{empheq}
+%\usepackage{multido}
+\resettagform
+\newtheorem{dfn}{定義}[chapter]
+\newtheorem{thm}[dfn]{定理}
+\newtheorem{exm}[dfn]{例}
+\newtheorem{fmr}[dfn]{公式}
+\newtheorem{exe}[dfn]{練習}
+\newtheorem{dfnop}{*定義}[chapter]
+\newtheorem{thmop}[dfn]{*定理}
+\newtheorem{exmop}[dfn]{*例}
+\newtheorem{frmop}[dfn]{*公式}
+\newtheorem{exeop}[dfn]{*練習}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+\newenvironment{tagcases}[1][]
+  {\empheq[left={#1\empheqlbrace}]{alignat=2}}
+  {\endempheq}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\setlength{\footskip}{30pt}
+\lhead{2 年生 数学$\alpha$}
+\chead{第 2 章《連立方程式》}
+\rhead{No.\thepage}
+\lfoot{}
+\cfoot{}
+\rfoot{担当：岡崎正悟}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   Set Counter (chapter, section etc. ) %%%%%%%%
+\setcounter{chapter}{1}
+\setcounter{section}{0}    % 節番号
+\setcounter{subsection}{0}
+\setcounter{equation}{-}   % 式番号
+\setcounter{page}{13}     % 必ず開始ページは明記する
+\setcounter{figure}{0}     % 図番号
+\setcounter{table}{0}      % 表番号
+\setcounter{dfn}{0}
+\setcounter{footnote}{0}
+
+%\def\labelitemi{$\clubsuit$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%        Counter Output Format           %%%%%%%%
+\def\thechapter{\arabic{chapter}}
+\def\thesection{\arabic{chapter}.\arabic{section}}
+\def\thesubsection{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\def\theequation{\arabic{chapter}.\arabic{equation}}
+\def\thepage{\arabic{page}}
+\def\thefigure{\arabic{chapter}.\arabic{figure}}
+\def\thetable{\arabic{chapter}.\arabic{section}.\arabic{table}}
+\def\thefootnote{$\dagger$\arabic{footnote}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\begin{document}
+
+\chapter{連立方程式}
+
+1 年生のときに 1 次方程式$ax+b=0$の解を求めることを勉強した. これは, 前
+の章の「等式変形」を用いれば解けるのだった. ここで勉強するのは, 数量がわ
+からない文字(=未知数)が 2 つの場合
+\begin{equation} \label{eq:nigen-itiji}
+ ax+by+c=0
+\end{equation}
+の解を求める勉強をする.
+
+\section{連立方程式とその解}
+
+\subsection{2 元 1 次方程式}
+
+(\ref{eq:nigen-itiji}) のように, 次数 1 の未知数が 2 つある等式のこと
+を \emph{2 元 1 次方程式}という. 一般に, $x, y$ についての 2 元 1 次方程
+式があるとき, これに当てはまる$x, y$の\uwave{組}をその方程式の\emph{解}
+という.
+
+\begin{exe}
+ 下の表は, $x$ の値が $0,1,2,3,\ldots$ のとき, 2 元 1 次方程式
+ \begin{equation}
+  2x+y=21
+ \end{equation}
+ を満たす $y$ の値を求めたものです. この表の空欄を埋めなさい.
+ \begin{table}[h]
+  \begin{tabular}{c||c|c|c|c|c|c|c|c|c|c|c} \hline
+    $x$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+    $y$ &21 &19 &   &   &   &   &   &   &   &   &    \\ \hline
+  \end{tabular}
+\end{table}
+\end{exe}
+
+上の練習問題の表の $x,y$の組$(0,21), (1,19),\ldots$ は全て 2 元 1 次方程式
+の解である. また, 表には載ってない $\displaystyle \left(\frac{1}{2}, 20
+\right), \left( \frac{3}{2}, 18\right)$ などもこの方程式の解になる. つま
+り, 2 元 1 次方程式の解は, 1 つだけではなく無数にある!
+
+\subsection{連立方程式}
+
+では, もう一つの 2 元 1 次方程式
+\begin{equation}
+ x+y=13
+\end{equation}
+について, 先ほどと同じような表を書くと,
+
+\begin{table}[h]
+ \begin{tabular}{c||c|c|c|c|c|c|c|c|c|c|c} \hline
+   $x$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+   $y$ &   &   &   &   &   &   &   &   &   &   &    \\ \hline
+ \end{tabular}
+\end{table}
+\noindent
+となる.
+
+先ほどの表と, 上の表とで両方に当てはまる$x, y$の値の組は,
+\begin{equation}
+ (x,y)=(8,5)
+\end{equation}
+である.
+
+以上のように, 2 つの方程式を組にしたものを\emph{連立方程式}という
+\footnote{
+正確には, 2 元 1 次連立方程式という.
+}. 連立方程式は一般に
+\begin{numcases*}
+ {}
+ ax+by=e \\
+ cx+dy=f
+\end{numcases*}
+の形で書かれる. 先ほど求めたような, 2 つの方程式のどちらも成り立たせる値の組の
+ことを\emph{連立方程式の解}といい, その解を求めることを\emph{連立方程式
+を解く}という.
+
+\noindent$\clubsuit$ 一般に, 未知数の数が$n$個の場合, 異なる方程式が$n$
+個立てられていたら, その連立方程式の解は 1 つに決まる. つまり, 方程式の
+解が 1 つに決まるためには, \emph{未知数の数$=$方程式の数}になっていなけ
+ればならない.
+
+\begin{exe}
+ 次の(1)$\sim$(3)のうち, $(x,y)=(3,4)$が解になっているものはどれか求めなさい.
+ \begin{edaenumerate}<3>[(1)]
+  \item \begin{numcases*}
+	 {}
+	 x+y=7 \\
+	 x+2y=8
+	\end{numcases*}
+  \item \begin{numcases*}
+	 {}
+	 3x-y=4 \\
+	 2x-5y=7
+	\end{numcases*}
+  \item \begin{numcases*}
+	 {}
+	 4x-y=8 \\
+	 -x+3y=9
+	\end{numcases*}
+ \end{edaenumerate}
+\end{exe}
+
+
+
+\end{document}

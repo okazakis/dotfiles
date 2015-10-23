@@ -1,0 +1,151 @@
+% 計算数学 II (青木先生) 課題レポート
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+\documentclass[a4j,11pt,openbib,oneside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{ascmac}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{fancybox} 
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{otf}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%    New Command Definition     %%%%%%%%
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\bnabla}{\bm{\nabla}}
+\newcommand{\DD}[3][]{\frac{\dd^{#1} #2}{\dd #3^{#1}}}
+\newcommand{\DDD}[3][]{\frac{D^{#1} #2}{D #3^{#1}}}
+\newcommand{\DP}[3][]{\frac{\partial^{#1} #2}{\partial #3^{#1}}}
+\renewcommand\thefootnote{\dag\arabic{footnote}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%       Title, Author and date       %%%%%%%%
+\title{計算数学 II レポート課題1 \\ 日本各地の平均気温の主成分分析}
+\author{理学研究科惑星学専攻 1 回生 岡\UTF{FA11} 正悟 (153s401s)}
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\maketitle
+
+\section{概要}
+
+気象庁から発表されている気象データを用いて, 主成分分析を行った. 各地点の
+年平均気温の情報を基に, 得られる情報を考察する.
+
+\section{データについて}
+
+気象庁ホームページの「過去の気象データダウンロード
+\footnote{URL:\verb|http://www.data.jma.go.jp/gmd/risk/obsdl/index.php|)}
+」から, 1970 年から 2014 年の毎月の平均気温のデータを取得し, それを基に
+毎年の各地点における平均気温を計算した. 平均気温のデータを取得した地点は,
+南極(昭和基地)・那覇・鹿児島・福岡・高知・広島・松江・神戸・潮岬・
+名古屋・金沢・長野・新潟・東京・宇都宮・仙台・秋田・札幌・稚内・根室であ
+る.
+
+\section{データ分析}
+
+\subsection{各地点の平均気温相関関係}
+
+まず, いくつかの 2 地点の平均気温のデータに相関がないかを見てみた. 神戸
+と比較的距離の近い潮岬の散布図を見てみる(図\ref{1}). すると, ある程度の
+相関があることが分かる. 神戸が気温の高い年は潮岬も気温が高く, 神戸が気温
+の低い年は潮岬も気温が低い. ところが, 距離の離れた稚内と那覇の(図
+\ref{2})を見てみると, 相関関係が悪い. 
+
+このように, 各地点の傾向を全体的に眺めるために, 20 の地点の 2 地点ずつを
+選んで散布図を描けば分かるかもしれないが, ここでは, 主成分分析を行うこと
+にする. 
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[clip,width=8.0cm]{kobe-shionomisaki.eps}
+    \caption{神戸と潮岬の年平均気温の散布図}
+    \label{1}
+  \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[clip,width=8.0cm]{wakkanai-naha.eps}
+    \caption{稚内と那覇の年平均気温の散布図}
+    \label{2}
+  \end{center}
+\end{figure}
+
+
+\subsection{各地点の年平均気温の主成分分析}
+
+各主成分の標準偏差, 寄与率, 累積寄与率は以下の通り.
+
+\begin{verbatim}
+Importance of components:
+                          Comp.1     Comp.2     Comp.3    Comp.4     Comp.5
+Standard deviation     3.9939065 1.34061788 0.81964598 0.7265122 0.49183865
+Proportion of Variance 0.7975645 0.08986281 0.03359098 0.0263910 0.01209526
+Cumulative Proportion  0.7975645 0.88742729 0.92101827 0.9474093 0.95950453
+                           Comp.6      Comp.7      Comp.8      Comp.9
+Standard deviation     0.45361114 0.385283933 0.290246905 0.277535790
+Proportion of Variance 0.01028815 0.007422185 0.004212163 0.003851306
+Cumulative Proportion  0.96979268 0.977214867 0.981427031 0.985278337
+                           Comp.10     Comp.11   Comp.12     Comp.13
+Standard deviation     0.269934591 0.234639673 0.2057037 0.202594883
+Proportion of Variance 0.003643234 0.002752789 0.0021157 0.002052234
+Cumulative Proportion  0.988921571 0.991674360 0.9937901 0.995842294
+                           Comp.14      Comp.15      Comp.16      Comp.17
+Standard deviation     0.151936121 0.1342312579 0.1225559745 0.1142792725
+Proportion of Variance 0.001154229 0.0009009015 0.0007509983 0.0006529876
+Cumulative Proportion  0.996996523 0.9978974250 0.9986484233 0.9993014109
+                            Comp.18      Comp.19      Comp.20
+Standard deviation     0.0807264957 0.0703764372 0.0500217066
+Proportion of Variance 0.0003258384 0.0002476421 0.0001251086
+Cumulative Proportion  0.9996272493 0.9998748914 1.0000000000
+\end{verbatim}
+
+これより, 第 2 主成分までで全体の 82\% を説明できることが分かる. また,
+主成分をプロットした棒グラフを見ても, 第 1 主成分の分散が大きく, 第 2 成分
+まででかなりの部分を説明できることが分かる(図\ref{3})
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[clip,width=8.0cm]{plot.eps}
+    \caption{主成分の分散}
+    \label{3}
+  \end{center}
+\end{figure}
+
+さて, ここで, 第 1 主成分と第 2 主成分の意味を考える. 主成分のバイプロッ
+ト図(図\ref{4})をみる.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[clip,width=15.0cm]{biplot_temp.eps}
+    \caption{主成分のバイプロット図}
+    \label{4}
+  \end{center}
+\end{figure}
+
+プロットされている年号を見ると, 一番右側にあるのが 2004 年と 1998 年, 次
+いで 1990 年, 2007 年と並ぶ. 一番左にあるのは, 1976 年で, 次いで 1981 年,
+1984 年, 1980 年と並ぶ. データをみると, 右側にプロットされた年は気温が高
+い年で, 左側にプロットされた年は気温が低い年だったことが分かる. このこと
+から, 第 1 主成分は, 年平均の高低を表した軸であると言える.
+
+また, 矢印を見ると, 反時計回りに南の都市から北の都市にほぼ順番通りに並ん
+でいる. これより, 第 2 主成分は, 日本の地方の南北を表している軸といえる.
+また, 南極の平均気温が最も高かった年は 2003 年, 根室の年平均気温が最も
+高かった年は 1990 年である. これらの関係から, 矢印の向きをつかむこともで
+きる.
+
+\end{document}

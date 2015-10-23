@@ -1,0 +1,6 @@
+\documentclass[dvipdfm]{beamer}
+\begin{document}
+\begin{frame}
+ Hellow World!
+\end{frame}
+\end{document}

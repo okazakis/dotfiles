@@ -1,0 +1,264 @@
+%
+% Atmospheric and Oceanic Fluid Dynamics.  (Vallis, G. K.)
+%
+%  2015/8/27 基礎理論読書会レジュメ
+%  当番 : 岡崎 正悟
+%
+% 2015/8/27 作成
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,12pt,openbib,oneside,report]{jsbook}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{Dennou6}		% 電脳スタイル ver 6
+\usepackage{ascmac}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{framed}
+\usepackage{bm}
+\usepackage{color}
+\definecolor{shadecolor}{gray}{0.89}
+\newcommand{\aboxed}[2]{%
+  \rlap{\boxed{#1#2}}%
+  \phantom{\hskip\fboxrule\hskip\fboxsep #1}&\phantom{#2}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%            PageStyle Setting           %%%%%%%%
+%\pagestyle{DAmyheadings}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%        Title and Auther Setting        %%%%%%%%
+%%
+%%  [ ] はヘッダに書き出される.
+%%  { } は表題 (\maketitle) に書き出される.
+
+\Dtitle{Vallis (2006)}   % 変更不可
+\Dauthor{岡崎 正悟}            % ゼミ担当者の名前
+\Ddate{2015/08/27}        % ゼミの日時 (毎回変更すること)
+\Dfile{vallis-20150827.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   Set Counter (chapter, section etc. ) %%%%%%%%
+\setcounter{chapter}{2}    % 章番号
+\setcounter{section}{2}    % 節番号
+\setcounter{subsection}{2}
+\setcounter{equation}{35}   % 式番号
+\setcounter{page}{128}     % 必ず開始ページは明記する
+\setcounter{figure}{3}     % 図番号
+\setcounter{table}{0}      % 表番号
+%\setcounter{footnote}{0}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%    New Command Definition     %%%%%%%%
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\bnabla}{\bm{\nabla}}
+\renewcommand{\DD}[3][]{\frac{\dd^{#1} #2}{\dd #3^{#1}}}
+\newcommand{\DDD}[3][]{\frac{\mathrm{D}^{#1} #2}{\mathrm{D} #3^{#1}}}
+\renewcommand{\DP}[3][]{\frac{\partial^{#1} #2}{\partial #3^{#1}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%        Counter Output Format           %%%%%%%%
+\def\thechapter{\arabic{chapter}}
+\def\thesection{\arabic{chapter}.\arabic{section}}
+\def\thesubsection{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\def\theequation{\arabic{chapter}.\arabic{equation}}
+\def\thepage{\arabic{page}}
+\def\thefigure{\arabic{chapter}.\arabic{figure}}
+\def\thetable{\arabic{chapter}.\arabic{table}}
+\def\thefootnote{\dag\arabic{footnote}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%        Dennou-Style Definition         %%%%%%%%
+
+%% 改段落時の空行設定
+\Dparskip      % 改段落時に一行空行を入れる
+%\Dnoparskip    % 改段落時に一行空行を入れない
+
+%% 改段落時のインデント設定
+\Dparindent    % 改段落時にインデントする
+%\Dnoparindent  % 改段落時にインデントしない
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\markright{\arabic{chapter}.\arabic{section} 球面座標系における運動方程
+式}
+%  節の題名を書き込むこと
+
+%\chapter{回転と成層の効果}
+%\section{球面座標系における運動方程式}
+%\subsection{球面座標におけるいくつかの恒等式}
+
+\subsubsection{単位ベクトルの変化率}
+
+球面座標系において, 単位ベクトルは次のように定義される. $\bm{i}$は東の方
+向を指す単位ベクトルで, 緯線に平行である; $\bm{j}$は極の方向を指す単位ベ
+クトルで, 経線に平行である; $\bm{k}$は放射的に外向きを指す単位ベクトルで
+ある. これらのベクトルの向きは場所によって変わる. 実際, デカルト座標系は
+注目すべき例外であるが, ほとんどすべての座標系においてこのことは当てはま
+り, これら単位ベクトルの物質微分はゼロではない. 単位ベクトルの評価をする
+一つの方法は, 位置によってどのように座標軸が変わるかを幾何学的に考察する
+ことである. もう一つの私たちが進めていく方法は, 単位ベクトルが流れととも
+に移動するときに単位ベクトルの地球に相対的な実際の回転率
+$\bm{\Omega}_{flow}$を最初に得てから (2.3) を適用する方法である
+\footnote{%
+(2.3) を再掲する;
+\begin{equation}
+ \left(\DD{\bm{C}}{t}\right)_I = \bm{\Omega}\times\bm{C} \tag{2.3}\label{eq:2.3}
+\end{equation} %
+}. 具体的には, 流速を$\bm{v}=(u,v,w)$としよう. 子午線方向成分$v$から変
+位$r\delta\theta = v\delta t$が導かれ, これにより局所的な東西方向の軸周
+りの局所的な実際の回転率$-(v/r)\bm{i}$を与える. 負の符号が付いているのは,
+北極の方向への変位が$\bm{i}$軸周りの負の回転の変位によって生じるからであ
+る. 同様に, 東西方向成分$u$から変位$\delta\lambda r\cos\theta = u\delta
+t$が導かれ, 地球の回転軸についての実際の回転率$u/(r\cos\theta)$が生じる.
+いま, 地球の回転軸周りの回転は
+\begin{equation}
+ \bm{\Omega} = \Omega(\bm{j}\cos\theta + \bm{k}\sin\theta)
+\end{equation}
+と書けるだろう(図 2.4 を見よ). もし, スカラーの回転率が$\Omega$でなく,
+$u/(r\cos\theta)$ならば, ベクトルの回転率は
+\begin{equation}
+ \frac{u}{r\cos\theta}(\bm{j}\cos\theta+\bm{k}\sin\theta) =
+  \bm{j}\frac{u}{r}+\bm{k}\frac{u\tan\theta}{r} 
+\end{equation}
+である. よって, 流れとともに移動しているベクトルの合計の回転率は
+\begin{equation}
+ \bm{\Omega}_{flow} = -\bm{i}\frac{v}{r} + \bm{j}\frac{u}{r} +
+  \bm{k}\frac{u\tan\theta}{r} \label{eq:2.38}
+\end{equation}
+である. (\ref{eq:2.3}) を (\ref{eq:2.38}) に適用すると,
+\begin{subequations}
+ \begin{align}
+  \DDD{\bm{i}}{t} &= \bm{\Omega}_{flow}\times\bm{i} =
+  \frac{u}{r\cos\theta}(\bm{j}\sin\theta-\bm{k}\cos\theta),\\
+  \DDD{\bm{j}}{t} &= \bm{\Omega}_{flow}\times\bm{j} =
+  -\bm{i}\frac{u}{r}\tan\theta-\bm{k}\frac{v}{r}, \\
+  \DDD{\bm{k}}{t} &= \bm{\Omega}_{flow}\times\bm{k} = \bm{i}\frac{u}{r}
+  + \bm{i}\frac{u}{r}
+ \end{align} 
+\end{subequations}
+を得る.
+\begin{center}
+ \begin{figure}[ht]
+  \includegraphics[clip,scale=.25]{fig2.4.eps}
+  \caption{(a)球面座標系において回転速度$\bm{\Omega}$は局所的な鉛直方向
+  と極方向を向いている局所的な水平方向に分解できる. つまり, $\bm{\Omega}
+  = \Omega_y\bm{j} + \Omega_z\bm{k}$となる. ここで,
+  $\Omega_y=\Omega\cos\theta$, $\Omega_z=\Omega\sin\theta$である. 地球流
+  体力学では, 局所的な鉛直方向の回転ベクトルは, しばしば水平方向の運動量
+  方程式においてより重要である. (b)回転する円盤上で, 回転ベクトル
+  $\bm{\Omega}$は局所的な鉛直方向$\bm{k}$と平行である.}
+ \end{figure}
+\end{center}
+
+\subsection{運動方程式系}
+
+\subsubsection{質量保存の式と熱力学の式}
+
+質量保存の式(1.36a)を球面座標系に展開すると\footnote{%
+(1.36a) を再掲する;
+\begin{equation}
+ \DDD{\rho}{t}=\rho\bnabla\cdot\bm{v}=0. \tag{1.36a}
+\end{equation}%
+},
+\begin{align}
+ \begin{aligned}
+  \DP{\rho}{t}&+\frac{u}{r\cos\vartheta}\DP{\rho}{\lambda}+\frac{v}{r}\DP{\rho}{\vartheta}+w\DP{\rho}{r}\\
+  &+\frac{\rho}{r\cos\vartheta}\left[\DP{u}{\lambda}+\DP{}{\vartheta}(v\cos\rho\vartheta)+\frac{1}{r}\DP{}{r}(wr^2\cos\vartheta)\right]
+  = 0 
+ \end{aligned}
+\end{align}
+となる. (1.36b) の形式を使えば\footnote{%
+(1.36b) を再掲する;
+\begin{equation}
+ \DP{\rho}{t}+\bnabla\cdot(\rho\bm{v})=0. \tag{1.36b}
+\end{equation}
+}, この式は等価に
+\begin{equation}
+ \DP{\rho}{t}+\frac{1}{r\cos\vartheta}\DP{(u\rho)}{\lambda}+\frac{1}{r\cos\vartheta}\DP{}{\vartheta}(v\rho\cos\vartheta)+\frac{1}{r^2}\DP{}{r}(r^2
+  w\rho)=0
+\end{equation}
+となる.
+
+熱力学の式 (1.108) は\footnote{%
+(1.108) を再掲する;
+\begin{equation}
+ c_p\DDD{\theta}{t}=\frac{\theta}{T}\dot{Q}. \tag{1.108}
+\end{equation}
+}, トレーサーの移流方程式である. 従って, (2.27) を用いると,
+(断熱的な)熱力学の式の球面座標系における形式は
+\begin{equation}
+ \DDD{\theta}{t}=\DP{\theta}{t}+\frac{v}{r\cos\vartheta}\DP{\theta}{\lambda}+\frac{v}{r}\DP{\theta}{\vartheta}+w\DP{\theta}{r}=0
+\end{equation}
+となり, 水蒸気や塩分のようなトレーサーについても同様である.
+
+\subsubsection{運動方程式}
+
+非粘性の運動方程式を思い出そう:
+\begin{equation}
+ \DDD{\bm{v}}{t}+2\bm{\Omega}\times\bm{v}=-\frac{1}{\rho}\bnabla
+  p-\bnabla\Phi, 
+\end{equation}
+ここで, $\Phi$はジオポテンシャルである. 球面座標系において, 座標軸の方向
+は位置によって変わるので, (2.43) を成分に展開すると
+\begin{subequations}
+ \begin{align}
+  \DDD{\bm{v}}{t} &=
+  \DDD{u}{t}\bm{i}+\DDD{v}{t}\bm{j}+\DDD{w}{t}\bm{k}+u\DDD{\bm{i}}{t}+v\DDD{\bm{j}}{t}+w\DDD{\bm{k}}{t}\\ 
+  &=
+  \DDD{u}{t}\bm{i}+\DDD{v}{t}\bm{j}+\DDD{w}{t}\bm{k}+\bm{\Omega}_{flow}\times\bm{v},
+ \end{align}
+\end{subequations}
+となる. ここで, (2.39) を用いた. (2.44a) と (2.39) で与えられる単位ベク
+トルの変化率の表現を用いるか, (2.44b) と (2.38) で与えられる
+$\bm{\Omega}$の表現を用いるかのいずれかによって, (2.44) は
+\begin{align}
+ \begin{aligned}
+  \DDD{\bm{v}}{t} = &\bm{i}\left(\DDD{u}{t}-\frac{uv\tan\vartheta}{r}+\frac{uw}{r}\right)+\bm{j}\left(\DDD{v}{t}+\frac{u^2\tan\vartheta}{r}+\frac{vw}{r}\right) \\
+  &+ \bm{k}\left(\DDD{w}{t}-\frac{u^2+v^2}{r}\right)
+ \end{aligned}
+\end{align}
+となる. ベクトルの外積の定義を用いれば, コリオリの項は
+\begin{align}
+ 2\bm{\Omega}\times\bm{v} &= \left|
+ \begin{array}{ccc}
+  \bm{i} & \bm{j} & \bm{k} \\
+   0 & 2\Omega\cos\vartheta & 2\Omega\sin\vartheta \\
+   u & v & w
+ \end{array}
+ \right| \nonumber\\
+ &= \bm{i}(2\Omega w \cos\vartheta - 2\Omega v\sin\vartheta) +
+ \bm{j}2\Omega u\sin\vartheta - \bm{k}2\Omega u\cos\vartheta
+\end{align}
+となる. (2.45) と (2.46) と (2.31) によって与えられる勾配演算子を用いる
+と, 運動方程式 (2.43) は
+\begin{subequations} 
+ \begin{align}
+  \DDD{u}{t}-\left(2\Omega+\frac{u}{r\cos\vartheta}\right)(v\sin\vartheta-w\cos\vartheta)
+  & =-\frac{1}{\rho r\cos\vartheta}\DP{p}{\lambda}, \\
+  \DDD{v}{t}+\frac{wv}{r}+\left(2\Omega+\frac{u}{r\cos\vartheta}\right)u\sin\vartheta
+  &= -\frac{1}{\rho r}\DP{p}{\vartheta}, \\
+  \DDD{w}{t}-\frac{u^2+v^2}{r}-2\Omega u\cos\vartheta
+  &= -\frac{1}{\rho}\DP{p}{r}-g
+ \end{align}
+\end{subequations}
+となる. $\Omega$ を含む項はコリオリの項と呼ばれ, $1/r$ を含む左辺の 2 次
+の項はしばしばメトリック項と呼ばれる.
+
+% ここで本文おしまい
+\end{document}
+%%%%%%%%              Text End                  %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

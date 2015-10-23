@@ -1,0 +1,3 @@
+
+((digest . "f2ba8e4575530ec36aa5bfb3c6aef198") (undo-list nil (1408 . 1420) nil (1405 . 1408) nil (nil rear-nonsticky nil 1027 . 1028) (nil fontified nil 1015 . 1028) (nil fontified nil 1010 . 1015) (nil fontified nil 998 . 1010) (998 . 1028) (#("for time in fsec..lsec
+" 0 3 (fontified t face font-lock-keyword-face) 3 9 (fontified t) 9 11 (fontified t face font-lock-keyword-face) 11 23 (fontified t)) . -998) (t 21924 60462 0 0) nil (456 . 465) nil (#("1" 0 1 (face font-lock-string-face fontified t)) . -456) nil (415 . 416) nil (#("e" 0 1 (face font-lock-string-face fontified t)) . -415) nil (411 . 416) nil (#("1" 0 1 (face font-lock-string-face fontified t)) . -411) (t 21924 59752 0 0)))

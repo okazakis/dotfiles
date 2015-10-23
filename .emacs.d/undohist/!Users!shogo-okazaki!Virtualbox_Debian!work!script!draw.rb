@@ -1,0 +1,3 @@
+
+((digest . "3be775fb6d0e5c353a812d44a09c118d") (undo-list nil (348 . 349) nil (#("3" 0 1 (fontified t)) . -348) nil (303 . 304) nil (#("2" 0 1 (fontified t)) . -303) nil (177 . 178) nil (#("1" 0 1 (fontified t)) . -177) nil (177 . 178) nil (#("1" 0 1 (fontified t)) . -177) nil (118 . 119) nil (#("0" 0 1 (fontified t)) . -118) nil (102 . 103) nil (101 . 103) nil (97 . 101) (#("ARG" 0 3 (fontified t face font-lock-type-face)) . -97) ((marker*) . 3) nil (90 . 100) nil (#("#" 0 1 (fontified t face font-lock-comment-delimiter-face)) . -90) nil (#(" " 0 1 (fontified t face font-lock-comment-delimiter-face)) . -91) nil (#("
+" 0 1 (fontified nil face font-lock-comment-face)) . 92) (90 . 92) (89 . 91) (t 21923 5309 0 0)))

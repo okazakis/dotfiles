@@ -1,0 +1,6 @@
+program Test
+  !==== モジュール使用宣言 ====
+  use gt4_history
+  use dc_types, only: DP
+  implicit none
+end program Test

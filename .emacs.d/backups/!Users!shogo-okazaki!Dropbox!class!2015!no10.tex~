@@ -1,0 +1,76 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,12pt,openbib,oneside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{emathPh}
+\usepackage{emathPk}
+\usepackage{emathMw}
+\usepackage{emathCap}
+\usepackage{emathQf}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{EMproof}
+\usepackage{EMxymatrix}
+\usepackage{EMboutyuu}
+\usepackage{EMminipages}
+\usepackage{emathEy}
+\usepackage{ulem}
+\usepackage{hako}
+%\usepackage{multido}
+%\resettagform
+\newtheorem{dfn}{定義}[section]
+\newtheorem{thm}[dfn]{定理}
+\newtheorem{exm}[dfn]{例}
+\newtheorem{fmr}[dfn]{公式}
+\newtheorem{exe}[dfn]{練習}
+\newtheorem{dfnop}{*定義}[section]
+\newtheorem{thmop}[dfn]{*定理}
+\newtheorem{exmop}[dfn]{*例}
+\newtheorem{frmop}[dfn]{*公式}
+\newtheorem{exeop}[dfn]{*練習}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\lhead{2 年生 数学$\alpha$}
+\chead{第 1 章《式の計算》}
+\rhead{No.\thepage}
+\lfoot{}
+\cfoot{}
+\rfoot{担当：岡崎正悟}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   Set Counter (chapter, section etc. ) %%%%%%%%
+\setcounter{section}{2}    % 節番号
+\setcounter{subsection}{1}
+\setcounter{equation}{0}   % 式番号
+\setcounter{page}{9}     % 必ず開始ページは明記する
+\setcounter{figure}{0}     % 図番号
+\setcounter{table}{0}      % 表番号
+\setcounter{dfn}{5}
+%\setcounter{footnote}{0}
+
+%\def\labelitemi{$\clubsuit$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+%\section{文字式の利用}
+
+\subsection{等式の変形}
+
+\end{document}

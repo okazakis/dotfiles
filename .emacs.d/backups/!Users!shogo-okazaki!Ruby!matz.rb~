@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+name = okazkai
+age = 23
+
+puts "#{name}さん (#{age})"
+#=>

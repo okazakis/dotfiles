@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*-
+# 新しいハッシュを作る
+friends = {
+    :shin => "Shin Kuboaki",
+    :shinichirou => "Shinichirou Ooba",
+    :shingo => "Shingo Katori"
+  }
+
+# ハッシュに要素を追加する
+friends[ :shinsaku ] = "Shinsaku Takasugi"
+
+# ハッシュの要素を検索する
+p friends.include?( :shinsaku)
+p friends[:shinsaku]
+
+# 追加した要素を削除
+friends.delete( :shinsaku)
+
+# ハッシュの要素を検索
+if friends.include?( :shinsaku ) then
+  puts friends[:shinsaku ]
+else
+ put "見つかりません"
+end

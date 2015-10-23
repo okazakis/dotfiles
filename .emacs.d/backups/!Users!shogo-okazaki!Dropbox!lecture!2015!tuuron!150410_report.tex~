@@ -1,0 +1,90 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+\documentclass[a4j,12pt,openbib,oneside,report]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{ascmac}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{fancybox} 
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{fancyhdr}
+\usepackage{emathPh}
+\usepackage{EMproof}
+\resettagform
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%    New Command Definition     %%%%%%%%
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\D}{\mathrm{D}}
+\newcommand{\bnabla}{\bm{\nabla}}
+\newcommand{\DD}[3][]{\frac{\dd^{#1} #2}{\dd #3^{#1}}}
+\newcommand{\DDD}[3][]{\frac{\mathrm{D}^{#1} #2}{\mathrm{D} #3^{#1}}}
+\newcommand{\DP}[3][]{\frac{\partial^{#1} #2}{\partial #3^{#1}}}
+\renewcommand\thefootnote{\dag\arabic{footnote}}
+\def\proofcmd{\gtfamily}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%       Title, Author and date       %%%%%%%%
+\title{惑星学要論 課題レポート (4/10 出題分)}
+\author{理学研究科惑星学専攻 岡崎 正悟 \\\small{学籍番号: 153s401s}}
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%      Header and Footer          %%%%%%%%
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{\textbf{惑星学要論 課題レポート (4/10 出題分)}}
+\chead{}
+\rhead{\leftmark\textbf{\thepage}}
+\lfoot{}
+\cfoot{}
+\rfoot{{\small \today (153s401s: 岡崎 正悟)}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\maketitle
+
+\section{なぜ, この惑星は「地球」なのか}
+
+地球は他の惑星と比べて特異であると一般に言われている. それは, 太陽系内の
+他の惑星と比べても特異であるし, 系外惑星にも地球と同じ性質を持つ惑星は見
+当たらない. 一番特徴的なのは「液体水が存在すること」である. 地球表面の約
+70\%を覆う水が地球のあらゆるシステムのカギとなる役割を担っているのである.
+
+\subsection{地球の大きな特徴: 陸と海の存在}
+
+地球の形状に注目してみると, 他の惑星に比べて「凸凹している」というのが特
+徴的である. 惑星表面の高さと深さの分布を見ると, 地球の場合は高さ数百 m
+と深さ 5000~6000m のところにピークがある「ふたコブ分布」になっている. 一
+方, 同じ地球型惑星の金星はピークがひとつしかない. 火星については, 地形的
+には「ふたコブ分布」になっているが, 火星の場合は質量分布が非常に偏ってい
+る特徴があり, そのことを差し引いて考えると, やはり形状分布のピークはひと
+つしかない. よって, 「陸」と「海」地球に分かれていることは, 地球の大きな
+特徴である.
+
+\subsection{陸の地殻と海の地殻}
+
+地球において陸と海の 2 つに分かれていることは, 単に地形が凸凹していると
+いうだけの話ではない. 陸の地殻と海の地殻では厚さ, 組成, 密度で大きく異な
+る.
+
+陸の地殻の厚さは約 40 km で組成は安山岩質のものや流紋岩質のものが多く含
+まれている「中間組成」である. 一方, 海洋地殻の厚さは 6 km ほどで, 組成も
+玄武岩質のものが多く含まれている. また, 大陸地殻の密度は 2.7 g/cm$^3$,
+海洋地殻の密度は 3.0 g/cm$^3$ である. マントルの密度が 3.3 g/cm$^3$ であ
+るから, この差は大きいといえる. 一方, 観測事実で, 海嶺の組成は玄武岩質,
+沈み込み帯の組成は中間組成であることは知られており, このことから「海洋地
+殻は海嶺ででき, 大陸地殻は沈み込み帯でできた」と言える. ただし, 大陸地殻
+の沈み込み帯と陸のない付近の沈み込み帯とでは組成が異なる. 
+
+\end{document}

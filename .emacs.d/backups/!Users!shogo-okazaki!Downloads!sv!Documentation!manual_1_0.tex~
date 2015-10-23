@@ -1,0 +1,754 @@
+\documentclass[12pt]{article}
+ 
+%\usepackage{epsfig,subfigure,texdraw,amsmath,amsfonts,amssymb,pslatex,fleqn}
+\usepackage{epsfig,subfigure,texdraw,amsmath,amsfonts,amssymb,pslatex}
+                                                                                
+ 
+% horizontal
+             
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\textwidth}{6.75in}
+% vertical
+\setlength{\topmargin}{-0.75in}
+\setlength{\headheight}{0.2in}
+\setlength{\headsep}{0.3in}
+\setlength{\textheight}{9.25in}
+\setlength{\footskip}{0.30in}
+ 
+\def\O{{\mathcal{O}}}
+\def\L{{\mathcal{L}}}
+\def\J{{\mathcal{J}}}
+\def\H{{\mathcal{H}}}
+\def\B{{\mathcal{B}}}
+\def\F{{\mathcal{F}}}
+\def\R{{\mathcal{R}}}
+\def\P{{\mathcal{P}}}
+\def\K{{\mathcal{K}}}
+\def\A{{\mathcal{A}}}
+                                                                                
+\def\u{{\bf u}}
+\def\k{{\bf k}}
+                                                                                
+\def\Dpartial#1#2{ {\partial #1 \over \partial #2} }
+\def\Dpartialmix#1#2#3{ {\partial^2 #1 \over \partial #2\,\partial #3} }
+\def\Dpartialn#1#2#3{ {\partial^{#3} #1 \over \partial #2^{#3}} }
+\def\Bmp#1{ \begin{minipage}{#1} }
+\def\Emp{ \end{minipage} }
+                                                                                
+                                                                                
+\pagestyle{myheadings}
+\markboth{Saint--Venant --- Documentation}{Saint--Venant --- Documentation}
+                                                                                
+\begin{document}
+\title{\vspace*{-0.75 cm} Documentation for the simulation and analysis package {\sc Saint-Venant} (ver.~1.0)}
+\author{A.~Azzalini$^1$, M.~Caldoro$^1$, M.~Farge$^1$, G.~Perret$^1$ \& B.~Protas$^2$}
+\maketitle
+\vspace*{-0.95cm}
+\begin{center}
+1) LMD--CNRS, \'Ecole Normale Sup\'rieure \\
+24, rue Lhomond, 75231 Paris, Cedex 05, FRANCE \\
+\vspace*{0.15cm}
+2) Department of Mathematics \& Statistics, McMaster University \\
+1280 Main Street West, Hamilton, Ontario, CANADA L8S 4K1 \\
+\vspace*{0.25cm}
+Official website: \verb|http://www.math.mcmaster.ca/~bprotas/Software/sv| 
+\end{center}
+\vspace*{-0.5cm}
+
+\tableofcontents
+
+\setcounter{section}{-1}
+\newpage
+\section{Preamble}
+\label{sec:preamble}
+
+This scientific software package is the result of the work of several people
+over many years and is still under development (see \cite{f87} for an early description 
+of the code). Recently we decided to put together
+a revised version that is now publicly available under the terms of the GNU General
+Public License\footnote{For details see \texttt{http://www.gnu.org/copyleft/gpl.html}.}.
+This is the first release of the package and we are aware that there may still
+be many imperfections, as certain elements of the package are incomplete, whereas
+other may have not been thoroughly tested. As time permits, we will work to expand
+the package and make it more reliable. We encourage people to use this code for
+research and / or study and look forward to receiving any comments, remarks, 
+suggestions for improvement, etc. \newline
+
+The list of people involved at various stages in the development of this code
+includes (in chronological order): Marie Farge, Alexandre Azzalini, Michele Caldoro,
+Gaele Perret and Bartosz Protas. \newline
+
+{\bf Disclaimer:} All parts of the {\sc Saint--Venant} package are free 
+software; you can redistribute it and/or modify it under the terms of the GNU Lesser 
+General Public License as published by the Free Software Foundation; either version 2.1 
+of the License, or (at your option) any later version.
+ 
+The {\sc Saint--Venant} package is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more 
+details.
+
+
+\section{Outline of the Problem}
+\label{sec:outline}
+
+The code package {\sc Saint--Venant} consists of three basic units:
+\begin{itemize}
+\item
+{\it SV\_simul} --- which solves numerically the Shallow Water and
+Navier--Stokes systems,
+\item
+{\it SV\_filter} --- which performs linear and nonlinear Fourier-- and
+wavelet--based filtering of fields obtained using {\it SV\_simul},
+\item
+{\it SV\_analysis} --- which performs the statistical analysis of the 
+fields obtained using {\it SV\_simul} and {\it SV\_filter} (in fact, this unit is 
+still under development and has not been released yet).
+\end{itemize}
+
+Depending on the value of the input parameter \verb|INCOMP|, the code 
+{\it SV\_simul} solves one of the following is two systems of equations:
+\begin{itemize}
+\item
+when \verb|INCOMP=0| the 2D Shallow Water System is solved (the {\em compressible} case)
+\begin{equation}
+\left\{
+\begin{aligned}
+&\Dpartial{\u}{t} + \left(\xi + f\right)\k \times \u + 
+\nabla\left(\Phi + \frac{\u^2}{2}\right) - \nu\Delta\u = 0, \\
+&\Dpartial{\Phi}{t} + \nabla\cdot\left(\Phi\u\right) = 0,
+\end{aligned}
+\right.
+\label{eq:sw}
+\end{equation}
+where $\u=[u,v]$ is the velocity field, $\Phi=gh$ is the geopotential (with $g$ 
+representing the gravitational acceleration and $h$ the height of the water surface), 
+$\xi = \Dpartial{v}{x}-\Dpartial{u}{y}$ is the vorticity, $f$ is the background
+rotation and $\nu$ the kinematic viscosity.
+
+\item
+when \verb|INCOMP=1,2| the 2D Navier--Stokes System\footnote{When working with 
+spatially--periodic domains it is customary to solve the 2D Navier--Stokes system 
+in the vorticity formulation. Here, however, we choose to use the primitive (i.e., 
+velocity--pressure) formulation so as to make this case consistent with the Shallow 
+Water version developed initially and also to facilitate subsequent extension to three
+dimensions.} is solved (the {\em incompressible} case); as explained in \S \ref{sec:temporal}, 
+the two cases \verb|INCOMP=1| and \verb|INCOMP=2| correspond to different time--stepping 
+schemes employed
+\begin{equation}
+\left\{
+\begin{aligned}
+&\Dpartial{\u}{t} + \xi\k \times \u + 
+\nabla\left(\Phi + \frac{\u^2}{2}\right) - \nu\Delta\u = 0, \\
+&\nabla\cdot\u = 0,
+\end{aligned}
+\right.
+\label{eq:ns}
+\end{equation}
+where $\Phi$ now has the meaning of the hydrostatic pressure.
+\end{itemize}
+The flow domain is a rectangular box $\Omega=[0,L_x]\times[0,L_y]$ with periodic 
+boundary conditions in both directions. It is assumed that $L_x=L_0=2\pi$ and
+$\alpha=\frac{L_x}{L_y}$. As described below, using the volume penalization
+method, it is possible to incorporate solid boundaries in the flow domain.
+A version of the code that allows for the presence of solid boundaries 
+(using the volume penalization method \cite{kg01}) is also available.
+\newline
+
+The specific flow configuration is determined based on the values of the input 
+parameters \verb|INCOMP| (see above) and \verb|FLOW_CASE|. The latter can assume 
+the following values:
+\begin{itemize}
+\item
+\verb|FLOW_CASE=0| --- homogeneous and isotropic case without solid boundaries,
+
+\item
+\verb|FLOW_CASE=1| --- the coordinate system coincides with the center of 
+a translating obstacle,
+
+\item
+\verb|FLOW_CASE=2| --- the coordinate system coincides with the obstacle which 
+remains motionless; upstream current in geostrophic balance is added,
+
+\item
+\verb|FLOW_CASE=3| --- the coordinate system is attached to the container,
+rather than to the translating obstacle.
+\end{itemize}
+
+The presence and the shape of the solid body is determined by the parameter 
+\verb|PENALIZATION| which can assume the following values:
+\begin{itemize}
+\item
+\verb|PENALIZATION=0| --- there is no solid body,
+
+\item 
+\verb|PENALIZATION=1| --- the solid body is a cylinder with the diameter 
+{\scshape d=coef\_diam\_lo*l0/$\alpha$}, where \verb|COEF_DIAM_LO| has to be 
+specified in the parameter file (see \S \ref{sec:prepost}),
+
+\item
+\verb|PENALIZATION=2| --- the solid body is a smeared cylinder, i.e.,  the mask of the 
+body is equal to one for $r \leq (R-\delta)$ and then decreases exponentially for 
+$(R-\delta)< r \leq R$,
+
+\item
+\verb|PENALIZATION=3| --- the solid body is a square with the dimension 
+$a=${\scshape coef\_diam\_lo*l0/(2*$\alpha$)},
+
+\item
+\verb|PENALIZATION=4| --- the mask for the solid body is read from a file called 
+{\em Mask\_Xi},
+
+\item
+\verb|PENALIZATION=5| --- the solid body is an ellipse with the minor axis 
+$a=${\scshape coef\_diam\_lo*l0/(2*$\alpha$)} and the major axis 
+$b=${\scshape 1.8*coef\_diam\_lo*l0},
+
+\item
+\verb|PENALIZATION=6| --- used for flows in a cylindrical tank; the equations are then
+penalized at the perimeter of the tank; the diameter of the tank is 
+{\scshape d=coef\_diam\_lo*l0/$\alpha$}.
+\end{itemize}
+
+For all those case, the center of the obstacle is located at $[L_x/(4\alpha), L_y/2]$ when
+\verb|FLOW_CASE < 2|. When \verb|FLOW_CASE=3|, the initial position of the obstacle is
+$[L_x-L_x/(4\alpha), L_y/2]$. It is also possible to include a sponge region at the end
+of the domain (when \verb|SPONGE=1|) and / or lateral boundaries in the streamwise direction 
+(when \verb|WALLS=1|). 
+
+All the input parameters are specified in the parameter file (see \S \ref{sec:prepost}).
+\newline
+
+The code {\it SV\_filter} first calculates the wavelet (or Fourier) transform of 
+a given field (for instance, vorticity) and then splits this field into the
+coherent (or large scale) and incoherent (or small scale) part. The threshold
+for splitting is either fixed, or adaptively determined using various criteria
+(see \S \ref{sec:DWT} for details). The code can also calculate an approximation of
+the Besov norm of a given field based on its discrete wavelet representation as
+in the following 1D example
+\begin{equation}
+\big\| f \big\|^r_{\B_{p,q}} = |\alpha_0| +
+\left\{\sum_{j=0}^N \left[ 2^{j(s+\frac{1}{2}-\frac{1}{p})}
+\left(\sum_k |\beta_{jk}|^p\right)^{1/p}\right]^q\right\}^{1/q},
+\label{eq:besov}
+\end{equation}
+where $\alpha_k = (f,\Phi_k)$ and $\beta_{jk} = (f,\Psi_{jk})$ are scaling 
+function and wavelet coefficients.
+\newline
+
+The code {\it SV\_analysis} performs statistical analyses of a given field
+calculating quantities such as energy spectra, probability distribution functions
+(PDFs) of the field, its derivatives and its increments.
+
+
+\section{Numerical Method}
+\label{sec:method}
+
+\subsection{Spatial Discretization}
+\label{sec:spatial}
+
+Systems \eqref{eq:sw} and \eqref{eq:ns} are solved using a standard pseudo--spectral
+method \cite{chqz90} in a periodic domain with $SIZE\_I\times SIZE\_J$ grid points. 
+The numerical resolution in the two directions $X$ and $Y$ does not have to be 
+the same. When it is different, all the variables are nondimensionalized with respect to $L_x$ 
+($L_y=\alpha L_x$, where $\alpha=\frac{SIZE\_I}{SIZE\_J}$). Regardless of the actual resolution 
+in $X$ and $Y$, the grid in physical space remains isotropic (i.e., $\Delta x = \Delta y$). 
+As a result, the grid in Fourier space becomes anisotropic (i.e., $\Delta k_y = \alpha \Delta k_x$).
+The fields $\hat{u}$, $\hat{v}$ and $\hat{\Phi}$ (hats denote 2D Fourier transforms)
+are represented using $\frac{1}{2}SIZE\_I$  Fourier modes in the X direction and 
+$\frac{1}{2}SIZE\_J$ Fourier modes in the Y direction. The parameters $SIZE\_I$ and $SIZE\_J$ are 
+specified in the {\em Makefile} where they are used by the preprocessor. 
+Fourier transforms are performed using FFTW routines (\verb|www.fftw.org|). For reasons 
+of consistency with the CRAY SCILIB routines, the FFTW routines are called through wrappers 
+provided in the library {\em libjmfftw.a}. When \verb|IDALIAS=1|, dealiasing is performed 
+by setting to zero the Fourier coefficients corresponding to the wavenumbers $k_x$ and $k_y$
+such that $k_x \ge k_{max}$ or $k_y \ge k_{max}$, where $k_{max}=\min(\frac{SIZE\_I}{3},
+\frac{SIZE\_J}{3})$ (we use here the ``3/2'' rule: $\frac{SIZE\_I}{3}=\frac{2}{3}\frac{SIZE\_I}{2}$).
+When \verb|IDALIAS=2|, dealiasing is performed by setting to zero the Fourier coefficients 
+corresponding to the wavenumbers $k_x$ and $k_y$ such that $\sqrt{k_x^2+k_y^2} \ge k_{max}$.
+Note that in the latter case dealiasing is performed isotropically in Fourier space and
+is therefore more aggressive than required. When \verb|IDALIAS=0|, dealiasing is not performed.
+
+
+\subsection{Temporal Discretization}
+\label{sec:temporal}
+
+In the compressible case (\verb|INCOMP=0|) and in the incompressible case with
+\verb|INCOMP=1|, time integration is performed by combining exact integration of the
+viscous and penalization terms with the leapfrog scheme on all the remaining terms 
+(represented by $\A(y)$ in the expressions below)
+\begin{equation}
+\hat{y}_k^{n+1} = \hat{y}_k^{n-1}\,e^{-2\nu k^2 \Delta t} +
+2\,\Delta t\, \hat{\A}_k^{n}(\hat{y})\,e^{-\nu k^2 \Delta t}.
+\label{eq:lf}
+\end{equation}
+In the incompressible case with \verb|INCOMP=2| the leapfrog scheme is replaced
+with the second--order accurate Adams--Bashforth scheme
+\begin{equation}
+\hat{y}_k^{n+1} = \hat{y}_k^{n}\,e^{-\nu k^2 \Delta t} +
+\frac{1}{2}\Delta t \left[3\hat{\A}_k^{n}(\hat{y}) - \hat{\A}_k^{n-1}(\hat{y})\right]
+\,e^{-\nu k^2 \frac{\Delta t}{2}}.
+\label{eq:ab}
+\end{equation}
+Here $\hat{y}_k^{n}$ represents the $k-th$ Fourier component at time $n\Delta t$ 
+of the advanced variable ($\hat{u}$, $\hat{v}$ and $\hat{\Phi}$ in the compressible case, 
+and $\hat{u}$ and $\hat{v}$ in the incompressible case) and $\Delta t$ is the time step 
+selected to satisfy the CFL condition. When the leapfrog scheme is used, even and odd time
+steps are resynchronized whenever the relative difference of the kinetic energy or
+enstrophy (potential enstrophy when \verb|INCOMP=0|) between two consecutive steps 
+exceeds \verb|ECARLF| percent. This is followed by an explicit Euler time step. 
+When initializing the simulation from scratch, time integration is also begun with 
+a single explicit Euler step. For simplicity, an explicit Euler time step is performed 
+by calling the Adams--Bashforth subroutine with $\hat{\A}_k^{n-1}(\hat{y})=
+\hat{\A}_k^{n}(\hat{y})$. A single time step in both compressible and incompressible 
+cases necessitates 12 Fourier transforms.
+
+\subsection{Pressure Correction}
+\label{sec:incomp}
+
+In the Navier--Stokes case incompressibility is enforced using the fractional step
+algorithm with pressure correction \cite{km85}. We treat the velocity fields obtained 
+from \eqref{eq:lf} or \eqref{eq:ab} as intermediate fields (marked with a tilde) and 
+correct them as follows
+\begin{equation}
+\u^{n+1} = \tilde{\u}^{n+1} - \nabla\varphi,
+\label{eq:pc}
+\end{equation}
+where the {\em correction} field $\varphi$ is obtained as 
+\begin{equation}
+\Delta \varphi = \nabla\cdot\tilde{\u}^{n+1}.
+\label{eq:pc2}
+\end{equation}
+The pressure is obtained by solving the 2D Poisson equation\footnote{In fact,
+in the pressure correction algorithm an approximation to pressure can be obtained
+based on the function $\varphi$. This is however not implemented yet.}
+\begin{equation}
+-\Delta\Phi = 2\left(\Dpartial{u}{x}\right)^2 +
+2 \left(\Dpartial{u}{y}\right)\left(\Dpartial{v}{x}\right).
+\label{eq:press}
+\end{equation}
+
+\subsection{Enforcement of Boundary Conditions via Volume Penalization}
+\label{sec:penal}
+
+The volume penalization consists in enforcing the boundary conditions on solid boundaries 
+by adding a penalty term to the governing equation \eqref{eq:sw} or \eqref{eq:ns}
+(cf.~\cite{kg01}). In the compressible (\verb|INCOMP=0|) and incompressible case 
+(\verb|INCOMP=1|) the penalty term is integrated exactly in physical space, i.e., in 
+expressions \eqref{eq:lf} and \eqref{eq:ab} the terms $\hat{y}_k^{n-1}$ and $\hat{\A}_k^{n}$ 
+actually become $\widehat{y_k^{n-1} e^{-2\frac{\chi}{\epsilon}\Delta t}}$ and  
+$\widehat{\A_k^n e^{-\frac{\chi}{\epsilon}\Delta t}}$ where $\chi$ is the mask of 
+the obstacle and $\epsilon$ is a small parameter. For reasons of stability, $\epsilon$ cannot 
+be smaller than $\Delta t$ and in the code has been selected as $2 \Delta t$.
+
+
+\subsection{Wavelet Transform and Adaptive Filtering}
+\label{sec:DWT}
+
+The Discrete Wavelet Transform is calculated using the function
+\verb|wxfrm_dand| from the library {\sc wvlt} --- The UBC Imager Wavelet Package 
+(Release 3.0). The wavelet filter must be chosen from the following list:
+{\it AdelsonSimoncelliHingorani}, {\it AntoniniBarlaudMathieuDaubechies\_4\_4},
+{\it BattleLemarie}, {\it BurtAdelson}, {\it Coifman\_12}, {\it Daubechies\_4},
+{\it Daubechies\_6}, {\it Daubechies\_8}, {\it Daubechies\_10}, {\it Daubechies\_12},
+{\it Daubechies\_20}, {\it Haar}, {\it Pseudocoiflet\_4\_4}, {\it Spline\_2\_2},
+{\it Spline\_2\_4}, {\it Spline\_3\_3}, {\it Spline\_3\_5}, {\it Spline\_3\_7}.
+In the case of Fourier transform the splitting threshold is fixed, whereas in
+the case of wavelet transform the splitting threshold is selected adaptively
+using either the MAD algorithm\footnote{As of today, this option, although implemented in the 
+code, has not been activated yet.} \cite{m98}, or an iterative recursive algorithm \cite{afs03}.
+
+\section{Organization of the Codes}
+\label{sec:org}
+
+\subsection{Code {\it SV\_simul}}
+\label{sec:org_simul}
+
+The code {\it SV\_simul} is made up of three source files: {\it modules.F90},
+{\it source.F90} and {\it MovieOut.c}. All the important data structures are 
+contained in the three modules: \verb|database|, \verb|parameters| and \verb|diagnostics|
+(file {\it modules.F90}). The discretized fields are stored in the following core 
+arrays:
+\begin{itemize}
+\item
+\verb|PU|, \verb|PV| and \verb|PP| (data at time level $n+1$),
+\item
+\verb|PUA|, \verb|PVA| and \verb|PPA| (data at time level $n$),
+\item
+\verb|PUAA|, \verb|PVAA| and \verb|PPAA| (data at time level $n-1$),
+\item 
+\verb|PO| (vorticity),
+\item
+\verb|PF| (streamfunction),
+\item
+\verb|WORK| (double size auxiliary array),
+\item
+\verb|MASK| (mask for dealiasing),
+\item
+\verb|DISSIP| (discretized dissipation operator).
+\end{itemize}
+Owing to a legacy part of the code\footnote{This is related to the fact the
+implementation of the complex arithmetic in early FORTRAN compilers, notably on
+CRAY machines, was very inefficient as compared to the real arithmetic}, 
+fields in Fourier space are stored as (real only)
+coefficients of the sine and cosine transforms interwoven with one another.
+The source file {\it source.F90} contains the main body of the program and
+definitions of all the functions and subroutines. For ease of navigation, all
+of the most important blocks of the main code as well as function and subroutine 
+definitions are numbered and marked with lines beginning with the sign ``$\$\$$''
+(one can take advantage of that, e.g., using the command {\it List Matching Lines}
+in the editor {\it XEmacs 21.4+}). Calls to FFTW subroutines are made through wrapper 
+available in the library {\it libjmfftw.a}. The file {\it MovieOut.c} contains 
+routines necessary for graphical output.
+
+\subsection{Code {\it SV\_filter}}
+\label{sec:org_filter}
+
+The structure of the code {\it SV\_filter} is very simple --- the source file 
+{\it SV\_filter.c} contains the body of the program, whereas the algorithms for
+threshold determination are implemented in separate files {\it RecurFilter.c} 
+and {\it MedianWltFilter.c}.
+
+\subsection{Code {\it SV\_analysis}}
+\label{sec:org_analysis}
+
+Still under development.
+
+\section{Installation}
+\label{sec:install}
+
+The tarball should be placed in a chosen directory, e.g., {\em \$(HOME)/Turb2D/}.
+Upon untarring the archive, the following subdirectories will be created:
+\begin{itemize}
+\item
+{\em Source} --- containing the {\em Makefile} as well as all the source
+files (i.e., {\em \*.F90} and{\em  \*.c}),
+\item
+{\em lib} --- containing the libraries {\em libfftw.a}, {\em librfftw.a},
+{\em libmpege.a}, {\em libjmfftw.a} and {\em libwvlt.a},
+\item
+{\em bin} --- where the executables will be placed after compilation,
+\item
+{\em wvlt} --- containing the source files for the library {\sc wvlt} --- 
+The UBC Imager Wavelet Package (Release 3.0),
+\item
+{\em dweezil} --- containing the source files necessary to build the code
+which handles the graphical output,
+\item
+{\em Documentation} --- containing LATEX and plain text files documenting
+the code, including the present file.
+\item
+{\em Text\_case} --- containing all the data and parameter files required to
+run the test case (see \S \ref{sec:prepost_simul})
+\end{itemize}
+All of these settings can be modified by editing {\em Makefile}. All the files
+containing the source code for {\it SV\_simul}, {\it SV\_filter} and 
+{\it SV\_analysis} can be archived by executing the command {\it make gohome}.
+Execution of the command {\it make tarball} creates an archive containing 
+the complete distribution, including all libraries (source code and binary files),
+sample parameter files, documentation and the test case.
+It is required for compilation and linking that a FORTRAN 90/95 and a C compiler be 
+available on the system. As the C compiler, {\it gcc} is used by default. All the 
+settings regarding compilers and linkers should be adjusted in {\it Makefile}.
+Below we describe the steps required for compilation of the different executables.
+
+\subsection{Code {\it SV\_simul}}
+\label{sec:inst_simul}
+
+The executable can be build simply by executing the command {\it make} in 
+the directory \linebreak {\em \$(HOME)/Turb2D/Source}. The spatial resolution is hardwired
+in the code by specifying the values of the variables \verb|SIZE_I| and \verb|SIZE_J|
+in {\it Makefile} (these settings can be overridden by assigning new values to these 
+variables on the command line following the invocation of {\it make}). Compiler 
+optimization options as well should be adjusted in {\it Makefile} to correspond to the 
+specific compilers used. OpenMP--based parallelization is activated by issuing the 
+following command {\it make PARALLEL=openmp}. The following libraries ought to be 
+available in {\em \$(HOME)/Turb2D/lib} (the libraries provided in the tarball are 
+for LINUX with {\it glibc 2.2+} and will likely have to be rebuilt for different 
+architectures):
+\begin{itemize}
+\item
+{\it libfftw.a}, {\it librfftw.a} and {\it libjmfftw.a} --- the first two of which 
+belong to the package FFTW and can also reside in some standard directory (e.g., 
+{\it /usr/lib}); the library {\it libjmfftw.a} can be built by executing
+{\it make jmfftw} (the option {\it PARALLEL=openmp} should be added to enable 
+parallelization),
+\item
+{\it libmpege.a} required for generation of the graphical (MPG) output;
+generation of the graphical output is activated by specifying the preprocessor 
+flag {\it MPG} in {\it Makefile}.
+\end{itemize}
+The executable {\em dweezil} can be built by changing the the directory 
+{\em \$(HOME)/Turb2D/dweezil} and then executing the following series commands: 
+{\em make clean; make distclean; make; make install},
+which creates the executable and puts it in the directory {\em \$(HOME)/bin} 
+where it can be accessed by the simulation code.
+
+\subsection{Code {\it SV\_filter}}
+\label{sec:inst_filter}
+
+The code {\it SV\_filter} is built by executing the command {\it make SV\_filter}.
+It is necessary that the library {\it libwvlt.a} be available in the directory
+{\it \$(HOME)/Turb2D/lib}. This library can be built by executing the command
+{\it make OSREL\_MAJOR=1 ARCH=LINUX} in the directory {\it \$(HOME)/Turb2D/wvlt}.
+Note that the parameters of the {\em make} command will likely have to be 
+adjusted when building the library on a system different than LINUX. 
+
+\subsection{Code {\it SV\_analysis}}
+\label{sec:inst_analysis}
+
+Still under development.
+
+\section{Preprocessing, Execution and Postprocessing}
+\label{sec:prepost}
+
+
+\subsection{Code {\it SV\_simul}}
+\label{sec:prepost_simul}
+
+When the code is launched, the parameter file needs to be piped through the
+standard input stream (\verb|UNIT=5|), i.e. the following command has to be issued
+in the execution directory {\em ./a.out\_512x512 < params\_simul.dat}. The meaning
+of all the parameters in the parameter file is explained in the sample file
+provided in {\it \$(HOME)/Turb2D/Source}. As regards the initial condition, two options 
+are available:
+\begin{itemize}
+\item
+when \verb|IINIT=1| the initial condition is created from scratch in 
+accordance with the settings specified in the parameter file;
+in the currently available cases the initial fields have Fourier coefficients 
+with a prescribed spectral slope and random phases,
+
+\item
+when \verb|IINIT=0,2| initialization is made with a restart file obtained using 
+a different run with similar parameters (e.g., files {\it field\_final}, 
+{\it field\_0000XYZ}); the restart file must be renamed {\em fort.1}; 
+when \verb|IINIT=2| the inertio--gravity modes are removed from the restart field 
+(compressible case only).
+\end{itemize}
+
+Possible forms of output from the code depend on the value of the various parameters
+specified in the parameter file {\em params\_simul.dat} and include:
+\begin{itemize}
+\item
+unformatted binary files with the fields $\hat{u}$, $\hat{v}$ and $\hat{\Phi}$ 
+at the time steps  $n$ and $n+1$ saved every \verb|NSAVE| steps (when \verb|ISAVE=1|); 
+these fields are saved in spectral representation and can be used to reinitialize a new
+run (see above),
+
+\item
+unformatted binary files containing any of the fields \{{\em vorticity, potential vorticity, 
+pressure, divergence, streamfunction, horizontal velocity, vertical velocity, velocity 
+modulus, Bernoulli potential}\} in the physical space representation saved every 
+\verb|NSXXXXX| time steps when \verb|ISXXXXX=1|, where ``\verb|XXXXX|'' is to be selected 
+from the set \{\verb|VORT|, \verb|VPOT|, \verb|PRESS|, \verb|DIV|, \verb|COUR|, \verb|U|,
+\verb|V|, \verb|MODV| and \verb|BERN|\},
+
+\item
+ASCII text files with various run--time diagnostics computed every \verb|NINV| time
+steps; if \verb|VERBOSE>0| this information is also output to the screen; histories
+of the following quantities are saved:
+\begin{itemize}
+\item
+incompressible case \verb|INCOMP=1|:
+\begin{itemize}
+\item
+time $t$, 
+\item
+energy $E=\|\u\|_{L_2}$, 
+\item
+enstrophy $Z=\|\omega\|_{L_2}$, 
+\item
+palinstrophy $P=\|\pmb{\nabla}\omega\|_{L_2}$, 
+\item
+total divergence $D=\|\pmb{\nabla}\cdot\u\|_{L_1}$,
+\item
+peak velocities $\max_\Omega |\u|$, $\min_\Omega u$, 
+$\max_\Omega u$, $\min_\Omega v$ and $\max_\Omega v$,
+\item
+peak pressures $\min_\Omega \Phi$ and $\max_\Omega \Phi$,
+\item
+stability parameter $\kappa_{CFL}=\pi \cdot \Delta t \cdot k_{max} \cdot \max_\Omega |\u|$,
+\item
+kinematic viscosity $\nu$,
+\end{itemize}
+\item
+compressible case \verb|INCOMP=0|:
+\begin{itemize}
+\item
+time $t$, 
+\item
+total energy $E=E_k+E_p$, 
+\item
+kinetic energy $E_k=\int_\Omega \u^2\Phi\,d\Omega$,
+\item
+potential energy $E_p=\|\Phi\|_{L_2}$,
+\item
+linear energy $E_l=\Phi_0\int_\Omega \u^2\,d\Omega + E_p$, where $\Phi_0=\int_\Omega \Phi\,d\Omega$,
+\item
+total enstrophy $Z=\|\omega - Co \|_{L_2}$, where $Co$ is the Coriolis parameter,
+\item
+potential enstrophy $Z_p=\int_\Omega \frac{\omega^2}{\Phi}\,d\Omega$, 
+\item
+linear enstrophy $Z_l=\|\omega - Co - \Phi\frac{Co}{\Phi_0}\|_{L_2}$
+\item
+palinstrophy $P=\|\pmb{\nabla}\omega\|_{L_2}$, 
+\item
+total divergence $D=\|\pmb{\nabla}\cdot\u\|_{L_1}$,
+\item
+peak velocities $\max_\Omega |\u|$, $\min_\Omega u$, 
+$\max_\Omega u$, $\min_\Omega v$ and $\max_\Omega v$,
+\item
+peak pressures $\min_\Omega \Phi$ and $\max_\Omega \Phi$,
+\item
+stability parameter $\kappa_{CFL}=\pi \cdot \Delta t \cdot k_{max} \cdot \max_\Omega |\u|$
+\item
+kinematic viscosity $\nu$,
+\item
+Mach number $M$
+\item
+Rossby number $Ro$
+\end{itemize}
+\end{itemize}
+As regards the peak values, the maxima and minima are taken over the whole 
+flow domain $\Omega$.
+
+\item
+video MPG files with animations of any of the fields \{{\em vorticity, potential 
+vorticity, pressure, divergence, streamfunction, horizontal velocity, vertical velocity, 
+velocity modulus, Bernoulli potential}\} in the physical space representation saved 
+every \verb|NMPGXXXXX| time steps when \verb|IMPGXXXXX=1| and \verb|VERBOSE>0|,
+where ``\verb|XXXXX|'' is to be selected from the set \{\verb|VORT|, \verb|VPOT|, 
+\verb|PRESS|, \verb|DIV|, \verb|COUR|, \verb|U|, \verb|V|, \verb|MODV| and 
+\verb|BERN|\}; this operation is in fact performed by the code {\em dweezil} 
+which is called from within the simulation code and must therefore reside in a directory
+listed in the \verb|PATH| environmental variable (e.g., {\it \$(HOME)/bin}).
+\end{itemize}
+The code is also provided with a test case which consists of the following files
+(all available in the directory {\it \$(HOME)/Turb2D/Test\_case}):
+\begin{itemize}
+\item
+parameter file {\em params.dat},
+\item
+binary (small endian) restart file {\em fort.1},
+\item
+diagnostics output file {\em IRVOR0.dat},
+\end{itemize}
+which can be used for consistency checks. The test case consists in the solution
+of an incompressible flow problem, thus the results concerning the total divergence 
+$D$ (fifth column in the file {\em IRVOR0.dat}) should be on the order of the 
+machine epsilon and may have different numerical values on different machines.
+
+\subsection{Code {\it SV\_filter}}
+\label{sec:prepost_filter}
+
+The filtering code can be executed as {\it ./SV\_filter field < params\_filter.dat},
+where {\it field} is the field to be analyzed (either ASCII or binary), whereas
+the file {\it params\_filter.dat} specifies all the parameters regarding the 
+input file {\it field} (i.e., format, dimension, size) and the operations
+to be performed. See the sample parameter file provided in {\it \$(HOME)/Turb2D/Source})
+for a detailed description. The file {\it field} can contain any field represented
+in physical space and obtained, for instance, using\footnote{For example, assume that 
+the file {\it vorticity} consists of $10$ instantaneous fields at resolution $512^2$ in 
+double precision. It will then have the size of 20971520 bytes ($512^2\times 8\times 10 = 20971520$). 
+Instantaneous fields needed for {\it SV\_filter} can be extracted from this file 
+using the UNIX/LINUX command {\it split -b 2097152 vorticity}.} {\em ./a.out\_512x512}.
+The code {\it SV\_filter} can return files with coefficients of the discrete 
+wavelet transform (DWT), or with fields corresponding to the coherent and 
+incoherent part of the original field. When the filtering threshold is determined 
+using the recursive algorithm, the results for the consecutive iterations are
+returned in {\it iters.dat} and also on the screen when the verbosity level
+is higher than $1$. When the Discrete Wavelet Transform is computed only (no filtering),
+the Besov norms (cf.~\eqref{eq:besov}) are also calculated for a range of parameters
+specified in the parameter file. Sample parameter files {\em params\_filter1.dat} 
+and {\em params\_filter2.dat} (for the 1D and 2D cases, respectively) containing
+explanations for all input parameters are provided in the directory 
+{\it \$(HOME)/Turb2D/Source}.
+
+\subsection{Code {\it SV\_analysis}}
+\label{sec:prepost_analysis}
+
+Still under development.
+
+\section{Acknowledgments}
+
+Financial support from SPI--CNRS is gratefully acknowledged.
+
+\appendix
+\section{{\em Makefile} options}
+\label{sec:makefile}
+
+The following is a summary of options available for the various {\em Makefiles} provided with 
+the package:
+\begin{itemize}
+\item
+in {\it \$(HOME)/Turb2D/Source})
+\begin{itemize}
+\item
+{\em make} --- builds the simulation executable in accordance with the parameters specified 
+in {\em Makefile}; note that these settings can be overridden by specifying them explicitly
+on the command line, e.g., {\em make SIZE\_I=1024 SIZE\_J=1024},
+\item
+{\em make SV\_filter} --- builds the filtering executable,
+\item
+{\em make jmfftw} --- builds the wrapper for the FFTW calls,
+\item
+{\em make gohome} --- creates an archive with the source files,
+\item
+{\em make tarball} --- creates an archive with a complete distribution of the package,
+including libraries, etc.,
+\end{itemize}
+
+
+\item
+in {\it \$(HOME)/Turb2D/wvlt})
+\begin{itemize}
+\item
+{\em make OSREL\_MAJOR=1 ARCH=LINUX} --- builds the discrete wavelet transform library 
+{\em libwvlt.a}
+\end{itemize}
+
+\item
+in {\it \$(HOME)/Turb2D/dweezil})
+\begin{itemize}
+\item
+{\em make} --- builds the executable {\em dweezil} necessary to process the video (MPG)
+output.
+\end{itemize}
+
+
+\end{itemize}
+Apart from the above, standard options such as {\em make clean} and {\em make distclean}
+are also available.
+
+\begin{thebibliography}{100}
+
+\bibitem{f87}
+Marie Farge, ``Dynamique non lineaire des ondes et des tourbillons dans les 
+\'equations de Saint--Venant'', {\em Doctorat des Math\'ematiques}, 
+Universite Paris VI, (1987).
+
+\bibitem{kg01}
+N.~K.-R.~Kevlahan and J.~-M.~Ghidaglia, ``Computation of turbulent flow past an 
+array of cylinders using a spectral method with Brinkman penalization'',
+{\em Eur. J. Mech. B} {\bf 20}, 333-350, (2001).
+
+\bibitem{chqz90}
+C.~Canuto, M.~Hussaini, A.~Quarteroni and T.~Zang,  ``Spectral Methods in Fluid Dynamics'', 
+Springer Verlag, (1990).
+
+\bibitem{km85}
+J.~Kim and P.~Moin, ``Application of a fractional step method to incompressible 
+Navier--Stokes equation'', {\em Journal of Computational Physics} {\bf 59}, 308-323,
+(1985).
+
+\bibitem{m98}
+S.~Mallat, ``A wavelet tour of signal processing'', Academic Press, (1998).
+
+\bibitem{afs03}
+A.~Azzalini, M.~Farge and K.~Schneider, ``Nonlinear wavelet thresholding:
+a recursive method to determine the optimal denoising threshold''
+(submitted), (2003).
+\end{thebibliography}
+
+\end{document}

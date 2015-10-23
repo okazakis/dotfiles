@@ -1,0 +1,106 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,11pt,openbib,oneside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{emathPh}
+\usepackage{emathPk}
+\usepackage{emathMw}
+\usepackage{emathCap}
+\usepackage{emathQf}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{EMproof}
+\usepackage{EMxymatrix}
+\usepackage{EMboutyuu}
+\usepackage{EMminipages}
+\usepackage{emathEy}
+\usepackage{ulem}
+\usepackage{hako}
+\usepackage{wrapfig}
+%\usepackage{multido}
+\resettagform
+\newtheorem{dfn}{定義}[section]
+\newtheorem{thm}[dfn]{定理}
+\newtheorem{exm}[dfn]{例}
+\newtheorem{fmr}[dfn]{公式}
+\newtheorem{exe}[dfn]{練習}
+\newtheorem{dfnop}{*定義}[section]
+\newtheorem{thmop}[dfn]{*定理}
+\newtheorem{exmop}[dfn]{*例}
+\newtheorem{frmop}[dfn]{*公式}
+\newtheorem{exeop}[dfn]{*練習}
+\newtheorem{prob}{問題}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\lhead{2 年生 数学$\alpha$}
+\chead{第 1 章《式の計算》}
+\rhead{特別-1}
+\lfoot{}
+\cfoot{}
+\rfoot{担当：岡崎正悟}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   Set Counter (chapter, section etc. ) %%%%%%%%
+\setcounter{section}{2}    % 節番号
+\setcounter{subsection}{1}
+\setcounter{equation}{0}   % 式番号
+\setcounter{page}{11}     % 必ず開始ページは明記する
+\setcounter{figure}{0}     % 図番号
+\setcounter{table}{0}      % 表番号
+\setcounter{dfn}{5}
+%\setcounter{footnote}{0}
+
+%\def\labelitemi{$\clubsuit$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+%\section{文字式の利用}
+
+\subsection*{特別課題: 証明の答案練習}
+
+証明の問題が解けるようになるコツは「とにかく丁寧に正しい答案を書く練習す
+ること」である. しかし, 自力で問題集を解いているだけでは, その答案が正し
+いのかどうか分からなかったり, 気づかないうちにマズい言葉の使い方をしてい
+ることがある. そこで, 今回は「特別課題」として以下の問題 A (易しめ) か B
+(難しめ) を解いてきてもらって, 岡崎が添削して返却する. ただし, 全員必須
+ではなく, \uwave{あくまで自由課題}なので, 出さなくても点数は引かない.
+\begin{wrapfigure}{r}{50pt}
+ \begin{center}
+  \includegraphics[width=70pt]{5-5-hyou.eps}
+  \end{center}
+\end{wrapfigure}
+
+
+\begin{prob}
+ 右のような$5\times5$の$1 から 25$の自然数を正方形状に並べた表がある. こ
+ れについて, 以下の A, B の性質についていずれかを選択し, 証明しなさい.
+ 必ず, どちらの問題を選んだかを書いてから解答を始めること. 答案は, 裏に
+ 書いても良い.
+ \begin{description}
+  \item[A] \karaHako で囲まれた 3 つの数の和は$2+3+4=9$で, 真ん中の数$3$
+	   の 3 倍になっている. このことが, 他の横に並んだ 3 つの数でも
+	   成立することを証明しなさい.
+  \item[B] 点線の四角で囲まれた数の和は$14+15+19+20=68$で, 4 の倍数になっ
+	     ている. このように 4 つの数を囲う場合, 4 つの数の和がこの表
+	     のどこでも 4 の倍数になることを証明しなさい.
+ \end{description}
+\end{prob}
+\end{document}

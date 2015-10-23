@@ -1,0 +1,15 @@
+class ParentGreeter
+  def greet(x)
+    puts "#{x}!!!"
+  end
+end
+
+class ChildGreeter < ParentGreeter
+  def greet(y)
+    y='Bamboo'
+    super
+  end
+end
+
+c = ChildGreeter.new
+c.greet('Hello!')

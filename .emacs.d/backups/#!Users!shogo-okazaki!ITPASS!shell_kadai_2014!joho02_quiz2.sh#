@@ -1,0 +1,47 @@
+,#!/bin/bash
+#kadai2_dataディレクトリ以下にall.csvファイルがあるか確認
+if [ -e './kadai2_data/all.csv' ]
+then
+echo '表示したい値の数字を入力してください'
+echo '1.日最高気温 2.日最低気温 3.日積算降水量 4.日最小湿度'
+read select
+#表示させたい番号を受け取る
+case $select in
+  1) saiko=8 saite=7 order='-r' deg='℃ ' ;;
+  2) saiko=9 saite=8 order='-r' deg='℃ ' ;;
+  3) saiko=4 saite=3 order='-r' deg='mm' ;;
+  4) saiko=11 saite=10 order='' deg='%' ;;
+  *) echo '入力できる数字は1～4のみです' ; exit ;
+esac
+#入力された番号によって場合分けをしている。1〜4以外の数字が入力された場合はエラー処理を実行する。
+allfile=./kadai2_data/all.csv
+#すべてのデータが入ったファイルをallfileに代入する。
+overlap=0
+#overlapを0とした。
+for cl in `sort -t , -k $saiko -n $order $allfile | uniq -f $saite -w 5 -c |head -n 10 | sed -e 's/^[ ]*//g' | cut -c 1`
+do
+  overlap=`expr $overlap + $cl`
+done
+#sortによって「,」で区切り「-k」で場所を指定し「-n $order」で大きい順もしくは小さい順にソートする。そしてuniqで重複をなくし「-c」で重複した数を先頭に付け加える。この時空白ができるためあとでsedによって取り除く。headは上から10番目までを取り出し、cutで重複数を切り取っている。そしてdoubleに代入し重複数を含めた上位10位の数の合計を出している。
+ 
+value=($(sort -t , -k $saiko -n $order $allfile | head -n $overlap | cut -d , -f $saiko))
+year=($(sort -t , -k $saiko -n $order $allfile | head -n $overlap | cut -d , -f 23 | cut -d - -f 1))
+month=($(sort -t , -k $saiko -n $order $allfile | head -n $overlap | cut -d , -f 23 | cut -d - -f 2))
+date=($(sort -t , -k $saiko -n $order $allfile | head -n $overlap | cut -d , -f 1))
+#それぞれ値、年、月、日をどこを基準にソートするか指定し、先ほど求めた重複を含めた上位10位までの数値を切り取っている。
+number=0
+while [ $number -lt $overlap ]
+#bangoがonerlapまで繰り返し実行する。
+do
+  if [[ ${date[$number]} =~ ^[0-9]$ ]]
+  then
+    date[$number]=0${date[$number]}
+ fi
+#日は1桁の場合桁がずれてしまうため便宜上10の位に0をつけて桁をあわせておく。
+  echo "${year[$number]} 年 ${month[$number]} 月 ${date[$number]} 日 ${value[$number]}$deg" 
+  number=`expr $number + 1`
+done
+#whileによって繰り返し実行する。重複を含めた上位10番目までを出力している。
+else
+  echo "all.csvファイルが存在しません"
+fi

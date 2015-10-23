@@ -1,0 +1,19 @@
+---
+layout: page
+title : Article
+header : Post Archive
+group: navigation
+permalink: /article/
+---
+
+日々やってみたこととか考えてみたことを雑多に書いている程度です. 気が向いたらまとめます. とりあえず, 日付順に並んでいます.
+
+* [カテゴリー分類]({{ site.baseurl }}/categories.html)
+
+* [タグ一覧]({{ site.baseurl }}/tags.html) 
+
+<ul class="article-list">
+{% include JB/setup %}
+{% assign posts_collate = site.posts %}
+{% include JB/posts_collate %}
+</ul>

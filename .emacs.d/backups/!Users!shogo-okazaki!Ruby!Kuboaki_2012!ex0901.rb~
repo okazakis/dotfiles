@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+# Student クラスを作る
+class Student
+  # Student クラスのインスタンスを初期化
+  def initialize( name, age )
+    @name = name
+    @age = age
+  end
+
+  # Student クラスのインスタンスの文字列表現を返す
+  def to_s
+    "#{@name}, #{@age}"
+  end
+
+  #Student クラスのインスタンスを作成
+  shogo = Student.new('岡崎 正悟', 22)
+  natsumi = Student.new('高間 菜摘', 21)
+
+  # インスタンスの名前と年齢を表示
+  puts shogo.to_s
+  puts natsumi.to_s
+  

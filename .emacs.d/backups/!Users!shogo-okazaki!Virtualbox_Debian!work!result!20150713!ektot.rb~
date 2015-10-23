@@ -1,0 +1,29 @@
+# -*- coding: utf-8 -*-
+require "numru/ggraph"
+include NumRu
+
+# ----- コマンドラインオプション -----
+iws = ( ARGV[0] || 4 ).to_i    # 第1引数は装置番号 (1,2,or 4)
+
+# ----- 使用データ -----
+run1 = GPhys::IO.open 'run1.nc', 'ektot'
+run2 = GPhys::IO.open 'run2_ektot.nc', 'ektot'
+run3 = GPhys::IO.open 'run3_ektot.nc', 'ektot'
+
+# ----- DCL設定 -----
+def prep_dcl(iws=4) # iws : DCL出力デバイス．1,4:画面, 2:PS
+  DCL.gropn(iws)
+  DCL.swpset("iwidth",900)   # 画面の幅
+  DCL.swpset("iheight",900)  # 画面の高さ
+  DCL.sgpset('isub', 96)       # 下付き添字を表す制御文字を '_' から '`' に
+  DCL.glpset('lmiss',true)     # DCLの欠損値処理を on に
+end
+
+prep_dcl(iws)
+# ----- エネルギーの図 -----
+GGraph.set_fig("itr"=>1)
+GGraph.line(run1,true,"max"=>80,"min"=>62,"type"=>1)
+GGraph.line(run2,false,"max"=>80,"min"=>62,"type"=>2)
+GGraph.line(run3,false,"max"=>80,"min"=>62,"type"=>3)
+
+DCL.grcls      # 描画終了処理

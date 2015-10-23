@@ -1,0 +1,300 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,12pt,openbib,oneside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{emathPh}
+\usepackage{emathPk}
+\usepackage{emathMw}
+\usepackage{emathCap}
+\usepackage{emathQf}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{EMproof}
+\usepackage{EMxymatrix}
+\usepackage{EMboutyuu}
+\usepackage{EMminipages}
+\usepackage{emathEy}
+\usepackage{ulem}
+%\usepackage{multido}
+\resettagform
+\newtheorem{dfn}{定義}[section]
+\newtheorem{thm}[dfn]{定理}
+\newtheorem{exm}[dfn]{例}
+\newtheorem{fmr}[dfn]{公式}
+\newtheorem{exe}[dfn]{練習}
+\newtheorem{dfnop}{*定義}[section]
+\newtheorem{thmop}[dfn]{*定理}
+\newtheorem{exmop}[dfn]{*例}
+\newtheorem{frmop}[dfn]{*公式}
+\newtheorem{exeop}[dfn]{*練習}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\lhead{2 年生 数学$\alpha$}
+\chead{第 1 章《式の計算》}
+\rhead{No.\thepage}
+\lfoot{}
+\cfoot{}
+\rfoot{担当：岡崎正悟}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   Set Counter (chapter, section etc. ) %%%%%%%%
+\setcounter{section}{0}    % 節番号
+\setcounter{equation}{0}   % 式番号
+\setcounter{page}{1}     % 必ず開始ページは明記する
+\setcounter{figure}{0}     % 図番号
+\setcounter{table}{0}      % 表番号
+%\setcounter{footnote}{0}
+
+%\def\labelitemi{$\clubsuit$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\section{式の計算}
+
+1 年生で学習した(であろう)事柄について簡単にまとめておく. 忘れてしまった
+事柄については要復習.
+
+\subsection{単項式と多項式}
+
+\begin{description}
+ \item[単項式] 数や文字の乗算(かけ算)のみからなる式. \\
+	       例: $2x^2, 4x, -3ab,y,-5$
+ \item[多項式] 単項式の和の形で表される式. 多項式の中の単項式一つ一つを
+	    多項式の\emph{項}といい, 数だけの項を\emph{定数項}という. \\
+	    $2x^2 -4x, -3x^2+2x^2 y+4xy-7$
+ \item[次数] 単項式でかけあわされている文字の個数.\\
+	    例: $2x^2$の次数は2, $-5xy^2$の次数は3 \\
+	    多項式の場合は, 各項の次数のうち, もっとも大きいものをその多
+	    項式の\emph{次数}という.\\
+	    例: $2x+7y$の次数は 1. $5x^2-3y+2$の次数は 2.
+\end{description}
+
+\subsection{多項式の計算}
+
+\begin{description}
+ \item[同類項] 文字の部分が同じ項どうしのこと. 同類項は分配法則
+	    \begin{equation*}
+	     ax+bx=(a+b)x
+	    \end{equation*}
+	    を使ってまとめることができる.
+	    例:
+	    \begin{align*}
+	      & 3a^2+a+4-3a+4-1\\
+	     =& 3a^2+2a^2+a-3a+4-1\\
+	     =& (3+2)a^2+(1-3)a+(4-1) \\
+	     =& 5a^2-2a+3 
+	    \end{align*}
+	    【注】$a^2とa$は文字は同じでも次数は異なるので, 同類項とは言
+	    わない.
+\end{description}
+
+\subsubsection*{多項式の加法・減法}
+
+カッコを外して同類項をまとめればよい.
+\\例:
+ \begin{edaenumerate}[(1)]
+  \item 
+  $\begin{aligned}[t]
+    &(3x+2y)+(2x-5y)\\
+   =&3x+2y+2x-5y\\
+   =&3x+2x+2y-5y \\
+   =&5x-3y 
+   \end{aligned}$
+  \item
+   $\begin{aligned}[t]
+    &(3x+2y)-(2x-5y)\\
+   =&3x+2y-2x+5y\\
+   =&3x-2x+2y+5y\\
+   =&x-7y 
+  \end{aligned}$
+ \end{edaenumerate}
+
+筆算でやっても良い. その場合, 同類項を揃えて縦に並べること.\\
+例:
+\begin{edaenumerate}[(1)]
+ \item
+      \begin{align*}
+        \begin{array}{rr}
+           & -5x-4y \\
+         + &  3x+5y \\ \hline
+           & -2x+y
+        \end{array}
+       \end{align*}
+ \item
+      \begin{align*}
+        \begin{array}{rr}
+           & 2x^2+7x-2 \\
+         - &  x^2\hspace{23pt}-3 \\ \hline
+           &  x^2 +7x+1
+        \end{array}
+       \end{align*}
+\end{edaenumerate}
+
+\subsubsection*{多項式と数の乗法・除法}
+
+分配法則を使う. 除法は乗法になおす.\\
+例:
+\begin{edaenumerate}[(1)]
+ \item
+      $\begin{aligned}[t]
+	 &3(2x+5y-1)\\
+	=&3\times2x+3\times5y-3\times1\\
+	=&6x+15y-3
+       \end{aligned}$
+ \item
+      $\begin{aligned}[t]
+	 &(12a-6b-9)\div\frac{3}{2}\\
+	=&(12a-6b-9)\times\frac{2}{3}\\
+	=&8a-4b-6
+       \end{aligned}$
+\end{edaenumerate}
+
+\subsubsection*{上記2つの組み合わせ}
+
+\begin{itemize}
+  \item カッコを含むもの \\
+	例:
+	\begin{align*}
+	  &2(x^2+3x-2)-3(2x-1)\\
+	 =&2x^2+6x-4-6x+3\\
+	 =&2x^2-1 
+	\end{align*}
+ \item 分数を含むもの$\ldots$基本的には「通分$\rightarrow$分配法則」 \\
+       例:
+       \begin{align*}
+	 &\frac{3x+2y}{4}-\frac{x-3y}{6}\\
+	=&\frac{3(3x+2y)}{12}-\frac{2(x-3y)}{12}\\
+	=&\frac{9x+6y-2x+6y}{12} \\
+	=&\frac{7x+12y}{12} 
+       \end{align*}
+\end{itemize}
+
+\subsection{単項式の乗法・除法}
+
+\subsubsection*{単項式どうしの乗法}
+
+それぞれの\uwave{単項式の積}に\uwave{文字の積}をかければ良い.\\
+例:
+\begin{edaenumerate}<3>[(1)]
+  \item 
+   $\begin{aligned}[t]
+     &-4x\times 2y \\
+    =&(-4)\times2\times x\times y\\
+    =&-8xy
+    \end{aligned}$
+  \item
+   $\begin{aligned}[t]
+    &3xy\times2y \\
+   =&3\times2\times y\times y \\
+   =&6xy^2
+    \end{aligned}$
+  \item
+   $\begin{aligned}
+      &(7xy^2)^2\\
+     =&(7xy^2)\times(7xy^2) \\
+     =&7\times7\times x\times x\times y\times y\times y\times y\\
+     =& 49x^2 y^4
+    \end{aligned}$
+\end{edaenumerate}
+
+\subsubsection*{単項式どうしの除法}
+
+同じ数どうし・同じ文字どうしで約分する.\\
+例:
+\begin{edaenumerate}[(1)]
+ \item
+      $\begin{aligned}[t]
+	 &6ab\div(-2b)\\
+	=&\frac{6ab}{-2b}\\
+	=&-\frac{6\times a\times b}{2\times b}\\
+	=&-3a
+       \end{aligned}$
+ \item
+      $\begin{aligned}[t]
+	 &\frac{5}{2}x^2y\div\frac{5}{6}xy\\
+	=&\frac{5x^2 y}{2}\div\frac{5xy}{6}\\
+	=&\frac{5\times x\times x\times y}{2}\times\frac{6}{5\times
+	x\times y}\\
+	=&3x
+       \end{aligned}$
+\end{edaenumerate}
+
+\newpage
+
+\subsubsection*{乗法と除法の組み合わせ}
+
+計算をし始める前に, 符号を先に決めるとミスが減る:
+\begin{itemize}
+ \item $-$が偶数個$\Rightarrow +$
+ \item $-$が奇数個$\Rightarrow -$
+\end{itemize}
+例:
+\begin{edaenumerate}[(1)]
+ \item
+      $\begin{aligned}[t]
+	 &4xy^2\times3x\div(-2y^2)\\
+	=&-\frac{4xy^2\times3x}{2y^2}\\
+	=&-6x^2
+       \end{aligned}$
+ \item
+      $\begin{aligned}[t]
+	 &(-12x^2y)\div(-2x)\div4x\\
+	=&\frac{12x^2 y}{2x\times4x}\\
+	=&\frac{3}{2}y
+       \end{aligned}$
+\end{edaenumerate}
+
+\subsection{式の値}
+
+与えられた文字の値を\uwave{代入}して計算する.\\
+例:
+\begin{enumerate}[(1)]
+ \item $x=2$のとき, $x^2+3x$の値は, $(-2)^2+3\times(-2)=-2$
+ \item $a=3, b=-1$のとき, $2a-5b$の値は, $2\times3-5\times(-1)=11$
+\end{enumerate}
+
+\begin{exe}
+ $x=-3, y=2$のとき, 次の式の値を求めなさい.
+ \begin{edaenumerate}<3>[(1)]
+ \item $2x+5y$
+ \item $-3x-4y$
+ \item $x^2-xy$
+\end{edaenumerate}
+\end{exe}
+
+\noindent
+$\clubsuit$ 式を簡単にしてから代入すると, 計算がしやすくなる.\\
+例: $a=4, b=-2$のときの, $3(a-3b)-(2a-5b)$の値を計算する;
+       \begin{align*}
+	 &3(a-3b)-(2a-5b)\\
+	=&3a-9b-2a+5b\\
+	=&a-4b 
+       \end{align*}
+なので, $a=4, b=-2$を代入して, $4-4\times(-2)=12$
+
+\begin{exe}
+ $x=2, y=-3$のとき, 次の式の値を求めなさい.
+ \begin{edaenumerate}[(1)]
+ \item $3(x+2y)-2(x+y)$
+ \item $4xy^2\div(-8x^2y)$
+\end{edaenumerate}
+\end{exe}
+
+\end{document}

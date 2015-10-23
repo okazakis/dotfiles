@@ -1,0 +1,9 @@
+cond1 = true
+cond2 = false
+
+condition = cond1 and cond2
+if cond1 and cond2
+  puts 'condition ok'
+else
+  puts 'condition ng'
+end

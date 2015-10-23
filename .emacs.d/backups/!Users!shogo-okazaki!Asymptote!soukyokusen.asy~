@@ -1,0 +1,27 @@
+import contour;
+import graph;
+import geometry;
+size(200);
+
+pair x=(-3,-3);
+pair y=(3,3);
+
+real f(real x, real y) {return x^2-y^2;}
+pair a(real x) {return (x,sqrt(x^2-1));}
+real b(real x) {return sqrt(x^2-1);}
+path a=(1,b(1))::(1.2,b(1.2))::(1.4,b(1.4))::(1.6,b(1.6))::(1.8,b(1.8))::(2,b(2));
+path q1=(0,0)--(0,1);
+path q2=(2,b(2))--(0,0);
+path s=buildcycle(q1,a,q2);
+path a=(1,b(1))::(1.2,b(1.2))::(1.4,b(1.4))::(1.6,b(1.6))::(1.8,b(1.8))::(2,b(2))--(0,0)--(1,0)--cycle;
+
+fill(a,cyan);
+draw(contour(f,(-3,-3),(3,3),new real[] {1}),red);
+dot("1",(1,0),SW);
+dot("-1",(-1,0),SW);
+dot("O",(0,0),SW);
+dot("P$(\cosh\theta,\sinh\theta)$",(2,b(2)));
+draw((0,0)--a(2),blue);
+draw("$\theta$",arc(0,0.4,0,40),RightSide,Arrow,PenMargin);
+xaxis("$x$",EndArrow);
+yaxis("$y$",EndArrow);

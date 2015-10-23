@@ -1,0 +1,37 @@
+---
+layout: page
+---
+
+<head>
+<style type="text/css">
+.left { float:left;
+width:65%;
+}
+.right { float:right;
+width:32%;
+}</style>
+</head>
+
+<div class="right">
+<a class="twitter-timeline"  href="https://twitter.com/tsuchinoko0402" data-widget-id="561398998628433921">@tsuchinoko0402さんのツイート</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+
+<div class="left">
+
+<h2> 最近の投稿 </h2>
+
+<ul class="posts">
+  {% for post in site.posts %}
+     <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ site.baseurl }}{{ post.url}}">{{ post.title }}</a></li>
+   {% endfor %}
+</ul>
+
+<h2> リンク </h2>
+
+<ul>
+<li> <a href="http://www.sci.kobe-u.ac.jp" alt="理学部・理学研究科">理学部理学研究科</a> </li>
+<li> <a href-"http://www.math.sci.kobe-u.ac.jp/index-j.html" alt= "数学科・数学専攻">数学科・数学専攻</li>
+<li> <a href="http://www.planet.sci.kobe-u.ac.jp/" alt="地球惑星科学科・地球惑星学専攻">地球惑星科学科・地球惑星科学専攻 </li>
+<li> <a href="http://epa.scitec.kobe-u.ac.jp/" alt="地球および惑星大気科学研究室">地球および惑星大気科学研究室 </li>
+</div>

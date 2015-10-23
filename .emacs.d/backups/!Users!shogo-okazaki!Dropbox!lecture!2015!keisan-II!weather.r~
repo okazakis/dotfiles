@@ -1,0 +1,5 @@
+baseball <- read.table("150423d.dat", header=T)
+base.pc <- princomp(baseball, cor=T)
+summary(base.pc)
+base.pc$loadings
+biplot(base.pc)

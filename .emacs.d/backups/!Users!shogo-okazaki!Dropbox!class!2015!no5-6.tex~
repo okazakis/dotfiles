@@ -1,0 +1,95 @@
+Call `platex no5-6.tex'
+This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (TeX Live 2014) (preloaded format=platex)
+ restricted \write18 enabled.
+entering extended mode
+(./no5-6.tex
+pLaTeX2e <2006/11/10> (based on LaTeX2e <2014/05/01> patch level 0)
+Babel <3.9l> and hyphenation patterns for 21 languages loaded.
+(/usr/local/texlive/2014basic/texmf-dist/tex/platex/jsclasses/jsarticle.cls
+Document Class: jsarticle 2014/02/07 okumura
+) (/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathPh.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/eepic/epic.sty
+Enhancements to Picture Environment. Version 1.2 - Released June 1, 1986
+) (/usr/local/texlive/2014basic/texmf-dist/tex/latex/eepic/eepic.sty
+Extension to Epic and LaTeX. Version 1.1e - Released Dec 21, 1999
+)
+load eepic
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emath.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/oberdiek/makerobust.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathC.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/tools/calc.sty)
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/EMhairetu.sty))
+ (/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathE.sty
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathEc.sty
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathK.sty)
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/tools/enumerate.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathLb.sty))
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/jquote.sty))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/amsfonts/umsb.fd))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/graphics/trig.sty))
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathPk.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathMw.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathCap.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathQf.sty
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathHe.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathB.sty))
+(/usr/local/texlive/2014basic/texmf-dist/tex/platex/base/ascmac.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/platex/base/tascmac.sty))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/cases/cases.sty)
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/tools/tabularx.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/tools/array.sty))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/latexconfig/graphics.cfg)
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/graphics/dvips.def)))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/graphics/color.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/latexconfig/color.cfg)
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/graphics/dvipsnam.def))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/fancybox/fancybox.sty
+Style option: `fancybox' v1.4 <2010/05/15> (tvz)
+) (/usr/local/texlive/2014basic/texmf-dist/tex/latex/base/latexsym.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/EMproof.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/EMxymatrix.sty
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathPxy.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathT.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/tools/hhline.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/zougenhyou.sty)
+ (/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/outotuhyou.sty
+)) (/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/xykaisa.sty)
+) (/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/EMboutyuu.sty
+)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/EMminipages.sty
+) (/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/emathEy.sty)
+(/usr/local/texlive/2014basic/texmf-dist/tex/generic/ulem/ulem.sty)
+(/usr/local/texlive/2014basic/texmf-local/tex/platex/misc/emath/hako.sty
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/tools/verbatim.sty))
+(/usr/local/texlive/2014basic/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty)
+
+LaTeX Warning: Unused global option(s):
+    [openbib].
+
+(./no5-6.aux) (/usr/local/texlive/2014basic/texmf-dist/tex/latex/base/ulasy.fd)
+[5] [6] (./no5-6.aux) )
+Output written on no5-6.dvi (2 pages, 6460 bytes).
+Transcript written on no5-6.log.
+ 
+typeset finished at Tue Apr 14 00:06:11 (1.42 secs)
+=======> Success! Calling dvipdfmx no5-6
+
+no5-6 -> no5-6.pdf
+[1][2]
+43191 bytes written
+
+typeset+dvipdfmx finished at Tue Apr 14 00:06:12 (2.07 secs)
+

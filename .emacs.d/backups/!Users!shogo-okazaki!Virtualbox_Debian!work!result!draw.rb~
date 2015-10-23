@@ -1,0 +1,55 @@
+# -*- coding: utf-8 -*-
+require "numru/ggraph"
+include NumRu
+
+# ----- コマンドラインオプション -----
+iws = ( ARGV[0] || 4 ).to_i    # 第1引数は装置番号 (1,2,or 4)
+tsleep = [ ( ARGV[1] || 0.5 ).to_f, 0.0 ].max  # 第2引数は描画間隔(秒)
+wait = ( tsleep <= 0.0 )       #->true/false; 0以下(true)ならマウスクリックを待つ
+fsec = ( ARGV[2] ||   0 ).to_i  # 第3引数は最初の時刻
+lsec = ( ARGV[3] || 40 ).to_i  # 第4引数は最後の時刻
+
+# ----- 使用データ -----
+vor   = GPhys::IO.open 'run3-1.nc', 'vor'
+eksp  = GPhys::IO.open 'run3-1.nc', '1deksp'
+enssp = GPhys::IO.open 'run3-1.nc', '1denssp'
+
+# ----- DCL設定 -----
+def prep_dcl(iws=4,wait=false) # iws : DCL出力デバイス．1,4:画面, 2:PS
+  DCL.sgscmn(4)               # カラーマップ番号
+  DCL.swpset("iwidth",900)     # 画面の幅
+  DCL.swpset("iheight",450)    # 画面の高さ
+  DCL.swpset("lwait",wait)     # 次の描画の前にマウスクリックを待つ
+  DCL.swpset("lalt",true)      # 裏で描画（パラパラアニメ用）
+  DCL.gropn(iws)
+  DCL.sldiv("y",2,1)           # 画面分割 (描画順("y"oko/"t"ate),数:横,数:縦)
+  DCL.sgpset('isub', 96)       # 下付き添字を表す制御文字を '_' から '`' に
+  DCL.glpset('lmiss',true)     # DCLの欠損値処理を on に
+end
+
+prep_dcl(iws,wait)
+for time in fsec..lsec
+  
+  # ----- 渦度の物理空間の絵 -----
+  GGraph.set_fig("itr"=>1)
+  GGraph.set_tone("min"=>-160,"max"=>160,"levels"=>[-160,-120,-80,-40,-30,-20,-10,0,10,20,30,40,80,120,160])
+  GGraph.tone vor.cut("t"=>time)
+  GGraph.color_bar
+  # ----- エネルギースペクトルの図 -----
+#  if time == 0
+#      GGraph.line eksp.cut("t"=>time),true,"max"=>0.25
+#  else
+#      GGraph.line eksp.cut("t"=>time),true,"max"=>0.25,"min"=>3.0*10**(-3)
+#  end
+#  sleep tsleep
+  # ----- エンストロフィースペクトルの図 -----
+  GGraph.set_fig("itr"=>4)
+  if time == 0
+      GGraph.line enssp.cut("t"=>time),true,"max"=>100
+  else
+      GGraph.line enssp.cut("t"=>time),true,"max"=>100,"min"=>10**(-3)
+  end
+  sleep tsleep
+end
+
+DCL.grcls      # 描画終了処理

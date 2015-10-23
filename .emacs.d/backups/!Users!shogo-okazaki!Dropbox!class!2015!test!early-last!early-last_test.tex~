@@ -1,0 +1,341 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[b5j,papersize,12pt,openbib,twoside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+%---------- emath ----------
+\usepackage{emathPh}
+\usepackage{emathPk}
+\usepackage{emathMw}
+\usepackage{emathCap}
+\usepackage{emathQf}
+\usepackage{EMproof}
+\usepackage{EMxymatrix}
+\usepackage{EMboutyuu}
+\usepackage{EMminipages}
+\usepackage{emathEy}
+\usepackage{ulem}
+\usepackage{hako}
+\usepackage{empheq}
+%----------------------------
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+
+%\usepackage{multido}
+\resettagform
+
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+\newenvironment{tagcases}[1][]
+  {\empheq[left={#1\empheqlbrace}]{alignat=2}}
+  {\endempheq}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\setlength{\footskip}{30pt}
+\lhead[2 年生 数学$\alpha$]{No.\thepage}
+\chead{2015 年前期 中間考査}
+\rhead[No.\thepage]{2 年生 数学$\alpha$}
+\lfoot[担当 : 大木谷 / 岡崎]{}
+\cfoot{}
+\rfoot[]{担当：大木谷 / 岡崎}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%       問題番号を出力するための設定      %%%%%%%%
+\renewcommand{\labelenumi}{{\preitem\large\fbox{\protect\makebox[1.2em][c]{\bfseries\ {\arabic{enumi}}\ }}}}%
+\renewcommand{\labelenumii}{\preitem(\arabic{enumii})\ }%
+\renewcommand{\labelenumiii}{{\preitem{\small(\protect\makebox[0.8em][c]{\roman{enumiii}})}}}%
+\let\theenumi\labelenumi%
+\let\theenumii\labelenumii%
+\let\theenumiii\labelenumiii%
+\def\ToNextPage{\hfill{}\Kakko{次のページに続く}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\begin{enumerate}
+ % 大問1
+ \item 次の式の次数を答えなさい. 【知識・理解】
+       \begin{enumerate}
+	\item $xyz$
+	\item $x^2+3xy^2+8$
+       \end{enumerate}
+ \vfill
+       
+ %大問2
+ \item 次の計算をしなさい. 【技能】
+	\begin{enumerate}
+	 \item $7a+5-3a+6b-1+b$
+	 \item $\displaystyle -24\left(\frac{3}{4}x-\frac{7}{12}y+\frac{5}{6}z\right)$
+	 \item $4(2a-5b+6a^2)+7(2a+b^2-a^2)$
+	 \item $(6s^2+8st-2t^2)-(s^2-2st+1)$
+	 \item $(16x^2y^3)\div(2xy^2)$
+	 \item $(2x)^2 \times 6x^2y^4 \div (3x^3y)$
+	\end{enumerate}
+ \vfill
+
+ %大問3
+ \item $x=3, y=-5$のとき, 次の式の値を計算しなさい. 【技能】
+       \begin{enumerate}
+	\item $(2x-y)-(3x-2y)$
+	\item $5y\times(-2x^4 y^2)\div x^3y^3$
+       \end{enumerate}
+ \vspace{50pt}
+
+ \newpage
+
+ %大問4
+ \item 偶数から奇数をひいた差は必ず奇数になる. このことが成り立つ理由を
+       文字を使って説明しなさい.【見方・考え方】
+ \vfill
+
+ %大問5
+ \item 下の図のように, マッチ棒を並べて, 1 番目, 2 番目, 3 番目,
+       $\cdots$ と正三角形を 1 つずつ増やしていく. 次の場合に必要なマッ
+       チ棒の本数を求めなさい.【見方・考え方】
+       \begin{figure}[h]
+	\begin{center}
+	\includegraphics[clip,scale=0.2]{./matti.eps}
+	\end{center}
+       \end{figure}
+       \begin{enumerate}
+	\item 6 番目で必要なマッチの本数
+	\item $n$ 番目で必要なマッチの本数
+	\item 正三角形を 20 個作るのに必要なマッチの本数
+       \end{enumerate}
+  \vspace{50pt}
+
+  \newpage
+
+  %大問6
+  \item 次の連立方程式を解きなさい.【技能】
+	\begin{edaenumerate}<2>[(1)]
+	 \item \[
+		\begin{cases}
+		 -6x+y=-7\\
+		 -10x-y=-9
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 x-2y=-7\\
+		 -8y+3=x
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 -2x+4y=-2\\
+		 7x-3y=10
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 -6x-4y=17\\
+		 3x+4y=-18
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 \displaystyle \frac{7}{8}x-\frac{3}{8}y=2\\
+		 \displaystyle \frac{1}{8}x-\frac{1}{4}y=\frac{9}{4}
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 \displaystyle -\frac{9}{8}x-y=-\frac{5}{4}\\
+		 \displaystyle \frac{9}{16}x+\frac{1}{8}y=1
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 2x+3y=5\\
+		 x+2y=4
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 5x-5y=-8\\
+		 6x+7y=-7
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 10x-7y=8\\
+		 9x-8y=5
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 \displaystyle x+y=\frac{1}{90}\\
+		 99x+100y=1
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 0.04x+0.08y=28\\
+		 0.12x+0.18y=72
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 20x+5y=500\\
+		 \displaystyle \frac{20}{100} \cdot
+		 20x+\frac{10}{100}\cdot 5y=\frac{8}{100}\cdot 1000
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 \displaystyle \frac{x+y}{2}=\frac{5}{3}\\
+		 \displaystyle \frac{(x+2)+(2y-7)}{2}=-\frac{1}{3}
+		\end{cases}
+	       \]
+	 \item \[
+		\begin{cases}
+		 y=x-2\\
+		 x-5(x+y)=-2
+		\end{cases}
+	       \]
+	 \item \[
+	       4x+3y+10=2y-3x+6=4y+3
+	       \]
+	 \item \[
+	       x+2y=3x+7y=x-4
+	       \]
+	\end{edaenumerate}
+ \vfill
+
+ \newpage
+
+ %大問8
+ \item 下の図のように, 台形 ABCD で上底の長さが$a$, 下底の長さが$b$, 高
+       さが$h$のときの面積を$S$とする. 次の問に答えなさい.【見方・考え方】
+       \begin{figure}[h]
+	\begin{center}
+	\includegraphics[clip,scale=0.25]{./daikei.eps}
+	\end{center}
+      \end{figure}
+       \begin{enumerate}
+	\item 台形の面積$S$を$a,b,h$を用いて表しなさい.
+	\item (1) で作った式を変形して, 上底$a$を求める式を作りなさい.
+	\item (1) で作った式は次の場合にどんな図形の面積を表しているか答
+	      えなさい.
+	      \begin{enumerate}
+	       \item $a=b$の場合
+	       \item $a=0$の場合
+	      \end{enumerate}
+       \end{enumerate}
+ \vfill
+ 
+
+ %大問7
+ \item 連立方程式
+       $\displaystyle\begin{cases}
+	 ax-by=4\\
+	 bx-2ay=5
+	\end{cases}$
+       の解が$x=-1,y=-2$であるとき, $a,b$の値を答えなさい.【技能】
+ \vfill
+
+ \newpage
+
+ \item 次の問に答えなさい.【見方・考え方】
+       \begin{enumerate}
+	\item 神戸くんは所持金の$\displaystyle\frac{1}{3}$を, 中戸くんは
+	      所持金の$\displaystyle\frac{1}{4}$を出し合って 3000 円の品
+	      物を買った. このとき, 2 人の残りの所持金は同じだった. 2 人
+	      の最初の所持金をそれぞれ求めなさい.
+	\item 長さ 180 m の列車が, 一定の速さである鉄橋を渡り始めてから
+	      渡り終えるまでに 30 秒かかった. また, 鉄橋の 2 倍の長さの
+	      トンネルに入り始めてからトンネルから完全に出終えるまでに
+	      51 秒かかった. この列車の長さと速さを求めなさい.
+	\item 2 桁の自然数がある. それぞれの位の数の和は 6 で, 十の位と
+	      一の位の数を入れか得てできる数はもとの数よりも 36 だけ小さ
+	      くなるという. このとき, もとの数を求めなさい.
+       \end{enumerate}
+  \vfill
+
+ \newpage
+       
+ \item  次は 大木谷 さんと 岡崎 さんの会話の一部である. これを読んで, 次
+	の(1)$\sim$(3)に答えなさい.  (山口県立高校. 一部改)【見方・考え
+	方】
+	
+	\begin{screen}
+	 \begin{description}
+	  \item[大木谷さん]江戸時代に書かれた和算書『勘者御伽双紙(かんじゃおとぎぞう
+	      し)』の中に「さっさ立て」という遊びがあるけど, やってみない? 
+	  \item[岡崎さん] どういう遊びなん?
+	  \item[大木谷さん] 最初に 30 個の碁石と 2 つの空の箱 A,B を用意
+		     するんだ. 岡崎さんは「さあ」とかけ声をしながら, か
+		     け声 1 回につき, 碁石を 2 個か 3 個手に取って, 2 個
+		     取ったら箱 A に, 3 個取ったら箱 B に入れて. その
+		     時, 最初に用意した 30 個の碁石は残さず全部どっちか
+		     の箱に入れてね. 碁石を全部入れ終えたあとで,箱 A に
+		     入れた碁石の数を当ててみせるよ. 僕は箱の中が見えな
+		     いように後ろを向いとくから. 
+	  \item[岡崎さん]ルールは分かったわ. ほな, 始めるで.\\
+	      さあ, さあ, $\cdots\cdots\cdots$, さあ.\\
+	      大木谷さん, 全部入れたで.
+	  \item[大木谷さん] 岡崎さんは, 11 回「さあ」って言ったので, 箱
+		     A の中に入れた碁石の数は...わかった！  
+	 \end{description}
+	\end{screen}
+	\begin{enumerate}
+	 \item 会話のように「さっさ立て」をしている途中で, 箱 A の中に 2 個,
+	       箱 B の中に 9 個碁石が入っているとき, それまでに岡崎さんが言った
+	       「さあ」のかけ声の回数を求めなさい.
+	 \item 『勘者御伽双紙』には, 最初の碁石の個数と「さあ」のかけ声の回数
+	       を使って, 箱 A に入れた碁石の個数が求められることが書いてある.
+	       会話のように「さっさ立て」をしたあとで, 岡崎さんは大木
+	       谷さんから『勘者御伽双紙』に書いてあるこの求め方を教えて
+	       もらった. 岡崎さんは次のように考察した.
+	       \begin{boxnote}
+		箱 A に入れた碁石の個数は, 連立方程式を使って求めることもでき
+		る. 箱 A に碁石を入れた回数を$x$回, 箱 B に碁石入れた回数を$y$回と
+		すると,
+		\[
+		\begin{cases}
+		 \hakoxyohaku{70pt}\Hako[3] \\
+		 \hakoxyohaku{70pt}\Hako[4]
+		\end{cases}
+		\]
+		となる. \underline{この連立方程式を解くことにより, 箱 A
+		に入れた碁石}\\\underline{の個数が計算できる.}\\ 
+		ところで, この連立方程式を$y$の係数をそろえて$y$を消去して解く
+		と, 大木谷さんから教えてもらった『勘者御伽双紙』に書いてある求め方
+		との関連が分かる.
+		\begin{itembox}{『勘者御伽双紙』に書いてある求め方}
+		 箱 A に入れた碁石の個数は「さあ」のかけ声の回数を$\Hako[1]$倍し
+		 た数から最初の碁石の個数をひいて, その差を$\Hako[2]$倍すると求め
+		 られる.
+		\end{itembox}
+	       \end{boxnote}
+	       以上の岡崎さんの考察において, 次の(i)$\sim$(iii)に答えなさい.
+	       \begin{enumerate}
+		\item $\refHako*{3}$, $\refHako*{4}$ に当てはまる式を答え
+		      なさい.
+		\item 下線部について, 箱 A に入れた碁石の個数を求めなさい.
+		\item $\refHako*{1}$, $\refHako*{2}$に当てはまる数を答えなさい.
+	       \end{enumerate} 
+	 \item 会話の中の「さっさ立て」では, 用意した 30 個の碁石が全部入れ終わ
+	       るまでの「さあ」のかけ声の回数は 11 回であったが, 「さあ」のかけ
+	       声の回数は他の場合も考えられる. 30 個の碁石を全部入れ終わるまで
+	       の「さあ」のかけ声の回数は, 11 回の場合も含めて何通りあるか, 求
+	       めなさい.
+	\end{enumerate}
+\end{enumerate}
+
+\end{document}
