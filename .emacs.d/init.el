@@ -1,4 +1,5 @@
 ;; -*- mode: emacs-lisp; coding: utf-8; indent-tabs-mode: nil -*-
+(package-initialize)
 ;; デバッグモードでの起動
 ;; おまじない
 (require 'cl)
@@ -212,7 +213,7 @@
 (set-face-underline-p 'show-paren-match-face "yellow")
 
 ;;; カラーテーマの適用
-(load-theme 'deeper-blue t)
+;;(load-theme 'deeper-blue t)
 ;; color-theme.el
 ;;(when (require 'color-theme nil t)
 ;;  (color-theme-initialize)
