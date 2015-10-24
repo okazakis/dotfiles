@@ -1,2 +1,0 @@
-#!/bin/bash
-rsync -arv -delete -e ssh _site/ okazakis@itpass.scitec.kobe-u.ac.jp:~/public_html/

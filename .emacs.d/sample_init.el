@@ -183,7 +183,7 @@
 
 ;; ▼要拡張機能インストール▼
 ;;; P96-97 表示テーマの設定
-;; http://download.savannah.gnu.org/releases/color-theme/color-theme-6.6.0.tar.gz
+;; http://download.savannah.gnu.org/releases/color-theme/color-theme-6.6.0.tar.gz 
 (when (require 'color-theme nil t)
   ;; テーマを読み込むための設定
   (color-theme-initialize)
