@@ -10,6 +10,10 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; スタートアップメッセージを非表示
 (setq inhibit-startup-screen t)
+;; ---------- emacsclient のためのサーバ起動 ----------
+(require 'server)
+(unless (server-running-p)
+  (server-start))
 
 ;; --------------------------------------------------------------
 ;; 設定ファイルの管理
@@ -331,19 +335,6 @@
 
 
 ;; ---------------------------------------------------------
-;; auto-complete                                      
-;; ---------------------------------------------------------
-;; (require 'auto-complete-config)
-;; (ac-config-default)
-;; (add-to-list 'ac-modes 'text-mode)         ;; text-modeでも自動的に有効にする
-;; (add-to-list 'ac-modes 'fundamental-mode)  ;; fundamental-mode
-;; (add-to-list 'ac-modes 'org-mode)
-;; (add-to-list 'ac-modes 'yatex-mode)
-;; (ac-set-trigger-key "TAB")
-;; (setq ac-use-menu-map t)       ;; 補完メニュー表示時にC-n/C-pで補完候補選択
-;; (setq ac-use-fuzzy t)          ;; 曖昧マッチ
-
-;; ---------------------------------------------------------
 ;; メモ・情報整理                                     
 ;; ---------------------------------------------------------
 ;;; メモ書き・ToDo管理──howm
@@ -377,4 +368,95 @@
 (cua-mode t) ; cua-modeをオン
 (setq cua-enable-cua-keys nil) ; CUAキーバインドを無効にする
 
+;; ---------------------------------------------------------
+;; YaTeX の設定
+;; ---------------------------------------------------------
 
+;; Add library path
+(add-to-list 'load-path "~/.emacs.d/site-lisp/yatex1.78.4")
+;; YaTeX mode
+(setq auto-mode-alist
+    (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+(setq tex-command "platex")
+(setq dviprint-command-format "dvipdfmx %s")
+;; use Preview.app
+(setq dvi2-command "open -a Preview")
+(setq bibtex-command "pbibtex")
+
+;; ---------------------------------------------------------
+;; ヒストリーの設定
+;; ---------------------------------------------------------
+
+;; undohistの設定
+(when (require 'undohist nil t)
+  (undohist-initialize))
+
+;; undo-treeの設定
+(when (require 'undo-tree nil t)
+  (global-undo-tree-mode))
+
+;; point-undoの設定
+(when (require 'point-undo nil t)
+  ;; (define-key global-map [f5] 'point-undo)
+  ;; (define-key global-map [f6] 'point-redo)
+  (define-key global-map (kbd "M-[") 'point-undo)
+  (define-key global-map (kbd "M-]") 'point-redo)
+  )
+
+;; ---------------------------------------------------------
+;; 各言語の編集モード
+;; ---------------------------------------------------------
+
+;; -------------------- Java Script --------------------
+;;; js-modeの基本設定
+(defun js-indent-hook ()
+  ;; インデント幅を4にする
+  (setq js-indent-level 2
+        js-expr-indent-offset 2
+        indent-tabs-mode nil)
+  ;; switch文のcaseラベルをインデントする関数を定義する
+  (defun my-js-indent-line ()
+    (interactive)
+    (let* ((parse-status (save-excursion (syntax-ppss (point-at-bol))))
+           (offset (- (current-column) (current-indentation)))
+           (indentation (js--proper-indentation parse-status)))
+      (back-to-indentation)
+      (if (looking-at "case\\s-")
+          (indent-line-to (+ indentation 2))
+        (js-indent-line))
+      (when (> offset 0) (forward-char offset))))
+  ;; caseラベルのインデント処理をセットする
+  (set (make-local-variable 'indent-line-function) 'my-js-indent-line)
+  ;; ここまでcaseラベルを調整する設定
+  )
+
+;; js-modeの起動時にhookを追加
+(add-hook 'js-mode-hook 'js-indent-hook)
+
+;; ------------------- Ruby --------------------
+;;; Ruby編集用の便利なマイナーモード
+;; 括弧の自動挿入──ruby-electric
+(require 'ruby-electric nil t)
+;; endに対応する行のハイライト──ruby-block
+(when (require 'ruby-block nil t)
+  (setq ruby-block-highlight-toggle t))
+;; インタラクティブRubyを利用する──inf-ruby
+(autoload 'run-ruby "inf-ruby"
+  "Run an inferior Ruby process")
+(autoload 'inf-ruby-keys "inf-ruby"
+  "Set local key defs for inf-ruby in ruby-mode")
+
+;; ruby-mode-hook用の関数を定義
+(defun ruby-mode-hooks ()
+  (inf-ruby-keys)
+  (ruby-electric-mode t)
+  (ruby-block-mode t))
+;; ruby-mode-hookに追加
+(add-hook 'ruby-mode-hook 'ruby-mode-hooks)
+
+;; -------------------- Fortran --------------------
+;; Fortran-mode など
+(cond (window-system
+       (require 'font-lock)
+       (global-font-lock-mode t)))

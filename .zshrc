@@ -1,23 +1,14 @@
 # スクリプトファイルへのパス通し
-#export PATH=$PATH:~/bin
+export PATH=$PATH:~/bin
 
 # TeXのための設定
 #export PATH=$PATH:/usr/local/texlive/2014basic/bin/x86_64-darwin
 
-# emacs のための設定
-# alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
-#alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
-#alias e='emacsclient -n'
-#alias emacs='emacsclient -nw'
-#export EDITOR=emacsclient
-#export VISUAL=emacsclient
-
-# Emacs デーモンの利用
-# alias E='emacsclient -t -a'
-# "kill-emacs" で Emacs デーモンを終了
-# alias kill-emacs="emacsclient -e '(kill-emacs)'"
-# alias e='emacsclient -nw -a ""'
-# alias emacs='emacsclient -nw -a ""'
+# Emacs のための設定
+alias e='emacsclient -n'
+alias emacs='emacsclient -nw'
+export EDITOR=emacsclient
+export VISUAL=emacsclient
 
 # 環境変数
 export LANG=ja_JP.UTF-8

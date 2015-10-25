@@ -1,0 +1,55 @@
+= 各種アプリケーションのインストール
+
+* Office for mac 2016
+* ブラウザ経由
+  * Firefox
+  * iterm2
+    * カラースキーム Solarized もダウンロード
+      $ git clone git://github.com/altercation/solarized.git
+  * google 日本語入力
+  * クラウド関係
+    * Dropbox
+    * Google ドライブ
+    * OneDrive
+    * Onyx
+  * BetterTouchTool
+  * Alfred 2
+    * https://www.alfredapp.com/
+* Mac App Store 経由
+  * Xcode
+    * command line tool もインストール
+  * The Unarchiver
+  * Win Archiver Lite
+  * Pocket
+* homebrew の導入
+
+  $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  $ brew doctor
+  $ brew install caskroom/cask/brew-cask
+  $ brew cask doctor
+
+* Homebrew 経由で幾つかインストール
+  * lv(コマンドラインページャ)
+	$ brew install lv
+  * XQuartz
+	$ brew cask install xquartz
+  * emacs
+    * Emacs Mac Port 版
+      	    $ brew tap railwaycat/emacsmacport
+      	    $ brew install emacs-mac --with-modern-icon
+	    $ brew linkapps
+  * Quick Look 用のプラグイン
+    * 参考: http://ottan.xyz/quick-look-plugin-78/
+      $ brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json quicklook-csv betterzipql
+  * Ricty フォント
+    * http://morizyun.github.io/blog/ricty-font-homebrew-mac/
+      $ brew tap sanemat/font
+      $ brew install Caskroom/cask/xquartz
+      $ brew install ricty
+      $ cp -f /usr/local/Cellar/ricty/3.2.2/share/fonts/Ricty*.ttf ~/Library/Fonts/
+      $ fc-cache -vf
+  * BasicTeX 2015
+    * http://snap.textfile.org/20151006085255/
+      $ brew install mactex
+      $ sudo tlmgr update --self --all
+      $ sudo tlmgr install collection-langjapanese
