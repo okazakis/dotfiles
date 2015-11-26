@@ -1,0 +1,65 @@
+\documentclass[dvipdfmx]{beamer} % dvipdfmx ドライバを指定
+\usepackage{bxdpx-beamer}  % ナビゲーションシンボルを機能させる
+\setbeamertemplate{some beamer element}[square] % ナビゲーションバー
+% \setbeamertemplate{navigation symbols}{}      % ナビゲーションバー非表示
+\usepackage{pxjahyper}     % しおりの文字化け対策
+\usepackage{minijs}        % 和文メトリックの調整（代わりに otf を読み込んでも良い）
+\renewcommand{\kanjifamilydefault}{\gtdefault} % 和文既定をゴシックに変更
+
+%---------- デザインの選択(省略可)
+\usetheme{Copenhagen}
+%---------- カラーテーマの選択(省略可) 
+\usecolortheme{dolphin}
+%---------- フォントテーマの選択(省略可)
+\usefonttheme{default}
+%---------- フレーム内のテーマの選択(省略可)
+\useinnertheme{rectangles}
+%---------- フレーム外側のテーマの選択(省略可)
+\useoutertheme{infolines}
+
+%---------- スライドの情報([  ]内に略称を書く)
+\title[Tung \& Orlando (2001) の紹介]{準地衡 2 層モデルの数値シミュレーション -- Tung \& Orlando (2001)
+の紹介 --}
+\subtitle{ K.K. Tung and W.W. Orlando, The $k^{-3}$ and $k^{-5/3}$Energy Spectrum of Atmospheric Turbulence. Quasi-Geostrophic Two-Level Model Simulation,
+\emph{J. Atmos. Sci.} , 60, (2003), 824-835.}
+\author{岡崎 正悟}
+\institute[神戸大院理]{神戸大学大学院理学研究科惑星学専攻}
+\date{2015/11/19}
+
+\begin{document}
+%---------- タイトルページ
+\begin{frame}
+ \titlepage
+\end{frame}
+
+%---------- 目次
+\begin{frame}
+ \frametitle{目次}
+ \tableofcontents
+\end{frame}
+
+\section{まずはじめに}
+
+\subsection{手始めに}
+
+\begin{frame}
+ \frametitle{frame}
+ にほんご
+ 
+ hogehoge
+\end{frame}
+
+\begin{frame}{ブロックとか}
+ \begin{block}{青色}
+  内容ホゲホゲ
+ \end{block}
+ \begin{alertblock}{タイトル}
+  \begin{itemize}
+   \item 箇条書き
+  \end{itemize}
+  \begin{enumerate}
+   \item hoge
+  \end{enumerate}
+ \end{alertblock}
+\end{frame}
+\end{document}

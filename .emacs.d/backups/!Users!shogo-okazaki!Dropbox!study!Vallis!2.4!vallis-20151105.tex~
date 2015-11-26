@@ -1,0 +1,188 @@
+%
+% Atmospheric and Oceanic Fluid Dynamics.  (Vallis, G. K.)
+%
+%  2015/11/05 基礎理論読書会レジュメ
+%  当番 : 岡崎 正悟
+%
+% 2015/11/05 作成
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,12pt,openbib,oneside,report]{jsbook}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{Dennou6}		% 電脳スタイル ver 6
+\usepackage{ascmac}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{framed}
+\usepackage{bm}
+\usepackage{color}
+\definecolor{shadecolor}{gray}{0.89}
+\newcommand{\aboxed}[2]{%
+  \rlap{\boxed{#1#2}}%
+  \phantom{\hskip\fboxrule\hskip\fboxsep #1}&\phantom{#2}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%            PageStyle Setting           %%%%%%%%
+%\pagestyle{DAmyheadings}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%        Title and Auther Setting        %%%%%%%%
+%%
+%%  [ ] はヘッダに書き出される.
+%%  { } は表題 (\maketitle) に書き出される.
+
+\Dtitle{Vallis (2006)}   % 変更不可
+\Dauthor{岡崎 正悟}            % ゼミ担当者の名前
+\Ddate{2015/11/05}        % ゼミの日時 (毎回変更すること)
+\Dfile{vallis-20151105.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   Set Counter (chapter, section etc. ) %%%%%%%%
+\setcounter{chapter}{2}    % 章番号
+\setcounter{section}{4}    % 節番号
+\setcounter{subsection}{1}
+\setcounter{equation}{103}   % 式番号
+\setcounter{page}{154}     % 必ず開始ページは明記する
+\setcounter{figure}{0}     % 図番号
+\setcounter{table}{0}      % 表番号
+%\setcounter{footnote}{0}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%    New Command Definition     %%%%%%%%
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\bnabla}{\bm{\nabla}}
+\renewcommand{\DD}[3][]{\frac{\dd^{#1} #2}{\dd #3^{#1}}}
+\newcommand{\DDD}[3][]{\frac{\mathrm{D}^{#1} #2}{\mathrm{D} #3^{#1}}}
+\renewcommand{\DP}[3][]{\frac{\partial^{#1} #2}{\partial #3^{#1}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%        Counter Output Format           %%%%%%%%
+\def\thechapter{\arabic{chapter}}
+\def\thesection{\arabic{chapter}.\arabic{section}}
+\def\thesubsection{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\def\theequation{\arabic{chapter}.\arabic{equation}}
+\def\thepage{\arabic{page}}
+\def\thefigure{\arabic{chapter}.\arabic{figure}}
+\def\thetable{\arabic{chapter}.\arabic{table}}
+\def\thefootnote{\dag\arabic{footnote}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%        Dennou-Style Definition         %%%%%%%%
+
+%% 改段落時の空行設定
+\Dparskip      % 改段落時に一行空行を入れる
+%\Dnoparskip    % 改段落時に一行空行を入れない
+
+%% 改段落時のインデント設定
+\Dparindent    % 改段落時にインデントする
+%\Dnoparindent  % 改段落時にインデントしない
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\markright{\arabic{chapter}.\arabic{section} 球面座標系における運動方程
+式}
+%  節の題名を書き込むこと
+
+%\chapter{回転と成層の効果}
+%\section{ブシネスク近似}
+%\subsection{ブシネスク方程式系}
+%\subsubsection{熱力学の式と状態方程式}
+
+多くの応用において, さらにより良い精度の状態方程式を使う必要があるだろう.
+その場合(1.6.2 節を参照せよ), 状態方程式に加えて, 熱力学の方程式系
+\begin{align}
+ \aboxed{\DDD{\theta}{t}=\dot{\theta},\hspace{10pt}}{\DDD{S}{t}=\dot{S}} \tag{2.104a,b}
+\end{align}
+によって, (2.101) を置き換える. ここで, $\theta$ は温位, $S$ は塩分であ
+る. 状態方程式は, 一般の形 $b=b(\theta,S,p)$ をとるが, 他のブシネスク方
+程式系における近似の程度と矛盾がないように, $p$ は参照密度を用いて計算さ
+れる静水圧(つまり, $-\rho_0 gz$)によって置き換えられ, 状態方程式は一般形
+\setcounter{equation}{104}
+\begin{align}
+ \aboxed{b=}{b(\theta,S,z)} \label{eq:2.105}
+\end{align}
+をとる. (\ref{eq:2.105}) の例は, 浮力の定義 $b=-g\delta\rho/\rho_0$ を用
+いて書き直した (1.156) である\footnote{%
+(1.156) を再掲する;
+\[
+ \alpha \approx
+ \alpha_0\left[1+\frac{g(z-z_0)}{c_{s0}^{2}}+\beta_{T}\left(1-\gamma'^{\ast}\frac{g(z-z_0)}{\alpha_0}\right)\theta'
++\frac{\beta_{T}^{\ast}}{2}\theta'^2-\beta_{S}(S-S_0)\right]
+\]
+}. 閉じた方程式系 (2.94), (2.97), (2.104), (2.105) は\textbf{一般的なブシネ
+スク方程式系}である. 精度の良い状態方程式とブシネスク近似を用いることは,
+多くの包括的な海洋大循環モデルで用いられる手法である. 静水圧近似と伝統的
+な近似を適用したブシネスク方程式系は, しばしば海洋のプリミティブ方程式系
+とみなされ, 次のページの影付きの囲みの中に要約される.
+
+\begin{snugshade}
+\begin{center}
+ \textbf{{\large ブシネスク方程式系のまとめ}}
+\end{center}
+ 非粘性の流体に対して, 簡単なブシネスク方程式系は,
+ \begin{align}
+  熱力学の式:\hspace{40pt}
+  &\DDD{\bm{v}}{t}+\bm{f}\times{v}=-\bnabla\phi+b\bm{k},\tag{B.1}\\
+  質量保存:\hspace{40pt}&\bnabla\cdot\bm{v}=0, \tag{B.2}\\
+  浮力の式:\hspace{40pt}&\DDD{b}{t}=\dot{b} \tag{B.3}
+ \end{align}
+ である. より一般的な形式は, 浮力の式を以下の方程式によって置き換える:
+ \begin{align}
+  運動方程式:\hspace{40pt}&\DDD{\theta}{t}=\dot{\theta}, \tag{B.4} \\
+  塩分の式:\hspace{40pt}&\DDD{S}{t}=\dot{S}, \tag{B.5}\\
+  状態方程式:\hspace{40pt}&b=b(\beta,S,z). \tag{B.6}
+ \end{align}
+ もし, 状態方程式が$b=b(\theta,S\phi)$ならば, エネルギー保存は保証され
+ ない.
+\end{snugshade}
+
+\subsubsection*{* 平均的な成層と浮力振動数}
+
+密度の鉛直方向の変動を引き起こす過程は, しばしば水平方向の変動を引き起こ
+す過程と異なる. そのため, $\rho=\rho_0+\hat{\rho}(z)+\rho'(x,y,z,t)$ と
+書き, $\tilde{b}(z)\equiv -g\hat{\rho}/\rho_0$ と $\b'\equiv
+-g\rho'/\rho_0$ を定義すると, 時おり便利である. 圧力を評価するのに静水圧
+の式を用いると, 熱力学の式 (2.98) は, 良い近似で,
+ \begin{equation}
+  \DDD{b'}{t}+N^2 w=0
+ \end{equation}
+となる. ここで, $\mathrm{D}/\mathrm{D}t$ は 3 次元の演算子のままである.
+また,
+\begin{equation}
+ N^2(z) = \left(\DD{\tilde{b}}{z}-\frac{g^2}{c_s^2}\right) = \DD{\tilde{b}_{\sigma}}{z}
+\end{equation}
+である. ここで, $\tilde{b}_\sigma = \tilde{b}-gz/H_\rho$ である. $N^2$
+の量は, 流体の平均的な成層の指標で, 平均的なポテンシャル浮力の鉛直勾配と
+等しい. $N$ は浮力振動数として知られ, 2.9 節でもう一度いくらか議論するだ
+ろう. (2.106) と (2.107) は, 簡単なブシネスク方程式系においても成り立つ
+が, そのときは, $c_s^2 = \infty$ である.
+
+\subsection{ブシネスク方程式のエネルギー論}
+
+一様な重力場にある流体に対して(ただし, 他の強制や散逸は考えない), 簡単な
+ブシネスク方程式系は
+\begin{equation}
+ \DDD{\bm{v}}{t}+2\bm{\Omega}\times\bm{v}=b\bm{k}-\bnabla\phi,
+ \hspace{10pt} \bnabla\cdot\bm{v}=0, \hspace[10pt] \DDD{\dot{b}}{t}=0
+ \tag{2.108a,b,c} 
+\end{equation}
+と書かれる. (2.108)
+
+% ここで本文おしまい
+\end{document}
+%%%%%%%%              Text End                  %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

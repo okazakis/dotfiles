@@ -12,8 +12,8 @@
 (setq inhibit-startup-screen t)
 ;; ---------- emacsclient のためのサーバ起動 ----------
 (require 'server)
-(unless (server-running-p)
-  (server-start))
+ (unless (server-running-p)
+   (server-start))
 
 ;; --------------------------------------------------------------
 ;; 設定ファイルの管理
@@ -46,6 +46,13 @@
 ;; (require 'init-loader)
 ;; (setq init-loader-show-log-after-init nil)
 ;; (init-loader-load "~/.emacs.d/inits")
+
+;; --------------------------------------------------------------
+;; tramp の設定
+;; --------------------------------------------------------------
+
+(require 'tramp)
+(setq tramp-default-method "ssh")
 
 ;; --------------------------------------------------------------
 ;; キーバインドの設定
@@ -95,6 +102,9 @@
            "dim gray" "brown"))))
   (add-hook 'mac-selected-keyboard-input-source-change-hook
             'my-mac-selected-keyboard-input-source-chage-function))
+
+
+
 
 ;; --------------------------------------------------------------
 ;; フレームに関する設定
@@ -200,7 +210,7 @@
 (set-face-underline-p 'show-paren-match-face "yellow")
 
 ;; ---------------------------------------------------------
-;; 5.8 バックアップとオートセーブ                         
+;; バックアップとオートセーブ                         
 ;; ---------------------------------------------------------
 ;; バックアップとオートセーブの設定
 ;; バックアップファイルを作成しない
@@ -378,12 +388,15 @@
 (setq auto-mode-alist
     (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
-(setq tex-command "platex")
+(setq tex-command "platex -shell-escape")
 (setq dviprint-command-format "dvipdfmx %s")
 ;; use Preview.app
 (setq dvi2-command "open -a Preview")
-(setq bibtex-command "pbibtex")
-
+(defvar YaTeX-dvi2-command-ext-alist
+  '(("xdvi" . ".dvi")
+    ("ghostview\\|gv" . ".ps")
+    ("acroread\\|pdf\\|Preview\\|open" . ".pdf")))
+  
 ;; ---------------------------------------------------------
 ;; ヒストリーの設定
 ;; ---------------------------------------------------------

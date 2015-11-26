@@ -1,0 +1,175 @@
+---
+layout: post
+title: MacBookAir 環境構築メモ
+categories: メモ
+tags: コンピュータ Mac El_Capitan 環境
+---
+
+新たに MacBookAir を購入した際に, 1 から環境構築をしたので, そのメモ. OS も El Capitan にバージョンアップして, 一部仕様などが変わっている. OS のインストールは省略.
+
+## 各種アプリケーションのインストール
+
+### ブラウザ経由で
+
+* Firefox
+  * 以後ブラウザは Firefox に.
+  * [https://www.mozilla.org/ja/firefox/new/](https://www.mozilla.org/ja/firefox/new/)
+* Thunderbird
+  * メーラー
+  * [http://www.mozilla.jp/thunderbird/](http://www.mozilla.jp/thunderbird/)
+* Office for mac 2016
+  * 大学生協のホームページから. 大学のライセンスによって無料.
+* iTerm2
+  * ターミナルソフト
+  * [https://www.iterm2.com/](https://www.iterm2.com/)
+  * カラースキーム Solarized もダウンロードして適用
+
+    ~~~
+    $ git clone git://github.com/altercation/solarized.git
+    ~~~
+    
+* Google 日本語入力
+  * `brew cask`で入れても良いらしいが, なんとなくブラウザ経由
+* クラウド関係
+  * Dropbox
+  * Google ドライブ
+  * OneDrive
+* Onyx
+  * メンテナンスツール
+  * [http://www.titanium.free.fr/](http://www.titanium.free.fr/)
+* BetterTouchTool
+  * トラックパッドの機能を拡張してくれるツール
+  * [http://www.bettertouchtool.net/](http://www.bettertouchtool.net/)
+* Alfred 2
+  * Spotlight 検索よりも強力なランチャーアプリ.
+  * https://www.alfredapp.com/
+
+### Mac App Store 経由で
+
+* Xcode
+  * command line tool もインストール
+* The Unarchiver
+  * ファイルの圧縮・解凍
+* Win Archiver Lite
+  * Windows な環境の人に圧縮ファイルを送った時に文字化けしないように.
+* Pocket
+  * Firefox にも組み込まれて入るが...いわゆる「後で読む」ために使うツール
+
+### Homebrew 経由で
+
+#### Homebrew のインストール
+
+これをしないと始まらない.
+
+~~~
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+$ brew doctor
+$ brew install caskroom/cask/brew-cask
+$ brew cask doctor
+~~~
+
+* 昔は, Homebrew 入れたら, MacPorts を消さないと競合が起こってなんとかって注意を見たことがある気がするが, 今は良いのかな??
+
+#### Homebrew 経由でインストールしたツール
+
+* lv
+  * コマンドラインページャー
+
+    ~~~
+    $ brew install lv
+    ~~~
+
+* XQuartz
+  * X Window System
+
+    ~~~
+    $ brew install xquartz
+    ~~~
+
+* Emacs
+  * 今回は, Emacs Mac  Port 版を導入した.
+    * Mac で使える Emacs の比較記事はこちら -> [Macで本家EmacsとHomebrew IMEパッチ版とEmacs Mac PortとAquamacsを比べてみる。](http://www.sevencredit.com/2014/07/02/580/)
+  * インストール方法は[http://qiita.com/hnw/items/d7d71dfcfecff80ad8f1](http://qiita.com/hnw/items/d7d71dfcfecff80ad8f1)を参考に.
+
+    ~~~
+    $ brew tap railwaycat/emacsmacport
+    $ brew install emacs-mac --with-modern-icon
+    $ brew linkapps
+    ~~~
+
+* Quick Look 用のプラグイン
+  * 参考 -> [http://ottan.xyz/quick-look-plugin-78/](http://ottan.xyz/quick-look-plugin-78/)
+  
+    ~~~
+    $ brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json quicklook-csv betterzipql
+    ~~~
+    
+* Ricty フォント
+  * ターミナルや Emacs で見やすいフォント
+  * [http://morizyun.github.io/blog/ricty-font-homebrew-mac/](http://morizyun.github.io/blog/ricty-font-homebrew-mac/)
+
+    ~~~
+    $ brew tap sanemat/font
+    $ brew install Caskroom/cask/xquartz
+    $ brew install ricty
+    $ cp -f /usr/local/Cellar/ricty/3.2.2/share/fonts/Ricty*.ttf ~/Library/Fonts/
+    $ fc-cache -vf
+    ~~~
+
+* jekyll
+  * このホームページを作るために
+
+    ~~~
+    $ brew insatll jekyll
+    ~~~
+
+* TeX Live 2015(MacTeX-2015)
+  * [http://snap.textfile.org/20151006085255/](http://snap.textfile.org/20151006085255/)を参考に
+    * TeX 界では, El Capitan へのアップグレードに際してはいろいろと大変やったそうな... -> [TeX界の El Capitan 迎撃戦記](http://doratex.hatenablog.jp/entry/20151008/1444310306)
+
+      ~~~
+      # MacTeX 2015 のインストール
+      $ brew install caskroom/cask/brew-cask
+      $ brew cask install mactex
+      # TeX Live 2015 をアップデート
+      $ sudo tlmgr update --self --all
+      # jfontmaps のバージョンを確認
+      $ tlmgr info jfontmaps
+      # 和文フォント周りの作業
+      $ cd /usr/local/texlive/2015/texmf-dist/scripts/cjk-gs-integrate
+      $ sudo perl cjk-gs-integrate.pl --link-texmf --force
+      $ sudo mktexlsr
+      $ sudo updmap-sys --setoption kanjiEmbed hiragino-elcapitan-pron
+      ~~~
+
+## 開発環境の整備
+
+### zsh と Emacs の設定ファイル
+
+* [自分の Github](https://github.com/okazakis) にあげているものを `git clone` してきて, 一部上手く動かないところを書き換え
+
+### YaTeX の導入
+
+* 以前行った方法([http://itpass.scitec.kobe-u.ac.jp/~okazakis/%E3%83%A1%E3%83%A2/2015/03/18/emacs_setting/](http://itpass.scitec.kobe-u.ac.jp/~okazakis/%E3%83%A1%E3%83%A2/2015/03/18/emacs_setting/))がうまくいかなかったので, [http://salinger.github.io/blog/2013/02/04/1/](http://salinger.github.io/blog/2013/02/04/1/)を参考に導入した.
+  * YaTeX の最新版を [http://www.yatex.org/](http://www.yatex.org/) から取得
+  * 解凍して, `~/.emacs.d/lisp/yatex` に置く
+  * init.el に以下を記述
+
+    ~~~
+    ;; ---------------------------------------------------------
+    ;; YaTeX の設定
+    ;; ---------------------------------------------------------
+     
+    ;; Add library path
+    (add-to-list 'load-path "~/.emacs.d/site-lisp/yatex1.78.4")
+    ;; YaTeX mode
+    (setq auto-mode-alist
+        (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+    (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+    (setq tex-command "platex")
+    (setq dviprint-command-format "dvipdfmx %s")
+    ;; use Preview.app
+    (setq dvi2-command "open -a Preview")
+    (setq bibtex-command "pbibtex")
+    ~~~
+

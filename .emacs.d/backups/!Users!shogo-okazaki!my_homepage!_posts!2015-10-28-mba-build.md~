@@ -1,0 +1,34 @@
+---
+layout: post
+title: MacBookAir 環境構築メモ
+categories: メモ
+tags: コンピュータ Mac El_Capitan 環境
+---
+
+新たに MacBookAir を購入した際に, 1 から環境構築をしたので, そのメモ. OS も El Capitan にバージョンアップして, 一部仕様などが変わっている. OS のインストールは省略.
+
+## 各種アプリケーションのインストール
+
+### ブラウザ経由で
+
+* Office for mac 2016
+  * 
+* Firefox
+  * iterm2
+    * カラースキーム Solarized もダウンロード
+      $ git clone git://github.com/altercation/solarized.git
+  * google 日本語入力
+  * クラウド関係
+    * Dropbox
+    * Google ドライブ
+    * OneDrive
+    * Onyx
+  * BetterTouchTool
+  * Alfred 2
+    * https://www.alfredapp.com/
+* Mac App Store 経由
+  * Xcode
+    * command line tool もインストール
+  * The Unarchiver
+  * Win Archiver Lite
+  * Pocket

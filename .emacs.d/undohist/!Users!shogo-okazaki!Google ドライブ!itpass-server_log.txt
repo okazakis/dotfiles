@@ -1,0 +1,32 @@
+
+((digest . "ac75f6bdec746883ca551edb98e4de27") (undo-list nil (7520 . 7526) nil ("i" . -7520) nil ("t" . -7521) nil ("p" . -7522) nil ("a" . -7523) nil ("s" . -7524) nil ("s" . -7525) nil (7534 . 7535) nil (7514 . 7534) nil (7511 . 7514) nil (7506 . 7508) nil ("r" . -7506) nil ("t" . -7507) nil (7506 . 7508) nil ("e" . -7506) nil (7501 . 7507) nil (7484 . 7504) nil (7482 . 7484) nil ("1" . -7677) nil ("." . -7678) nil ("9" . -7679) nil ("." . -7680) nil ("1" . -7681) nil (7481 . 7482) ("I" . 7481) nil (7481 . 7482) ("i" . 7481) nil ("(" . -7467) nil ("," . -7474) nil ("e" . -7475) nil ("p" . -7476) nil ("a" . -7477) nil ("l" . -7478) nil ("a" . -7479) nil ("b" . -7480) nil ("," . -7481) nil ("i" . -7482) nil ("t" . -7483) nil ("p" . -7484) nil ("a" . -7485) nil ("s" . -7486) nil ("s" . -7487) nil ("-" . -7488) nil ("s" . -7489) nil ("e" . -7490) nil ("c" . -7491) nil ("r" . -7492) nil ("e" . -7493) nil ("t" . -7494) nil (")" . -7495) ((marker*) . 1) ((marker) . -1) ((marker) . -1) nil (7494 . 7496) nil (7474 . 7494) nil (7467 . 7468) nil ("
+" . -7740) ((marker . 7514) . -1) ((marker . 7788) . -1) nil (" " . -7741) ((marker . 7514) . -1) ((marker . 7788) . -1) nil (" " . -7742) ((marker . 7514) . -1) ((marker . 7788) . -1) nil ("* hikiconf.rb の最後の方
+    * 書き換え前
+
+       ### BEGIN: CREATED BY DEBIAN HIKISETUP ###
+       @data_path      = '/home/itpass/hiki/data'
+       @plugin_path    = '/usr/share/hiki/plugin'
+       @template_path  = '/usr/share/hiki/template'
+       @cgi_name       = 'hiki.cgi'
+       @lang           = 'ja'
+       ### END: CREATED BY DEBIAN HIKISETUP ###
+
+    * 書き換え後
+
+       ### BEGIN: CREATED BY DEBIAN HIKISETUP ###
+       @data_path      = '/home/itpass/hiki/data'
+       @plugin_path    = '/usr/local/hiki/plugin'
+       @template_path  = '/usr/local/hiki/template'
+       @cgi_name       = 'hiki.cgi'
+       @lang           = 'ja'
+       ### END: CREATED BY DEBIAN HIKISETUP ###
+" . 7743) ((marker . 7890) . -183) ((marker . 7890) . -183) ((marker . 7294) . -463) ((marker . 7294) . -463) ((marker . 7312) . -413) ((marker . 7312) . -413) ((marker . 7313) . -565) ((marker . 7313) . -565) ((marker . 7392) . -601) ((marker . 7392) . -601) ((marker . 7363) . -631) ((marker . 7363) . -631) ((marker . 7978) . -301) ((marker . 7978) . -301) ((marker . 7960) . -271) ((marker . 7960) . -271) ((marker . 7422) . -679) ((marker . 7422) . -679) ((marker . 7333) . -513) ((marker . 7333) . -513) ((marker) . -235) ((marker) . -235) ((marker . 7889) . -33) ((marker . 7889) . -33) ((marker . 7788) . -39) ((marker) . -679) 8422 (t 22093 32730 0 0) nil (7467 . 7474) (t 22093 31941 0 0) nil (7415 . 7421) nil (7395 . 7415) nil (7391 . 7395) nil ("   # insserv -d apache2
+   # chmod 755 apache2
+" . 7333) ((marker) . -47) 7380 (t 22093 31215 0 0) nil (7318 . 7379) nil ("systemctl enal" . 7318) ((marker . 7318) . -13) nil (7331 . 7332) nil ("ble apache2" . 7331) ((marker . 7318) . -11) nil ("
+   " . 7342) ((marker) . -1) ((marker) . -1) ((marker . 7318) . -4) nil ("# cd " . 7346) ((marker . 7318) . -5) nil (7346 . 7351) nil (7342 . 7346) nil (7331 . 7342) nil ("l" . -7331) nil (7318 . 7332) nil ("cd /etc/init.d
+   # insserv -d apache2
+   # chmod 755 apache2" . 7318) ((marker) . -61) 7379 (t 22093 31215 0 0) nil (4376 . 4377) nil (4322 . 4323) nil (4360 . 4361) nil (4373 . 4374) (4359 . 4360) (4321 . 4322) (apply 0 4321 4371 cua--rect-undo-handler [4321 4398 0 0 2 0 t nil] t 4321 4371) nil (4320 . 4321) nil (4320 . 4398) nil ("この作業後, tako (または ika) に接続できなくなった場合は,
+該当サーバを再起動し, 
+phase 1 を参考に全サービスを一時停止しておく.
+" . 4320) ((marker) . -78) ((marker) . -78) ((marker) . -37) ((marker) . -37) ((marker) . -50) ((marker) . -50) ((marker) . -78) ((marker) . -78) 4398 nil (4317 . 4319) nil (4297 . 4317) nil ("," . -4297) nil (4287 . 4298) nil ("    " . -4287) (4286 . 4287) nil (4242 . 4244) nil ("す" . -4242) nil ("る" . -4243) (t 22093 28336 0 0) nil (12441 . 12442) 3672 nil (3593 . 3595) nil ("す" . -3593) nil ("る" . -3594) nil ("こ" . -3595) nil ("と" . -3596) nil ("
+" . -3597) nil (" " . -3598) nil (" " . -3599) nil (3597 . 3600) nil (3061 . 3062) nil ("る" . -3061) nil (2989 . 2991) nil ("う" . -2989) nil (2915 . 2917) nil ("す" . -2915) nil (2761 . 2763) nil ("す" . -2761) nil ("る" . -2762) nil (2673 . 2675) nil ("す" . -2673) nil ("る" . -2674) nil (2514 . 2516) nil ("す" . -2514) nil ("る" . -2515) nil (2370 . 2372) nil ("す" . -2370) nil ("る" . -2371) nil (2313 . 2315) nil ("2" . -2313) nil ("6" . -2314) nil (2310 . 2311) nil ("4" . -2310) nil (2263 . 2265) nil ("す" . -2263) nil ("る" . -2264) nil (1872 . 1880) nil ("か" . -1872) nil ("確" . -1873) nil ("認" . -1874) nil ("し" . -1875) nil ("た" . -1876) nil (1858 . 1859) nil (1874 . 1876) nil ("す" . -1874) nil ("る" . -1875) nil ("." . -1876) nil (1450 . 1458) nil ("s" . -1450) nil ("o" . -1451) nil ("r" . -1452) nil ("e" . -1453) nil (1444 . 1454) nil ("る" . -1444) nil ("場" . -1445) nil ("合" . -1446) nil ("は" . -1447) nil ("そ" . -1448) nil ("れ" . -1449) nil ("を" . -1450) nil ("実" . -1451) nil ("行" . -1452) nil ("す" . -1453) nil ("る" . -1454) nil ("の" . -1455) nil ("み" . -1456) nil ("で" . -1457) nil ("よ" . -1458) nil ("い" . -1459) nil ("." . -1460) nil (1424 . 1426) nil ("う" . -1424) nil (1132 . 1134) nil ("す" . -1132) nil ("る" . -1133) nil (1088 . 1090) nil ("す" . -1088) nil ("る" . -1089) nil (1001 . 1002) nil ("て" . -1001) nil ("お" . -1002) nil ("く" . -1003) nil (910 . 912) nil ("す" . -910) nil ("る" . -911) nil (827 . 828) nil (826 . 828) nil ("い" . -826) nil (804 . 806) nil ("う" . -804) nil (595 . 597) nil ("す" . -595) nil ("る" . -596) nil (454 . 456) nil ("く" . -454) nil (1 . 12438) (t . -1)))

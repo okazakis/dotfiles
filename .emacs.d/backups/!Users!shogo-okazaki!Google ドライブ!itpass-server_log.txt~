@@ -1,0 +1,499 @@
+[((<ITPASSサーバ構築・運用ドキュメント>)) へ戻る]
+
+{{toc_here}}
+
+
+= 当日作業
+
+== 概要
+
+大まかな作業内容は以下の通りである.
+
+* 前半 (root パスワード保持者が中心になって行う)
+  * プロセスやサービスの停止
+  * 一時的に root ログインを許可して, 必要なファイルを転送
+* 後半 (全員で行う)
+  * ホスト名・IP アドレスの交換後, ネットワーク再起動
+  * 各種サービスの設定変更後, OS 再起動
+  * サービスなどの動作確認
+
+特に記述がない限り, ひとつの phase 内の全作業が
+完了してから次の phase に進むようにすること.
+また同一 phase 内に複数項目
+(Hiki ソースでの "===" の項目)
+がある場合は複数人で同時に行ってもよい.
+
+== phase 0 (準備)
+
+* サーバ交換中は Hiki 上のマニュアルを参照できなくなるため, 
+  作業者は予めサーバ交換マニュアルを手元に保存しておいた.
+  * サーバ交換マニュアルから引用されているページについても忘れないように.
+  * Hiki ページの印刷は推奨されない. 長いコマンドなどが切れてしまうため.
+
+== phase 1 (入替え開始)
+
+ここでは並行できる作業が少ないため.
+一部の作業メンバーでスタートした.
+((*作業メンバーには, tako, ika の root パスワードを
+持っている人を含めるようにする*))
+(ika の root パスワード保持者は念のため).
+
+=== ika, tako のログインユーザの削除, プロセスの削除, サービスの停止
+
+((<[ITPASS2014]サーバ再起動手順>)) を参考に, 
+ika, tako のログインユーザの削除, プロセスの削除, サービスの停止を行った.
+機器のアンマウントや再起動まではしなかった.
+
+
+=== ika の永続的なサービス停止
+
+((<[ITPASS2014]サービスの開始・停止>)) を参考に, 
+以下のサービスを((*永続的に*))停止した
+
+* apache2
+* openbsd-inetd
+* bind
+
+qmail, tcpserver については, 入れ替え後も
+システムログメールを送れるようにするため残した.
+
+== phase 2 (tako の root ログイン許可)
+
+=== tako の root ログイン許可
+
+tako において一時的に root ログインを許可した.
+方法は((<[ITPASS2014]root ログインの許可・禁止>))を参考にした.
+
+((*root ログインの許可はセキュリティ上好ましくない.
+必要な作業が終わったら root ログインを禁止する状態に戻すこと.*))
+
+== phase 3 (ika から tako へ各種データをコピー)
+
+((*この phase の作業には tako の root パスワードが必要*)).
+
+scp コマンドで移す際には, パーミッションやグループ等の設定を変えてしまわないように注意 (オプション p の使用). 
+
+=== ika から tako へ /home 領域を rsync
+
+前回 rsync を行ってから変更があった分のために再度 rsync を行った.
+前回 シェルスクリプトを作ってあったので, それを実行した.
+
+作業内容の詳細は((<"[ITPASS2014]サーバ交換事前作業">))と同じなので, 不明点がある場合はそちらを参照のこと.
+
+この作業は多少時間がかかる可能性がある.
+コマンドの実行が成功していること確認したら,
+別途端末を開いて他の作業を並行して行うと時間が節約できる.
+
+=== ika から tako へ各種設定ファイルをコピー
+
+* ika から tako へ cron の設定ファイルをコピー
+
+# ika# scp -p -r /var/spool/cron/crontabs root@tako-itpass:/var/spool/cron/
+ ika# rsync -av /var/spool/cron/crontabs root@tako-itpass:/var/spool/cron/
+#  /var/spool/cron/ 以下のパーミッションと所有者, グループが ika と同じになっていることを確認した.
+
+* ika から tako へ popauth の設定ファイル /usr/local/qpopper/pop.auth をコピー
+
+      ika# cd /usr/local/qpopper/
+      ika# cp pop.auth pop.auth.20141126
+#      ika# scp -p /usr/local/qpopper/pop.auth root@tako-itpass:/usr/local/qpopper/
+      ika# rsync -av /usr/local/qpopper/pop.auth root@tako-itpass:/usr/local/qpopper/
+
+* tako の /etc/shadow を /etc/shadow.YYYYMMDD (YYYYMMDD は今日の日付) にバックアップした.
+
+ tako# cd /etc
+ tako# cp shadow shadow.20151119
+
+
+* ssh, diff コマンドを組み合わせて ika と tako の /etc/shadow を比較した.
+
+ ika# ssh root@tako-itpass cat /etc/shadow | diff - /etc/shadow
+
+* 上記の出力の結果
+  tako 側の /etc/shadow に書かれていない UID のうち 1000 ～ 29999 までのものがあるか確認した(UID とユーザ名の対応については /etc/passwd を参照).  
+
+== phase 4 (root ログイン禁止)
+
+
+=== ika の root ログイン禁止
+
+* ((<[ITPASS2014]root ログインの許可・禁止>))を参考に
+  root ログインを禁止した状態になっているか確認した.
+* /root/.ssh/authorized_keys のファイル名を authorized_keys.bk に変更し,
+  root ログインを完全に拒否するようにした.
+
+=== tako の root ログイン禁止
+
+* /home 領域の rsync が終わっていることを確認する
+* tako に対する root ログインが必要な作業が終わったので, ((<[ITPASS2014]root ログインの許可・禁止>))を参考に root ログインを禁止した状態に戻した.
+
+== phase 5 (tako, ika の交換: 設定ファイルの変更)
+
+ここから先は手分けできる作業が多いため, 構築関係者全員で行った.
+
+=== ホスト名と IP アドレスの変更
+
+各種設定ファイルに存在する,
+ika と tako のホスト名と IP アドレスを入れ替えた.
+編集の際はバックアップを取っておくこと.
+
+* 担当
+  * /etc: WWW 班
+  * /usr: DNS 班
+  * /var: Mail 班
+    * システムログ内は変更しなくてよい
+
+* ホスト名の変更
+  * 編集するファイル
+    * /etc/hostname
+    * /etc/hosts 
+    * /etc/mailname
+    * /etc/gate/gate.conf
+    * /etc/exim4/update-exim4.conf.conf
+    * /etc/motd
+    * /usr/local/bind/etc/namedb/localhost.zone
+    * /usr/local/bind/etc/namedb/localhost.rev
+    * /var/qmail/control/defaulthost
+    * /var/qmail/control/me
+
+  上記の場所以外にも古い名前が残っていないか
+    # grep tako (または ika) /etc/*
+    # grep tako (または ika) /etc/*/*
+  などで検索しながら作業した.
+  ただし, /etc/hosts に関しては新 ika では tako, 新 tako では ika と書き換えること.ファイルの編集をするときはエディタの検索機能を活用すると早く作業できる.
+  ただし一括置換はホスト名とは関係ない文字列も置換してしまう恐れがあるので使わないこと. (/var/qmail/queue/mess. は変更しなくてよい. /var/qmail/control/rcpthosts と /var/qmail/control/rocals にも存在するが, phase 7 で作業するので, 変更しなくてよい.)
+ 
+
+* IP アドレスの変更
+
+  /etc/hosts と /etc/network/interfaces 内の IP アドレスを入れ替える.
+
+   設定後
+   ika --> 133.30.109.21
+   tako --> 133.30.109.22
+ただし, /etc/network/interfaces の dns-nameservers は ika, tako いずれも133.30.109.22 とする.
+
+== phase 6 (tako, ika の交換: ネットワークの再起動)
+
+=== ネットワークの再起動
+
+((*混乱を避けるため, ika, tako 両方ともに以下の作業を行う
+ユーザ以外は全員ログアウトし, 
+ネットワークの再起動が完了するまでログインは控えたほうがよい.*))
+
+ネットワークを再起動する.  
+  
+  # /etc/init.d/networking restart
+    
+この作業後, tako (または ika) に接続できなくなった場合は,
+該当サーバを再起動し, 
+phase 1 を参考に全サービスを一時停止しておく.
+
+== phase 7 (サービスの設定変更)
+
+((*ここからホスト名が入れ替わっているので注意すること*)).
+新, 旧はそれぞれ現構築メンバー, 昨年度の構築メンバーを意味する.
+
+また, この phase 以降は両方のサーバで
+作業の足並みをそろえる必要はない.
+
+=== tako の qmail の設定変更 (担当: 旧 Mail 班)
+
+外から来たメールを受け取らないように, 
+さらにシステムログメールを飛ばすのに必要な設定だけにするため, /var/qmail/control 以下の locals, rcpthosts を以下のように変更する.
+移行が終わったらサービスを再起動する.
+
+変更前
+
+  localhost
+  ika-itpass.scitec.kobe-u.ac.jp
+  itpass.scitec.kobe-u.ac.jp
+  epa.scitec.kobe-u.ac.jp
+  aoe.scitec.kobe-u.ac.jp
+
+変更後
+
+  localhost
+
+ここで, 端末上では以下のように表示されるが
+  
+  root@ika-itpass:#
+       ^^^
+この部分が ika と表示されているが, ホストは tako である.
+
+tako の変更は qmail だけなので,
+この作業が終わったら次の phase に進んで良い.
+
+=== ika の Mail 関連の設定変更 (担当: 新 Mail 班)
+
+* qmail の設定変更
+
+/var/qmail/control 以下の locals, rcpthosts が以下のように変更されているかチェックする. されていない場合は以下のように編集する.
+
+  localhost
+  ika-itpass.scitec.kobe-u.ac.jp
+  itpass.scitec.kobe-u.ac.jp
+  epa.scitec.kobe-u.ac.jp
+  aoe.scitec.kobe-u.ac.jp 
+
+また, /var/qmail/control 以下の defaultshost, me が以下のように変更されているかチェックする. されていない場合は以下のように編集する.
+
+    ika-itpass.scitec.kobe-u.ac.jp
+
+qmail-showctl(8) で設定を確認.
+
+* ((<[ITPASS2014]サービスの開始・停止>)) を参考に, 
+  以下のサービスが永続的に立ち上がるように設定する
+  * qmail
+  * tcpserver 
+
+* メーリングリスト毎の bouncer 設定
+
+  メーリングリストのエラーメール転送設定が行われているかチェックする. この作業が必要なメーリングリストは,
+
+    itpass-ml_at_itpass.scitec.kobe-u.ac.jp
+
+  である. ただし, "_at_" はアットマークである. 
+  /home/itpass/ml/ml-crtl/bouncer が以下のように変更されていることを確認する. されていない場合は以下のように編集する.
+
+    &itpadmin_at_itpass.scitec.kobe-u.ac.jp
+    |/usr/local/ezmlm/bin/ezmlm-weed
+    |/usr/local/ezmlm/bin/ezmlm-return -D '/home/itpass/ml/ml-ctrl'
+
+=== ika の DNS 関連の設定変更 (担当: 新 DNS 班)
+
+* bind の設定変更
+
+  * namedb のバックアップを作成(日付は適宜変更) 
+
+     root@ika-itpass:/usr/local/bind/etc# cp -r namedb namedb-20141126
+
+  * ((<[ITPASS2014]サービスの開始・停止>)) を参考に, 
+    以下のサービスが永続的に立ち上がるように設定する
+    * bind
+
+    ここで
+
+     insserv: warning: script 'K01tcpserver' missing LSB tags and overrides
+     insserv: warning: script 'tcpserver' missing LSB tags and overrides
+
+    のような LSB の警告が出た場合, 以下を /etc/init.d/tcpserver の冒頭に追記する．
+
+     ### BEGIN INIT INFO
+     # Provides:          tcpserver
+     # Required-Start:    $remote_fs
+     # Required-Stop:     $remote_fs
+     # Should-Start:      $network $syslog
+     # Should-Stop:       $network $syslog
+     # Default-Start:     2 3 4 5
+     # Default-Stop:      0 1 6
+     # Short-Description: Start and stop tcpserver
+     # Description:       tcpserver is  access control program
+     #        which translates ip addresses to and from internet names
+     ### END INIT INFO
+
+    その後, insserv -rf bind を実行してから, もういちど insserv bind を実行し, 警告が出ないことを確認する. 
+    
+    毎年異なる箇所でエラーが起きる可能性があるため(2010年度は/etc/init.d/bind を編集する必要があった), 適宜修正内容は変更する.
+
+
+  * resolv.conf の確認作業
+
+    * /etc/resolv.conf を以下のようであることを確認する.
+      これにより ika はフルサービスリゾルバになる.
+
+       nameserver 133.30.109.22
+       search scitec.kobe-u.ac.jp
+
+=== ika の WWW などの設定変更 (担当: 新 WWW 班)
+
+* ((<[ITPASS2014]サービスの開始・停止>)) を参考に, 
+  以下のサービスが永続的に立ち上がるように設定する
+  * apache2
+  * openbsd-inetd
+
+   # cd /etc/init.d
+   # insserv -d apache2
+   # chmod 755 apache2
+   # insserv -d openbsd-inetd
+   # chmod 755 openbsd-inetd
+
+* ika から tako へ /home 領域を rsync した際に, /home/hiki/cgi の下にあるファイルの設定が元に戻ってしまっているので, 以下のファイルを次のように書き換える
+  * hiki.cgi
+    * 書き換え前
+
+       #!/usr/bin/ruby1.9.1 -I/usr/share/hiki
+       load '/usr/share/hiki/hiki.cgi'
+
+    * 書き換え後
+
+       #!/usr/bin/ruby1.9.1 -I/usr/local/hiki
+       load '/usr/local/hiki/hiki.cgi'
+
+  * hikiconf.rb の最後の方
+    * 書き換え前
+
+       ### BEGIN: CREATED BY DEBIAN HIKISETUP ###
+       @data_path      = '/home/itpass/hiki/data'
+       @plugin_path    = '/usr/share/hiki/plugin'
+       @template_path  = '/usr/share/hiki/template'
+       @cgi_name       = 'hiki.cgi'
+       @lang           = 'ja'
+       ### END: CREATED BY DEBIAN HIKISETUP ###
+
+    * 書き換え後
+
+       ### BEGIN: CREATED BY DEBIAN HIKISETUP ###
+       @data_path      = '/home/itpass/hiki/data'
+       @plugin_path    = '/usr/local/hiki/plugin'
+       @template_path  = '/usr/local/hiki/template'
+       @cgi_name       = 'hiki.cgi'
+       @lang           = 'ja'
+       ### END: CREATED BY DEBIAN HIKISETUP ###
+
+* /usr/local/hiki/misc/plugin/table_form_rd.rb の文字コードを EUC-JP から UTF-8 に変更する 
+
+
+== phase 8 (OS 再起動)
+
+OS を再起動してもサービスが期待通り立ち上がる (立ち上がらない)
+ことを確認するため, tako, ika とも OS を再起動する.
+両者を同時に再起動する必要はない.
+
+ # reboot
+
+再起動が終わったホストから, phase 9 に進んで良い.
+
+== phase 9 (再起動後の動作確認)
+
+=== サービスの起動確認
+
+ps aux コマンドで以下の確認作業を行う.
+
+* ika
+  * http (https), bind, qmail, tcpserver (smtp), inetd (pop3) が
+    起動していることを確認. 
+
+* tako
+  * qmail, tcpserver (smtp) が起動していることを確認.
+  * http (https), bind, inetd (pop3) が起動して((*いない*))ことを確認.
+
+=== サービスの動作確認
+
+==== ika
+
+* ((*ssh*)): root ログインが禁止されているか
+* ((*http*)): ブラウザで https://ika-itpass.scitec.kobe-u.ac.jp/ にアクセスし, 各ページが正常に表示できるか
+  * 表示できないページがある場合は, /usr/local/apache2/conf/httpd.conf にそのページの領域の行があるか確認する. もしなければ, 書き加える.
+
+* ((*hiki*)):に書き込めるか
+* ((*gate*)):による登録や変更は可能か
+* ((*bind*)):問い合わせに応じるか, 正しいデータを返すか
+* ((*fail2ban*)): は正しく動作しているか
+ * ssh のテスト
+   * 他の情報実験機から存在しないユーザー名でログイン失敗し, ログで ban されているか確認する.
+    # lv /var/log/fail2ban.log
+    2014-11-26 16:18:56,252 fail2ban.actions: WARNING [ssh] Ban　133.30.109.80
+
+ * error のテスト
+   * /etc/fail2ban/jail.conf の findtime, maxretry, bantime の値を適宜変えて, fail2ban を再起動し, ブラウザを立ち上げ, tako-itpass.scitec.kobe-u.ac.jp/ 以下 の others にパーミッションがないところ, (例えば ITPASS 実習の ppt/odp ファイル) や itpass ドメイン以下の実在しない URL を入力して, findtime 以内に maxretry 回以上アクセスした. ログで ban されているか確認する.
+    # lv /var/log/fail2ban.log
+    2014-11-26 17:16:47,965 fail2ban.actions: WARNING [apache-nohome] Ban133.30.109.77
+      
+
+* access のテスト
+
+itpass.scitec.kobe-u.ac.jp 以下のファイルに findtime 内に maxretry 回ア
+クセスして /var/log/fail2ban.log を見て ban されているか確認する.
+
+/etc/fail2ban/jail.conf の findtime と maxretry の値をもとに戻して再起動する.
+
+  # /etc/init.d/fail2ban start
+
+
+* ベーシック認証が ban されるかの確認
+
+https://itpass.scitec.kobe-u.ac.jp/hiki-secret/hiki.cgi にアクセスすると
+出てくるログイン画面で以下の操作を findtime 内に maxretry 回行う
+
+    * 存在しないユーザでログインしようとする
+
+    * 存在するユーザで間違ったパスワードを入力する
+上の 2 つの作業について ban されることを確認する.
+
+* ((*pop*)): メールをとってこれるかを確認する.
+  * ika での作業
+    * ika の利用者は自分のアカウントで, .qmail の設定と Mailbox の作成
+    * popauth コマンドを行ってパスワードを作っておく作業をする.
+      * うまくいかない場合は, /usr/local/qpopper/pop.auth のバックアップを作り, 
+         popauth -init
+        を実行する(((<[Memo2012][ITPASS]サーバ交換作業(MAIL)>))を参照). サーバ構築完了後, POP利用者に対して設定してもらうようにメールを投げる.
+  * メールを受け取る ika 以外の計算機での作業
+    * メーラーの設定は pop サーバ, smtp サーバはどちらも itpass.scitec.kobe-u.ac.jp にする.
+    * pop も smtp も暗号化されたパスワード認証を選択した.
+
+* ((*smtp*)): メールを出せるか, 受け取れるかを確認する.
+  * qmail-inject で外にメールが届くか
+  * ((<リモート送り出しテスト|"[ITPASS2014]qmailのインストールと設定#[テスト 3] リモート送り出しテスト part1">)) を実行し, 届くことを確認する
+    他のホスト上のアカウントへ送って, 届いていることを確認する.
+
+ * 外からメールを送って届くか
+   個人のメーラーから ユーザ名_at_itpass.scitec.kobe-u.ac.jp へメールを送りメールが届いていることを確認する.
+
+* ((*mailing list*)): メールが配送されるかどうか確認する.
+
+==== tako
+
+* ((*ssh*)): root ログインが禁止されているか
+* ((*http*)): 無効になっているか
+* ((*DNS*)) (bind は立ち上がっていないが, 他の DNS サーバとの仲介として): 問い合わせに応じるか, 正しいデータを返すか
+* ((*pop*)): 無効になっているか
+* ((*smtp*)): submit は有効にするが, 受け取らない設定になっているか
+  * ((<ローカル配送テスト part1|[ITPASS2014]qmailのインストールと設定#[テスト 1] ローカル配送テスト part1>)) を実行し, 届かないことを確認する
+  * cron のログが管理者に届くようになっているか
+    * /etc/crontab 内の mail コマンドを実行し, 届くことを確認する. 
+    ただし _at_ は @ に読み替えること.
+      # mail -s "`hostname -f` test" itpadmin_at_itpass.scitec.kobeーu.ac.jp
+        .
+        Cc:
+
+== phase 10 (バックアップの確認)
+
+=== 電脳サーバへのバックアップの確認
+
+ITPASS サーバの資源は, 毎日電脳サーバへバックアップされている. cron によって毎日実行されているそのシェルスクリプトが正常に作動しているか試行する.
+
+電脳サーバにアカウントを持つ者がログインし, 
+
+ $ sudo -u kobe -s
+
+によって kobe になり, kobe のホームディレクトリに移動.
+そこで,
+
+ $ ./itpass_rsync_epa2dennou.sh -n
+ $ ./epalab_rsync_epa2dennou_yyh.sh -n
+
+を実行する. その後, 出力されたログを確認する.
+
+ $ cd ./itpass_rsync_epa2dennnou_log
+ $ less itpass_rsync_epa2dennnou.log
+ $ cd ../epalab_rsync_epa2dennnou_log
+ $ less ./epalab_rsync_epa2dennnou.log
+
+2 つとも正常に出力されていれば OK.
+
+== 追加事項
+
+* 文字表示
+  端末上で, 例えば ‘ダウンロード’ 等の日本語の文字が表示されない. そのため, /etc/bash.bashrc の最下行に export LANG=ja_JP.UTF-8 を書き足す.
+
+* /usr/sbin/inetd によって起動されるネットワークサービスの停止
+
+  tako で構築中にパッケージの引き継ぎをした際, 一度停止したネットワークサービスが再び立ち上がってしまっているので, これを止める. 
+  /etc/inetd.conf を編集して不必要なサービスが上がらないようにする.
+
+   # vi /etc/inetd.conf
+
+  で ident, pop3, skkserv をコメントアウトし, inetd のプロセスを再起動する.
+
+   # /etc/init.d/openbsd-inetd restart

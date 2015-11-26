@@ -1,0 +1,119 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[a4j,papersize,11pt,openbib,twoside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+\usepackage{amsmath}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{graphicx,color}
+\usepackage{amssymb}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{bm}
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+\newenvironment{tagcases}[1][]
+  {\empheq[left={#1\empheqlbrace}]{alignat=2}}
+  {\endempheq}
+%---------- タイトル・日付等 ----------
+\title{2015年度後期 大気セミナー向けメモ}
+\author{岡崎 正悟}
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%         New Command Definition        %%%%%%%%
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\bnabla}{\bm{\nabla}}
+\newcommand{\DD}[3][]{\frac{\dd^{#1} #2}{\dd #3^{#1}}}
+\newcommand{\DDD}[3][]{\frac{\mathrm{D}^{#1} #2}{\mathrm{D} #3^{#1}}}
+\newcommand{\DP}[3][]{\frac{\partial^{#1} #2}{\partial #3^{#1}}}
+%------------------------------------------------------
+% \aboxed{A}{=B} で数式を四角で囲むコマンド
+%------------------------------------------------------
+\newcommand{\aboxed}[2]{%
+  \rlap{\boxed{#1#2}}%
+  \phantom{\hskip\fboxrule\hskip\fboxsep #1}&\phantom{#2}%
+}
+% ----- 定理環境の設定 -----
+\newtheorem{dfn}{定義}[section]
+\newtheorem{thm}[dfn]{定理}
+\newtheorem{lem}[dfn]{補題}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%        Set Header & Footer    %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\setlength{\footskip}{30pt}
+\lhead[\rightmark]{No.\thepage}
+\chead{}
+\rhead[No.\thepage]{\leftmark}
+\lfoot[\today]{岡崎 正悟}
+\cfoot{}
+\rfoot[岡崎 正悟]{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\maketitle
+
+\section{はじめに}
+
+\section{数値モデル}
+
+\subsection{モデルについて}
+
+\begin{itemize}
+ \item 2 層準地衡流 (QG) 水路モデル
+ \item 強制機構は, ある決められた放射平衡温度 (左右対称) に向かって温度
+       が決まるような機構
+ \item 散逸機構は 2 つ
+       \begin{itemize}
+        \item 主に大スケールにおいては, 下層でのエクマンダンピング
+              (線型な摩擦)
+        \item 小さなスケールにおいては, 切断波数の近くの波数に subgrid
+              dissipation をいれる
+       \end{itemize}
+ \item モデルの概念図は, 論文の図 2c
+\end{itemize}
+
+\subsection{支配方程式と無次元化}
+
+支配方程式は, 準地衡流渦度方程式と熱力学の式; 各層の準地衡渦度方程式は,
+\begin{align}
+ \DDD{(\bnabla^2\Psi_{\ast})}{t}+\beta\DP{\Psi_{\ast}}{x_{\ast}}=-f_0^2\DP{w}{z_{\ast}},\\
+ \DDD{}{t}\left(\DP{\Psi_{\ast}}{z_{\ast}}\right)+N^2 w = -h\left\{\DP{\Psi_{\ast}}{z_{\ast}}-\left(\DP{\Psi_{\ast}}{z_{\ast}}\right)^{\dagger}\right\}.
+\end{align}
+$\ast$ 月の変数は無地減価されてない変数であることを表す. これを無次元化
+する. 無次元変数は論文で与えられているが, 導出してみる．準地衡流渦度方程
+式を 1 層目について書くと, 
+\begin{align*}
+ \DDD{(\bnabla^2\Psi_{\ast 1})}{t}+\beta\DP{\Psi_{\ast 1}}{x_{\ast}}=-\frac{f_0^2}{\Delta z_{\ast}}(w_0
+ -w_2), \\
+ \DP{}{t}\bnabla^2\Psi_{\ast 1} =
+ -J(\Psi_{\ast 1},\bnabla^2\Psi_{\ast 1})-\frac{f_0^2}{\Delta
+ z_{\ast}}(w_0 -w_2)-\beta\DP{\Psi_{\ast 1}}{x_{\ast}}, 
+\end{align*}
+長さスケールについて, $x_{\ast}=L_x x, y_{\ast}=L_y y$ として無次元化すると
+\begin{align*}
+ \bnabla^2&=\DP[2]{}{x_\ast}+\DP[2]{}{y_\ast}\\
+ &=\frac{1}{L_x^2}\DP[2]{}{x}+\frac{1}{L_y^2}\DP[2]{}{y}\\
+ &=\frac{1}{L_y^2}\left\{\left(\frac{L_y^2}{L_x^2}\DP[2]{}{x}+\DP[2]{}{y}\right)\right\}\\
+ &=\frac{1}{L_y^2}\left(\delta^2\DP[2]{}{x}+\DP[2]{}{y}\right)\\
+ &=\frac{1}{L_y^2}\bnabla_{\delta}^2, \\
+ J(a,b)&=\DP{a}{x_\ast}\DP{b}{y_\ast}-\DP{b}{x_\ast}\DP{a}{y_\ast}\\
+       &=\frac{1}{L_x
+ L_y}\left(\DP{a}{x}\DP{b}{y}-\DP{b}{x}\DP{a}{y}\right)\\
+       &=\frac{1}{L_y}\delta J(a,b) 
+\end{align*}
+\end{document}
+%%%%%%%%               Text End                 %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

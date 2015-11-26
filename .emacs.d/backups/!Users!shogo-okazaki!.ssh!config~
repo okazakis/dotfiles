@@ -1,0 +1,14 @@
+Host itpass
+     Hostname		itpass.scitec.kobe-u.ac.jp
+     User	        okazakis
+     IdentityFile	~/.ssh/id_rsa
+
+Host joho14
+     Hostname		133.30.109.84
+     User	        okazakis
+     ProxyCommand	ssh itpass -W %h:%p 
+
+Host dennou
+     Hostname       dennou-k.gfd-dennou.org
+     User           okazakis
+     

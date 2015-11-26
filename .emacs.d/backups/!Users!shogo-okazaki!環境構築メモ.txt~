@@ -48,8 +48,10 @@
       $ brew install ricty
       $ cp -f /usr/local/Cellar/ricty/3.2.2/share/fonts/Ricty*.ttf ~/Library/Fonts/
       $ fc-cache -vf
-  * BasicTeX 2015
-    * http://snap.textfile.org/20151006085255/
-      $ brew install mactex
-      $ sudo tlmgr update --self --all
-      $ sudo tlmgr install collection-langjapanese
+  * MacTeX 2015
+* YaTeX
+  * http://salinger.github.io/blog/2013/02/04/1/
+  * http://tech.shuntak.net/2013/05/yatexemacslatex.html
+* jekyll
+  * ホームページの管理に
+  

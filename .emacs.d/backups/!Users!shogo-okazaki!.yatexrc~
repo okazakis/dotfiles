@@ -1,0 +1,4 @@
+(setq user-env-table '(
+("exe")
+("exm")
+))

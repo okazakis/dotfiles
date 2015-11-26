@@ -1,12 +1,15 @@
 # スクリプトファイルへのパス通し
 export PATH=$PATH:~/bin
 
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
 # TeXのための設定
 #export PATH=$PATH:/usr/local/texlive/2014basic/bin/x86_64-darwin
 
 # Emacs のための設定
 alias e='emacsclient -n'
-alias emacs='emacsclient -nw'
+alias emacs='emacsclient'
 export EDITOR=emacsclient
 export VISUAL=emacsclient
 
@@ -125,6 +128,8 @@ afu-ad-delete-unambiguous-prefix afu+accept-line
 afu-ad-delete-unambiguous-prefix afu+accept-line-and-down-history
 afu-ad-delete-unambiguous-prefix afu+accept-and-hold
 
+# 「-azfu-」を表示させない
+zstyle ':auto-fu:var' postdisplay $''
  
 ########################################
 # vcs_info
