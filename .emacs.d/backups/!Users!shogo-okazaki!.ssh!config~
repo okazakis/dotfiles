@@ -3,12 +3,31 @@ Host itpass
      User	        okazakis
      IdentityFile	~/.ssh/id_rsa
 
+Host ika-itpass
+     Hostname		ika-itpass.scitec.kobe-u.ac.jp
+     User	        okazakis
+     IdentityFile	~/.ssh/id_rsa
+
+Host tako-itpass
+     Hostname		tako-itpass.scitec.kobe-u.ac.jp
+     User	        okazakis
+     IdentityFile	~/.ssh/id_rsa
+
 Host joho14
      Hostname		133.30.109.84
+     User	        okazakis
+     ProxyCommand	ssh itpass -W %h:%p
+
+Host joho01
+     Hostname		133.30.109.71
      User	        okazakis
      ProxyCommand	ssh itpass -W %h:%p 
 
 Host dennou
      Hostname       dennou-k.gfd-dennou.org
      User           okazakis
-     
+
+Host github
+     Hostname       github.com
+     Identityfile   ~/.ssh/id_rsa-github.com
+     User           okazakis

@@ -1,0 +1,140 @@
+---
+layout: post
+title: Homebrew で doctor を実行したときのエラーとその対処法まとめ
+categories: Mac Homebrew
+---
+
+私は, Mac のパッケージマネージャーで Homebrew を用いています. 定期的に `$ brew doctor` を実行し, エラーが無いかをチェックしていますが, そのときにエラーが出る場合が結構あったりするので, その対処法のまとめ.
+
+~~~shell
+$ brew doctor 
+ Your system is raring to brew.
+~~~
+
+となるまで, エラーを取り除く.
+
+参考:
+
+* [Homebrewをインストールしたときに出るWarningの対処](http://qiita.com/webbingstudio@github/items/fc02f8192e83130ddb33)
+* [brew doctorのwarningを解決する](http://shoya.io/blog/brew_doctor/)
+* [homebrew brew doctorトラブルシューティング](http://bismar.hatenablog.com/entry/2012/12/06/022457)
+
+## 書き込み権限がない
+
+~~~shell
+ Warning: /usr/local/include isn't writable. This can happen if you "sudo make install" software that isn't managed by Homebrew.  
+ If a brew tries to write a header file to this directory, the install will fail during the link step.  
+ You should probably chown /usr/local/include
+~~~
+
+上記では, /usr/local/includeに書き込み権限が与えられていない. 他のパスも指摘されることがあるがその場合は全部直す. 
+
+### 対処法
+
+~~~shell
+ $ sudo chown -R [username] /usr/local/include
+~~~
+
+username は現在ログインしているアカウント名に書き替える.
+
+## 古いバージョンのXcodeが残っている
+
+~~~shell
+ Warning: You have leftover files from an older version of Xcode.  
+ You should delete them using:  
+ /Developer/Library/uninstall-developer-folder  
+~~~
+
+### 対処法
+
+古いバージョンのXcodeが残っているので一式を削除する.
+
+~~~shell
+ $ sudo /Developer/Library/uninstall-developer-folder
+~~~
+
+## PATH がスラッシュで終わっている
+
+~~~shell
+ Warning: Some directories in your path end in a slash.  
+ Directories in your path should not end in a slash. This can break other  
+ doctor checks. The following directories should be edited:  
+     /Applications/MacVim.app/Contents/MacOS/  
+~~~
+
+### 対処法
+
+~/.bashrc や ~/.zshrc を編集して, スラッシュで終わっている path の最後のスラッシュを消す. 
+
+## パスがちゃんと設定されていない
+
+~~~shell
+ Warning: /usr/bin occurs before /usr/local/bin  
+ This means that system-provided programs will be used instead of those  
+ provided by Homebrew. The following tools exist at both paths:  
+   
+     git  
+     git-cvsserver  
+     git-receive-pack  
+     git-shell  
+     git-upload-archive  
+     git-upload-pack  
+   
+ Consider amending your PATH so that /usr/local/bin  
+ occurs before /usr/bin in your PATH.
+~~~
+
+### 対処法
+
+~~~shell
+ $ echo $PATH  
+ /usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin
+~~~
+
+/usr/binが/usr/local/binより前に読み込まれているので, `$ export PATH=/usr/local/bin:$PATH` を実行する.
+
+## 依存ツールがない
+
+~~~shell
+ Warning: Some installed formula are missing dependencies.  
+ You should `brew install` the missing dependencies:  
+   
+     brew install bsdmake coreutils fontconfig pcre  
+   
+ Run `brew missing` for more details.  
+~~~
+
+### 対処法
+
+依存ツールがないので, 表示されたコマンドを実行し, 依存ツールをインストールする.
+
+## link が切れている
+
+~~~shell
+ Warning: You have unlinked kegs in your Cellar  
+ Leaving kegs unlinked can lead to build-trouble and cause brews that depend on  
+ those kegs to fail to run properly once built. Run `brew link` on these:  
+   
+     byobu  
+     gnu-sed  
+     pidof  
+     python  
+     xz
+~~~
+
+### 対処法
+
+`brew link app名` でリンクを貼り直す.
+
+## Homebrew をアップデードしてない
+
+~~~shell
+ Warning: Your Homebrew is outdated.  
+ You haven't updated for at least 24 hours, this is a long time in brewland!  
+ To update Homebrew, run `brew update`.  
+~~~
+
+### 対処法
+
+'brew update' で Homebrew をアップデート.
+

@@ -1,0 +1,880 @@
+!Title(表題): Two-dimensional barotropic model on a double cyclic region
+!             (2 重周期境界領域上の2次元順圧モデル)
+!
+!History(履歴):
+!   2005/11/01  竹広真一, 新規作成
+!   2007/11/30  竹広真一, コマンドライン引数を解析し, NAMELIST ファイル名を取得
+!   2007/12/02  森川靖大, コマンドライン引数変数種別を変更
+!   2015/07/13  岡崎正悟, 1次元エネルギースペクトルを計算できるようにプログラムを変更
+!   2015/10/??  岡崎正悟, エネルギーフラックス計算を追加
+!
+! The governing equation(支配方程式): 
+!
+!      d\nabla^2\psi/dt 
+!          = -J(\psi,\nabla^2\psi) - beta d\psi/dx
+!            +(-1)^{p+1}\nu_{2p}\nabla^2p \nabla^2\psi
+!
+program plbaro_beta_freedecay_rn4expcs_exp1
+
+!== モジュール引用宣言 ================================================
+  use ee_module 
+  use gtool_history, only : GT_HISTORY, HistoryCreate, HistoryPut, HistoryGet, &
+                            HistoryAddVariable, HistoryClose, HistoryAddAttr
+  use dc_trace,      only : SetDebug, BeginSub, EndSub, DbgMessage
+  use dc_message,    only : MessageNotify
+  use dc_types
+  use dc_string,     only : StoA
+  use dc_args
+  implicit none
+
+!== 宣言部 ============================================================
+
+ !---- 変数(格子点データ) ----
+  real(8), allocatable :: yx_VelX(:,:)        ! 速度経度成分
+  real(8), allocatable :: yx_VelY(:,:)        ! 速度緯度成分
+  real(8), allocatable :: yx_Vor(:,:)         ! 渦度(鉛直成分)
+  real(8), allocatable :: yx_StrFunc(:,:)     ! 流線関数
+
+ !---- 変数(スペクトルデータ) ----
+  real(8), allocatable :: ee_Vor(:,:)         ! 渦度(鉛直成分)
+  real(8), allocatable :: ee_StrFunc(:,:)     ! 流線関数
+
+  real(8), allocatable :: ee_ESp(:,:)         ! エネルギースペクトル
+  real(8), allocatable :: ee_EnsSp(:,:)       ! エンストロフィースペクトル
+
+  real(8), allocatable :: e_ESp(:)            ! 1次元エネルギースペクトル
+  real(8), allocatable :: e_EnsSp(:)          ! 1次元エンストロフィースペクトル
+
+  real(8), allocatable :: ee_Xi(:,:)          ! ξ : ζ=ξexp[-(iω+ν)t]
+  real(8), allocatable :: ee_Vortmp(:,:)      ! 渦度(ルンゲクッタ計算作業用)
+  real(8), allocatable :: ee_k1(:,:)          ! 拡散以外の渦度時間変化(1段目)
+  real(8), allocatable :: ee_k2(:,:)          ! 拡散以外の渦度時間変化(2段目)
+  real(8), allocatable :: ee_k3(:,:)          ! 拡散以外の渦度時間変化(3段目)
+  real(8), allocatable :: ee_k4(:,:)          ! 拡散以外の渦度時間変化(4段目)
+
+  real(8), allocatable :: e_Tk(:)          ! エネルギー輸送函数
+  real(8), allocatable :: ee_J(:,:)        ! 流線関数と渦度のヤコビアン
+  real(8), allocatable :: e_Pi(:)          ! エネルギーフラックス
+
+  real(8), allocatable :: ee_OmegaR(:,:)      ! ロスビー波の振動数
+                                              ! (- Beta * abs(m)/(n*(n+1))
+
+ !---- 固定パラメタ -----
+  real(8), parameter  :: pi = 3.141592653589793D0 ! 円周率
+  character(len=20)   :: DbgMessageFmt='*** DbgMESSAGE ***'
+  real(8), parameter  :: vmiss = -999.0       ! 欠損値
+
+ !---- NAMELIST 変数 ----
+  ! コマンドライン引数用変数
+  type(ARGS) :: arg
+  character(STRING), pointer :: argv(:) => null()
+
+  ! NAMELIST 入力用デフォルトファイル名
+  character(len=100)  :: nmlfile='plbaro-beta_freedecay_rn4expcs.nml'
+
+  logical            :: Verbose=.false.          ! 冗長なメッセージ出力 On/Off
+  logical            :: DebugOn=.false.          ! デバッグメッセージ On/Off
+  namelist /message/  Verbose, DebugOn           !
+                                                 !-- 格子点・スペクトル --
+  integer :: km=21                               ! X 方向切断全波数
+  integer :: lm=21                               ! Y 方向切断全波数
+  integer :: im=64                               ! X 方向格子点数 (>3*km)
+  integer :: jm=64                               ! Y 方向格子点数 (>3*lm)
+  namelist /gridset/ km, lm, im, jm
+                                                 !-- 物理パラメター --
+  real(8)            :: XLength=1.0D0            ! 領域の大きさ(X 方向)
+  real(8)            :: YLength=1.0D0            ! 領域の大きさ(Y 方向)
+  real(8)            :: Beta=0.0D0               ! βパラメター
+  integer            :: HVOrder=1                ! 超粘性の次数(1 で普通の粘性,
+                                                 ! 水平ラプラシアンの階数)
+  real(8)            :: HVisc=1.0D0              ! 超粘性係数
+  namelist /physics/  XLength, YLength, Beta, HVOrder, HVisc
+                                                 ! -- 初期値 --
+  character(len=100) :: initial_file=''          ! 初期値データファイル名
+                                                 ! (空なら内部で初期値を計算)
+  real               :: initial_time=0.0         ! 初期時刻
+  namelist /initial/ initial_file, initial_time  ! 
+                                                 ! -- 時間積分 --
+  real(8) :: delta_t=1.0e-7                      ! 時間積分刻み
+  integer :: nstep=2000                          ! 時間積分ステップ数
+  namelist /tint/    delta_t, nstep              ! 
+                                                 ! -- ヒストリー出力 --
+  character(len=100) :: hst_file=   ''           ! ヒストリーファイル名
+  character(len=100) :: title = &                ! タイトル
+   'Test of linear terms of 2-dim barotropic model on a double-cyclic domain'
+
+  integer :: hst_intstep=200                     ! ヒストリー出力間隔ステップ数
+  namelist /history/    hst_file, title, hst_intstep
+
+  character(len=100) :: rst_file=''              ! リスタート出力ファイル名
+  integer :: rst_intstep=200                     ! リスタート出力間隔ステップ数
+  namelist /restart/   rst_file, rst_intstep 
+
+ !---- 作業変数 ----
+  real(8), allocatable :: ee_HVisc(:,:)      ! 超粘性係数
+
+  integer :: it=0                            ! 時間ステップ
+  real(8) :: time                            ! モデル内時間
+  integer :: k, l, n, wn                      ! 波数
+  integer :: i, j
+  
+  type(GT_HISTORY) :: hst_rst                ! リスタート GT_HISTORY 変数
+
+ !---------------- NAMELIST 読み込み ---------------------
+  call Open(arg)
+  call Debug(arg) ; call Help(arg) ; call Strict(arg)
+  call Get(arg, argv)
+  if ( size(argv) .le. 0 ) then
+     call MessageNotify('W','plbaro-beta_rn4excs_exp1',&
+                            'There is no argument. The defalut namlist file, '&
+                            //trim(nmlfile)//' is used.')
+  else
+     nmlfile=argv(1)
+     call MessageNotify('M','plbaro-beta_rn4excs_exp1',&
+                            'Namelist file is '//trim(nmlfile))
+  endif
+  deallocate(argv)
+  call Close(arg)
+
+  write(6,nml=message) 
+  open(10,file=nmlfile,status='OLD')
+  read(10,nml=message) ; write(6,nml=message) ; close(10)
+
+  if (verbose) write(6,nml=gridset) 
+  open(10,file=nmlfile,status='OLD')
+  read(10,nml=gridset) ; write(6,nml=gridset) ; close(10)
+
+  if (verbose) write(6,nml=physics) 
+  open(10,file=nmlfile,status='OLD')
+  read(10,nml=physics) ; write(6,nml=physics) ; close(10)
+
+  if (verbose) write(6,nml=initial) 
+  open(10,file=nmlfile,status='OLD')
+  read(10,nml=initial) ; write(6,nml=initial) ; close(10)
+
+  if (verbose) write(6,nml=tint) 
+  open(10,file=nmlfile,status='OLD')
+  read(10,nml=tint) ; write(6,nml=tint) ; close(10)
+
+  if (verbose) write(6,nml=history) 
+  open(10,file=nmlfile,status='OLD')
+  read(10,nml=history) ; write(6,nml=history) ; close(10)
+
+  if (verbose) write(6,nml=restart) 
+  open(10,file=nmlfile,status='OLD')
+  read(10,nml=restart) ; write(6,nml=restart) ; close(10)
+
+ !---------------- デバッグ出力制御設定 -----------------
+  if (DebugOn) then
+    call SetDebug
+  end if
+
+ !------------------ 変数の割り付け ---------------------
+  allocate(yx_VelX(0:jm-1,0:im-1),yx_VelY(0:jm-1,0:im-1))
+  allocate(yx_Vor(0:jm-1,0:im-1),yx_StrFunc(0:jm-1,0:im-1))
+
+  allocate(ee_Vor(-lm:lm,-km:km),ee_StrFunc(-lm:lm,-km:km))
+
+  allocate(ee_Vortmp(-lm:lm,-km:km))
+  allocate(ee_Xi(-lm:lm,-km:km))
+  allocate(ee_k1(-lm:lm,-km:km),ee_k2(-lm:lm,-km:km))
+  allocate(ee_k3(-lm:lm,-km:km),ee_k4(-lm:lm,-km:km))
+
+  allocate(ee_HVisc(-lm:lm,-km:km))
+  allocate(ee_OmegaR(-lm:lm,-km:km))
+  allocate(ee_ESp(-lm:lm,-km:km),ee_EnsSp(-lm:lm,-km:km))
+
+  wn = nint(sqrt(real(lm**2+km**2)))
+  allocate(ee_J(-lm:lm,-km:km))
+  allocate(e_ESp(1:wn), e_EnsSp(1:wn))
+  allocate(e_Tk(1:wn), e_Pi(0:wn))
+  
+ !------------------ 座標値の設定 -----------------------
+  call DbgMessage(fmt='call %c', c1='ee_initial') 
+  call ee_Initial(im,jm,km,lm,0.0D0,XLength,0.0D0,YLength)
+
+ !------------------ 物理係数の設定 -----------------------
+  ee_Vor = 1.0D0
+  ee_HVisc = (-1)**HVOrder * HVisc*(ee_Lapla_ee(ee_Vor))**HVOrder
+
+  do k=-km,km
+     do l=-lm,lm
+        if ( k**2+l**2 .NE. 0 ) then
+           ee_OmegaR(l,k) = - Beta * (2*PI*k/XLength) &
+                        / ( (2*PI*k/XLength)**2 + (2*PI*l/YLength)**2 )
+        else
+           ee_OmegaR(l,k) = vmiss
+        endif
+     enddo
+  enddo
+
+ !------------------- 初期値設定 ----------------------
+  time = initial_time
+
+  if ( initial_file == "") then
+     ! リスタートファイルを指定しない場合内部で ee_Vor を与える. 
+     call set_initial_values
+  else
+     !  初期値設定(リスタートファイルからの読みこみ)
+     call HistoryGet( trim(initial_file), 'ee_vor', ee_Vor,  time )
+     call phase_scrambling
+  endif
+
+  ee_Strfunc = ee_LaplaInv_ee(ee_Vor)
+
+ !---------------- 時間積分(Runge-Kutta + exp 変換法) -----------------
+  call output_restart_init
+  call output_history_init
+
+  ! if ( initial_file == '' ) call output_history    ! 内部で与えた初期値は出力
+  call output_history                                ! リスタートファイルで初期値を与えた時も, 初期値を出力
+
+  call DbgMessage(fmt='%c %c', &
+&                 c1=DbgMessageFmt, &
+&                 c2='Time integration starts.') 
+
+  do it=1,nstep
+     time = initial_time + it * delta_t
+
+     !---- 1 段目 [ k1 = f( x_n, t_n) ] ----
+     ee_k1 = ee_DXiDt_ee_ee(ee_Vor,ee_Strfunc,0.0D0)
+
+     !---- 2 段目 [ k2 = f( x_n+k1*dt/2, t_n+dt/2 ) ] ----
+     ee_Xi = ee_Vor + ee_k1*delta_t/2.0D0
+     ee_Vortmp = ee_Xi2Vor_ee(ee_Xi,delta_t/2.0D0)
+     ee_StrFunc = ee_LaplaInv_ee(ee_Vortmp)
+     ee_k2 = ee_DXiDt_ee_ee(ee_Vortmp,ee_Strfunc,delta_t/2.0D0)
+
+     !---- 3 段目 [ k3 = f( x_n+k2*dt/2, t_n+dt/2 ) ] ----
+     ee_Xi = ee_Vor + ee_k2*delta_t/2.0D0
+     ee_Vortmp = ee_Xi2Vor_ee(ee_Xi,delta_t/2.0D0)
+     ee_StrFunc = ee_LaplaInv_ee(ee_Vortmp)
+     ee_k3 = ee_DXiDt_ee_ee(ee_Vortmp,ee_Strfunc,delta_t/2.0D0)
+
+     !---- 4 段目 [ k4 = f( x_n+k3*dt, t_n+dt ) ] ----
+     ee_Xi = ee_Vor + ee_k3*delta_t
+     ee_Vortmp = ee_Xi2Vor_ee(ee_Xi,delta_t)
+     ee_StrFunc = ee_LaplaInv_ee(ee_Vortmp)
+     ee_k4 = ee_DXiDt_ee_ee(ee_Vortmp,ee_Strfunc,delta_t)
+
+     !---- 積分 ----
+     ee_Xi = ee_Vor + delta_t * (   ee_k1/6.0D0 + ee_k2/3.0D0 &
+                                  + ee_k3/3.0D0 + ee_k4/6.0D0    )
+     ee_Vor = ee_Xi2Vor_ee(ee_Xi,delta_t)
+
+     ! 渦度から流線関数を計算
+     ee_StrFunc = ee_LaplaInv_ee(ee_Vor)
+
+     call calc_energy_and_enstrophy_spectra
+     call calc_energy_flux
+
+     if(mod(it,hst_intstep) .eq. 0)then                    ! ヒストリー出力
+        call output_history
+     endif
+
+     if(mod(it,rst_intstep) .eq. 0)then                    ! リスタート出力
+        call output_restart
+     endif
+  enddo
+
+  call DbgMessage(fmt='%c %c',      &
+&                 c1=DbgMessageFmt, &
+&                 c2='Time integration end.') 
+
+  if(.not. mod(it-1,rst_intstep) .eq. 0)then                    ! 最終出力
+     call output_restart
+  endif
+
+  call output_restart_close
+  call output_history_close
+
+! 以上 メインプログラム 
+!-----------------------------------------------------------------------------
+! 以下 サブルーチン
+
+contains
+
+ !======== 1次元エネルギー/エンストロフィースペクトル計算 ============
+  subroutine calc_energy_and_enstrophy_spectra
+
+    ! ---- エネルギースペクトル計算
+    e_ESp = 0.0D0
+    do k=-km,km
+       do l=-lm,lm
+          n = nint(sqrt(real(l**2+k**2)))
+          if ((l .eq. 0) .AND. (k .eq. 0)) then
+             goto 10
+          else if ((n .gt. km) .OR. (n .gt. lm)) then
+             goto 10
+          else
+             e_ESp(n) &
+                  = e_ESp(n) &
+                  + ee_Vor(l,k) * ee_Vor(l,k) / (l**2+k**2)
+          endif
+10        continue
+       enddo
+    enddo
+
+    ! ---- エンストロフィースペクトル計算
+    e_EnsSp = 0.0D0
+    do k=-km,km
+       do l=-lm,lm
+          n = nint(sqrt(real(l**2+k**2)))
+          if ((l .eq. 0) .AND. (k .eq. 0)) then
+             goto 20
+          else if ((n .gt. km) .OR. (n .gt. lm)) then
+             goto 20
+          else
+             e_EnsSp(n) = e_EnsSp(n) + ee_Vor(l,k) * ee_Vor(l,k)
+          endif
+20       continue
+       enddo
+    enddo
+
+  end subroutine calc_energy_and_enstrophy_spectra
+
+ !========  phase scrambling ==========
+  subroutine phase_scrambling
+    real(8)              :: Ntotal             ! 全波数
+    integer              :: random_seed_size   ! 乱数の種の長さ
+    integer, allocatable :: seedarray(:)       ! 乱数の種
+    real                 :: harvest            ! 乱数の値
+    real                 :: random_phase(-lm:lm,-km:km)
+    integer              :: i_count(1:km)
+
+    integer    :: Seed=0           ! seed(1)に設定する種の値
+    real(8)    :: Nmin=0.0D0       ! 初期エネルギー分布の全波数領域域最小値
+    real(8)    :: Nmax=21.0D0      ! 初期エネルギー分布の全波数領域最大値
+    real(8)    :: Etotal=1.0D0     ! 初期平均エネルギーの値
+    
+    namelist /initvalue/ Seed, Nmin, Nmax, Etotal
+
+    real(8), allocatable :: ee_Strfunc_tmp(:,:)
+    allocate(ee_Strfunc_tmp(-lm:lm,-km:km))
+
+    ! ---- 乱数設定
+    call random_seed(size=random_seed_size)
+    allocate(seedarray(random_seed_size))
+    call random_seed(get=seedarray)
+    seedarray(1)=Seed
+    call random_seed(put=seedarray)
+    
+    do k=-km,km
+       do l=-lm,lm
+             call random_number(harvest)
+             random_phase(l,k)= harvest            ! [0,1] の一様乱数
+       enddo
+    enddo
+  
+    ! ---- Phase scrumbling
+    ee_Strfunc_tmp = 0.0D0
+    ee_Strfunc = ee_LaplaInv_ee(ee_Vor)
+    
+    k=0
+       do l=1,lm
+             ee_Strfunc_tmp(l,k) = ee_Strfunc(l,k) * cos(2.0*pi*random_phase(l,k)) &
+                                  & + ee_Strfunc(-l,k) * sin(2.0*pi*random_phase(l,k))
+             ee_Strfunc_tmp(-l,k) = ee_Strfunc(l,k) * sin(2.0*pi*random_phase(l,k)) &
+                                  & - ee_Strfunc(-l,k) * cos(2.0*pi*random_phase(l,k))
+       enddo
+
+    do k=1,km
+       do l=-lm,lm
+             ee_Strfunc_tmp(l,k) = ee_Strfunc(l,k) * cos(2.0*pi*random_phase(l,k)) &
+                                  & - ee_Strfunc(l,-k) * sin(2.0*pi*random_phase(l,k))
+             ee_Strfunc_tmp(l,-k) = ee_Strfunc(l,k) * sin(2.0*pi*random_phase(l,k)) &
+                                  & + ee_Strfunc(l,-k) * cos(2.0*pi*random_phase(l,k))
+       enddo
+    enddo
+    
+    ee_Strfunc = ee_Strfunc_tmp    
+    ee_Vor = ee_Lapla_ee(ee_Strfunc)
+
+   end subroutine phase_scrambling
+
+ !======== エネルギーフラックス計算 ==========
+  subroutine calc_energy_flux
+    ee_J = ee_Jacobian_ee_ee(ee_Strfunc,ee_Vor)
+    e_Tk = 0.0D0
+    e_Pi = 0.0D0
+    ! ----- エネルギー輸送関数の計算 -----
+    do k=-km,km
+       do l=-lm,lm
+          n = nint(sqrt(real(l**2+k**2)))
+          if ((l .eq. 0) .AND. (k .eq. 0)) then
+             goto 40
+          else if ((n .gt. km) .OR. (n .gt. lm)) then
+             goto 40
+          else
+             e_Tk(n) &
+                  = e_Tk(n) &
+                  + ee_StrFunc(l,k) * ee_J(l,k) + ee_Strfunc(-l,-k) * ee_J(-l,-k)
+          endif
+40        continue
+       enddo
+    enddo
+    ! ----- エネルギーフラックス計算 -----
+    do n=1,km
+       e_Pi(n) = e_Pi(n-1) + e_Tk(n)
+    enddo   
+  end subroutine calc_energy_flux
+     
+ !========================== 時間変化計算 ==========================
+ !
+ ! 時間変化項(非線形項のみ)
+ !
+  function ee_DVorDtNonlinear_ee_ee(ee_Vor,ee_Strfunc)
+
+    real(8) :: ee_Vor(:,:)                             ! 渦度(鉛直成分)
+    real(8) :: ee_StrFunc(:,:)                         ! 流線関数
+
+    ! 渦度時間変化(非線形項のみ)
+    real(8) :: ee_DVorDtNonlinear_ee_ee(size(ee_Vor,1),size(ee_Vor,2))
+
+    ee_DVorDtNonlinear_ee_ee = - ee_Jacobian_ee_ee(ee_StrFunc,ee_Vor)
+
+  end function ee_DVorDtNonlinear_ee_ee
+
+ !
+ ! ξ から ζ を求める
+ !
+  function ee_Xi2Vor_ee(ee_Xi,dt)
+    real(8), intent(IN)  :: ee_Xi(-lm:,-km:)        ! ξ : ζ=ξexp[-(iω+ν)t]
+    real(8), intent(IN)  :: dt                      ! 時間刻
+
+    ! 渦度ζ
+    real(8)  :: ee_Xi2Vor_ee( &
+                  -size(ee_Vor,1)/2:size(ee_Vor,1)/2, &
+                  -size(ee_Vor,2)/2:size(ee_Vor,2)/2     )
+
+    ! 作業領域
+    integer :: k,l
+
+    do k=0,km
+       do l=-lm,lm
+          ee_Xi2Vor_ee(l,k) &
+               =   ee_Xi(l,k) &
+                 * exp(-ee_HVisc(l,k)*dt)*cos(ee_OmegaR(l,k)*dt) &
+                 + ee_Xi(-l,-k) &
+                 * exp(-ee_HVisc(l,k)*dt)*sin(ee_OmegaR(l,k)*dt)
+          ee_Xi2Vor_ee(-l,-k) &
+               = ee_Xi(-l,-k) &
+               * exp(-ee_HVisc(l,k)*dt)*cos(ee_OmegaR(l,k)*dt) &
+               - ee_Xi(l,k) &
+               * exp(-ee_HVisc(l,k)*dt)*sin(ee_OmegaR(l,k)*dt)
+       enddo
+    enddo
+    ee_Xi2Vor_ee(0,0) = ee_Xi(0,0)
+
+  end function ee_Xi2Vor_ee
+
+ !
+ !  ξ(ζ=ξexp[-(iω+ν)t])の時間変化
+ !
+  function ee_DXiDt_ee_ee(ee_Vor,ee_Strfunc,dt)
+
+    real(8), intent(IN)  :: ee_Vor(-lm:,-km:)                 ! 渦度ζ
+    real(8), intent(IN)  :: ee_Strfunc(-lm:,-km:)             ! 流線関数
+    real(8), intent(IN)  :: dt                          ! 時間刻
+
+    ! ξ時間変化
+    real(8) :: ee_DXiDt_ee_ee( &
+                  -size(ee_Vor,1)/2:size(ee_Vor,1)/2, &
+                  -size(ee_Vor,2)/2:size(ee_Vor,2)/2     )
+
+    ! 作業領域
+    real(8) :: ee_G( &
+                  -size(ee_Vor,1)/2:size(ee_Vor,1)/2, &
+                  -size(ee_Vor,2)/2:size(ee_Vor,2)/2     )
+
+    integer :: l,k
+
+    ee_G = ee_DVorDtNonlinear_ee_ee(ee_Vor,ee_Strfunc)
+
+    do k=0,km
+       do l=-lm,lm
+          ee_DXiDt_ee_ee(l,k)   &
+            =   exp(ee_HVisc(l,k)*dt) * cos(ee_OmegaR(l,k)*dt) &
+              * ee_G(l,k) &
+              - exp(ee_HVisc(l,k)*dt) * sin(ee_OmegaR(l,k)*dt) &
+              * ee_G(-l,-k)
+          ee_DXiDt_ee_ee(-l,-k) &
+            =   exp(ee_HVisc(l,k)*dt) * cos(ee_OmegaR(l,k)*dt) &
+              * ee_G(-l,-k)           &
+              + exp(ee_HVisc(l,k)*dt) * sin(ee_OmegaR(l,k)*dt) &
+              * ee_G(l,k)
+       enddo
+    enddo
+    ee_DXiDt_ee_ee(0,0) = 0.0D0
+
+  end function ee_DXiDt_ee_ee
+
+!=========================== 初期値設定 ============================
+ !
+ !  初期値設定(リスタートファイルない場合のデフォルト設定)
+ !
+  subroutine set_initial_values    ! w_Vor を定める
+   
+    !---- 初期値全波数帯領域に乱数分布 ----
+    real(8)              :: Ntotal             ! 全波数
+    integer              :: random_seed_size   ! 乱数の種の長さ
+    integer, allocatable :: seedarray(:)       ! 乱数の種
+    real                 :: harvest            ! 乱数の値
+    real                 :: random_phase(-lm:lm,-km:km)
+    integer              :: i_count(1:km)
+
+    integer    :: Seed=0           ! seed(1)に設定する種の値
+    real(8)    :: Nmin=7.0D0       ! 初期エネルギー分布の全波数領域域最小値
+    real(8)    :: Nmax=9.0D0       ! 初期エネルギー分布の全波数領域最大値
+    real(8)    :: Etotal=1.0D0     ! 初期平均エネルギーの値
+    
+    namelist /initvalue/ Seed, Nmin, Nmax, Etotal
+
+    if (verbose) write(6,nml=initvalue) 
+    open(10,file=nmlfile,status='OLD')
+    read(10,nml=initvalue) ; write(6,nml=initvalue) ; close(10)
+
+    if ( Nmax .gt. km ) then
+       call MessageNotify('E','set_initial_values',&
+            'Nmax should be smaller equalt to  sqrt(km^2 + lm^2)' ) 
+    endif
+    if ( Nmin .lt. 0 .OR. Nmax .lt. 0 ) then
+       call MessageNotify('E','set_initial_values',&
+            'Nmin and Nmax should be larger equal to zero' ) 
+    endif
+
+    ! ---- 初期の1次元エネルギースペクトルを与える ----
+    e_ESp = 0.0D0
+    do n=1,km
+       e_ESp(n) = (10.0**35)*(dble(n))**30/((dble(n)+30.0D0)**60)
+    enddo
+
+    ! ---- カウンタの設定 ----
+    i_count = 0
+    k=0
+      do l=1,lm
+         i_count(l) = i_count(l)+1
+      enddo
+ 
+    do k = 1,km
+       do l = -lm,lm
+          n = nint(sqrt(real(l**2+k**2)))
+          if (n .EQ. 0) then 
+             goto 30
+          endif
+          if (n .gt. km) then
+             goto 30
+          endif
+          i_count(n) = i_count(n) + 1
+30        continue
+       enddo
+    enddo
+    
+    ! ---- 乱数設定
+    call random_seed(size=random_seed_size)
+    allocate(seedarray(random_seed_size))
+    call random_seed(get=seedarray)
+    seedarray(1)=Seed
+    call random_seed(put=seedarray)
+    
+    do k=-km,km
+       do l=-lm,lm
+             call random_number(harvest)
+             random_phase(l,k)= harvest            ! [0,1] の一様乱数
+       enddo
+    enddo
+ 
+    ! ---- Phase scrumbling(1次元エネルギースペクトルから流線函数を計算)
+    ee_StrFunc = 0.0D0
+    k=0
+       do l=1,lm
+          n = nint(sqrt(real(l**2+k**2)))
+          if ( (n .ge. Nmin) .AND. (n .le. Nmax) ) then
+             ee_StrFunc(l,k) &
+                  & = 2.0D+0 * sqrt(e_ESp(n) / real(k**2+l**2) / real(i_count(n))) &
+                  &   * cos(2.0*pi*random_phase(l,k))
+             ee_StrFunc(-l,k) &
+                  & = 2.0D+0 * sqrt(e_ESp(n) / real(k**2+l**2) / real(i_count(n))) &
+                  &   * sin(2.0*pi*random_phase(l,k))
+          endif
+       enddo
+ 
+    do k=1,km
+       do l=-lm,lm
+          n = nint(sqrt(real(l**2+k**2)))
+          if ( (n .ge. Nmin) .AND. (n .le. Nmax) ) then
+             ee_StrFunc(l,k) &
+                  & = 2.0D+0 * sqrt(e_ESp(n) / real(k**2+l**2) / real(i_count(n))) &
+                  &   * cos(2.0*pi*random_phase(l,k))
+             ee_StrFunc(l,-k) &
+                  & = 2.0D+0 * sqrt(e_ESp(n) / real(k**2+l**2) / real(i_count(n))) &
+                  &   * sin(2.0*pi*random_phase(l,k))
+          endif
+       enddo
+    enddo
+ 
+    ! ---- 全エネルギーの計算 
+    Etotal=0.0
+    do k=1,km
+       Etotal = Etotal + e_ESp(k)
+    enddo
+
+    ! ---- (平均)エネルギーを規格化
+    ee_StrFunc = ee_StrFunc / sqrt(Etotal*2.0)
+    ee_Vor = ee_Lapla_ee(ee_StrFunc)
+
+  end subroutine set_initial_values
+
+!=========================== リスタート出力 ============================
+ !
+ ! リスタート出力初期化
+ !
+  subroutine output_restart_init
+    call HistoryCreate( &
+           file=trim(rst_file), &
+           title=trim(title), &
+           source='plbaro-beta_freedecay_rn4expcs.f90 (2007/12/02)', &
+           institution='GFD_Dennou Club SPMODEL project',     &
+           dims=(/'x','y','k','l','n','t'/), &
+           dimsizes=(/im,jm,2*km+1,2*lm+1,wn,0/),&
+           longnames=(/'X           ','Y           ',&
+                       'X-wavenumber','Y-wavenumber',&
+                       'wavenumber  ','time        '/),&
+           units=(/'1','1','1','1','1','1'/),   &
+           origin=real(time), interval=real(rst_intstep*delta_t), &
+           history=hst_rst)
+
+   !---- 座標変数定義, 出力 ----
+    call HistoryPut('x',x_X, hst_rst)                       ! 変数出力
+    call HistoryAddattr('x','topology','circular', hst_rst) ! 周期属性
+    call HistoryAddattr('x','modulo',XLength, hst_rst)      ! 周期属性
+    call HistoryPut('y',y_Y, hst_rst)                       ! 変数出力
+    call HistoryAddattr('y','topology','circular', hst_rst) ! 周期属性
+    call HistoryAddattr('y','modulo',YLength, hst_rst)      ! 周期属性
+
+    call HistoryPut('k',(/(dble(k),k=-km,km)/), hst_rst)    ! 変数出力
+    call HistoryPut('l',(/(dble(l),l=-lm,lm)/), hst_rst)    ! 変数出力
+
+    call HistoryAddVariable( &                              ! 変数定義
+           varname='x_weight', dims=(/'x'/), & 
+           longname='Weight for integration in X', &
+           units='1', xtype='double',history=hst_rst)
+    call HistoryPut('x_weight',x_X_Weight,hst_rst)          ! 変数出力
+
+    call HistoryAddVariable( &                              ! 変数定義
+           varname='y_weight', dims=(/'y'/), & 
+           longname='Weight for integration in Y', &
+           units='1', xtype='double',history=hst_rst)
+    call HistoryPut('y_weight',y_Y_Weight,hst_rst)          ! 変数出力
+
+    call HistoryPut('n',(/(dble(n),n=1,wn)/), hst_rst)
+
+
+   !---- 物理変数定義 ----
+    call HistoryAddVariable( &                              ! 変数定義
+           varname='ee_vor', dims=(/'l','k','t'/), & 
+           longname='Vorticity', &
+           units='1', xtype='double', history=hst_rst)
+
+   !---- 実験パラメターを属性として定義, 出力(全て Global 属性) ----
+    call HistoryAddAttr('x','+delta_t', delta_t ,hst_rst)
+    call HistoryAddAttr('x','+Beta',    Beta    ,hst_rst)
+    call HistoryAddAttr('x','+HVOrder', HVOrder ,hst_rst)
+    call HistoryAddAttr('x','+HVisc',   HVisc   ,hst_rst)
+
+  end subroutine output_restart_init
+
+ !
+ ! リスタート出力
+ !
+  subroutine output_restart
+    write(6,*) ' Restart file output at it = ',it, '  time = ', time
+    call HistoryPut('t',real(time),hst_rst)
+
+   !---- 物理変数出力 ----
+    call HistoryPut('ee_vor', ee_Vor, hst_rst)
+  end subroutine output_restart
+
+ !
+ ! リスタート出力終了
+ !
+  subroutine output_restart_close
+    call HistoryClose(hst_rst)
+  end subroutine output_restart_close
+
+
+!=========================== ヒストリー出力 ============================
+ !
+ ! ヒストリー出力初期化
+ !
+  subroutine output_history_init
+
+    call HistoryCreate( &
+           file=trim(hst_file), &
+           title=trim(title), &
+           source='plbaro-beta_freedecay_rn4expcs_exp1.f90 (2007/12/02)', &
+           institution='GFD_Dennou Club SPMODEL project',     &
+           dims=(/'x','y','k','l','n','t'/), &
+           dimsizes=(/im,jm,2*km+1,2*lm+1,wn,0/),&
+           longnames=(/'X           ','Y           ',&
+                       'X-wavenumber','Y-wavenumber',&
+                       'wavenumber  ','time        '/),&
+           units=(/'1','1','1','1','1','1'/),   &
+           origin=real(time), interval=real(rst_intstep*delta_t) )
+
+   !---- 座標変数定義, 出力 ----
+    call HistoryPut('x',x_X )                               ! 変数出力
+    call HistoryAddattr('x','topology','circular')          ! 周期属性
+    call HistoryAddattr('x','modulo',XLength )              ! 周期属性
+    call HistoryPut('y',y_Y )                               ! 変数出力
+    call HistoryAddattr('y','topology','circular')          ! 周期属性
+    call HistoryAddattr('y','modulo',YLength )              ! 周期属性
+
+    call HistoryPut('k',(/(dble(k),k=-km,km)/) )        ! 変数出力
+    call HistoryPut('l',(/(dble(l),l=-lm,lm)/) )        ! 変数出力
+
+    call HistoryAddVariable( &                              ! 変数定義
+           varname='x_weight', dims=(/'x'/), & 
+           longname='Weight for integration in X', &
+           units='1', xtype='double')
+    call HistoryPut('x_weight',x_X_Weight)                  ! 変数出力
+
+    call HistoryAddVariable( &                              ! 変数定義
+           varname='y_weight', dims=(/'y'/), & 
+           longname='Weight for integration in Y', &
+           units='1', xtype='double')
+    call HistoryPut('y_weight',y_Y_Weight)                  ! 変数出力
+
+    call HistoryPut('n',(/(dble(n),n=1,wn)/) )
+
+   !---- パラメター定義, 出力 ----
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='hvisc', dims=(/'l','k'/), & 
+           longname='hyper diffusivity', units='1', xtype='double')
+
+    call HistoryPut('hvisc',ee_HVisc)  ! 変数出力
+
+   !---- 物理変数定義 ----
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='vor', dims=(/'x','y','t'/), & 
+           longname='Vorticity', units='1', xtype='double')
+    call HistoryAddVariable( &
+         varname='vorsp',dims=(/'k','l','t'/), &
+         longname='Vorticiy(spectra)',units='1',xtype='double')
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='strfunc', dims=(/'x','y','t'/), & 
+           longname='Stream function', units='1', xtype='double')
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='velx', dims=(/'x','y','t'/), & 
+           longname='x-velocity', units='1', xtype='double')
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='vely', dims=(/'x','y','t'/), & 
+           longname='y-velocity', units='1', xtype='double')
+
+   !---- 診断量定義 ----
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='ek', dims=(/'t'/), & 
+           longname='mean kinetic energy', units='1', xtype='double')
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='ens', dims=(/'t'/), & 
+           longname='mean enstrophy', units='1', xtype='double')
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='ektot', dims=(/'t'/), & 
+           longname='total kinetic energy', units='1', xtype='double')
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='enstot', dims=(/'t'/), & 
+           longname='total enstrophy', units='1', xtype='double')
+
+    call HistoryAddVariable( &                              ! 変数定義
+           varname='eksp', dims=(/'l','k','t'/), & 
+           longname='Energy spectrum', &
+           units='1', xtype='double')
+    call HistoryAddVariable( &                              ! 変数定義
+           varname='enssp', dims=(/'l','k','t'/), & 
+           longname='Enstrophy spectrum', &
+           units='1', xtype='double')
+
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='ektotsp', dims=(/'t'/), & 
+           longname='total kinetic energy(spectral)', &
+           units='1', xtype='double')
+    call HistoryAddVariable( &                                ! 変数定義
+           varname='enstotsp', dims=(/'t'/), & 
+           longname='total enstrophy(spectral)', &
+           units='1', xtype='double')
+
+    call HistoryAddVariable( &
+           varname='1deksp', dims=(/'n','t'/), &
+           longname='1d Energy spectrum', &
+           units='1', xtype='double')
+    call HistoryAddVariable( &
+           varname='1denssp', dims=(/'n','t'/), &
+           longname='1d Enstrophy spectrum', &
+           units='1', xtype='double')
+
+    call HistoryAddVariable( &                                ! 変数定義
+         varname='ekflux', dims=(/'n','t'/), & 
+         longname='Energy flux', &
+         units='1', xtype='double')
+
+  !---- 実験パラメターを属性として定義, 出力(全て Global 属性) ----
+    call HistoryAddAttr('x','+delta_t', delta_t )
+    call HistoryAddAttr('x','+Beta',    Beta    )
+    call HistoryAddAttr('x','+HVOrder', HVOrder )
+    call HistoryAddAttr('x','+HVisc',   HVisc   )
+
+  end subroutine output_history_init
+
+ !
+ ! ヒストリー出力
+ !
+  subroutine output_history
+    write(6,*) ' History file output at it = ',it, '  time = ', time
+    call HistoryPut('t',real(time))
+
+   !---- 物理変数出力 ----
+    yx_Vor = yx_ee(ee_Vor)
+    yx_StrFunc = yx_ee(ee_StrFunc)
+    yx_VelX = -yx_ee(ee_Dy_ee(ee_StrFunc))
+    yx_VelY = yx_ee(ee_Dx_ee(ee_StrFunc))
+
+    call HistoryPut('velx',transpose(yx_VelX))
+    call HistoryPut('vely',transpose(yx_VelY))
+    call HistoryPut('vor',transpose(yx_Vor))
+    call HistoryPut('vorsp', transpose(ee_Vor))
+    call HistoryPut('strfunc',transpose(yx_StrFunc))
+
+   !---- 診断量出力 ----
+    call HistoryPut('ek',  AvrYX_yx((yx_VelX**2+yx_VelY**2)/2.0d0))
+    call HistoryPut('ens', AvrYX_yx(yx_Vor**2/2.0d0))
+    call HistoryPut('ektot', IntYX_yx((yx_VelX**2+yx_VelY**2)/2.0d0))
+    call HistoryPut('enstot', IntYX_yx(yx_Vor**2/2.0d0))
+
+    ! エネルギースペクトル計算
+    ee_ESp = ee_EnergyFromStreamFunc_ee(ee_StrFunc)
+    ee_EnsSp = ee_EnstrophyFromStreamFunc_ee(ee_StrFunc)
+
+    call HistoryPut('eksp',  ee_ESp )
+    call HistoryPut('enssp', ee_EnsSP )
+    call HistoryPut('ektotsp',  sum(ee_ESp)*XLength*YLength )
+    call HistoryPut('enstotsp', sum(ee_EnsSP)*XLength*YLength )
+
+    ! 1次元エネルギー・エンストロフィースペクトル計算
+    call calc_energy_and_enstrophy_spectra
+    call HistoryPut('1deksp', e_ESp )
+    call HistoryPut('1denssp', e_EnsSp )
+
+    ! エネルギーフラックス計算
+    call calc_energy_flux
+    call HistoryPut('ekflux', e_Pi )
+
+  end subroutine output_history
+
+ !
+ ! ヒストリー出力終了
+ !
+  subroutine output_history_close
+    call HistoryClose
+  end subroutine output_history_close
+
+end program plbaro_beta_freedecay_rn4expcs_exp1

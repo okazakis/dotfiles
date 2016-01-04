@@ -1,0 +1,25 @@
+---
+layout: page
+title: 成果物
+permalink: /deliverable/
+group: navigation
+header: deliverable
+---
+
+計算機で遊んでみた結果などです.
+
+## McWilliams (1990) の再現
+
+[2015 年 7 月 2 日 の大気セミナー](http://www.gfd-dennou.org/arch/prepri/2015/kobe-u/150702_epasemi_okazakis/pub/)で行なった計算を修正して行なった結果.
+
+### 計算概要
+
+{% math %}
+Formular\ from Wikipedia\\
+ 
+\int_0^3 9x^2 + 2x + 4\, dx = 3x^3 + x^2 + 4x + C \Big\rbrack_0^3 = 102\\
+
+e^{x+iy} = e^x(\cos y + i\sin y)\\
+
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+{% endmath %}

@@ -1,0 +1,114 @@
+---
+layout: page
+title: Emacs の設定 -- yatex 編 --
+---
+
+最近, 地味に(いい意味で)ハマってしまった Emacs の設定についてのメモ.
+
+Emacs で TeX ファイルを編集して, コンパイルして, プレビューするために整えた環境について.
+
+## 環境
+
+* Mac OS X 10.10(Yosemite) on MacBookPro(2011Early)
+* BasicTex(2014)
+* Emacs 24.3
+
+## 手順
+
+### YaTeX の導入
+
+* [YaTex公式サイト](http://www.yatex.org/)から最新版(執筆時点では 1.78)をダウンロードし, 展開.
+
+~~~
+$ wget http://www.yatex.org/yatex1.78.tar.gz
+$ tar zxvf yatex1.78.tar.gz
+$ rm yatex1.78.tar.gz 
+$ cd yatex1.78
+~~~
+
+* makefile を編集
+
+エディタで 21 行目辺りにある
+
+~~~
+#EMACS	= /Applications/Emacs.app/Contents/MacOS/Emacs
+#PREFIX	= /Applications/Emacs.app/Contents/Resources
+#EMACSDIR = ${PREFIX}
+~~~
+
+のコメントアウトを外す. そして, `make install`する. インストールされたかどうかは`make info`を打って, 最後に done が表示されれば OK. または, /Applications/Emacs.app/Contents/Resources/site-lisp/ 以下に yatex のディレクトリがあれば成功.
+
+* init.el の編集
+
+~/.emacs.d/init.el に次の記述を加える.
+
+~~~
+;; run yatex mode when open .tex file
+(setq auto-mode-alist
+(cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+;; yatex load path
+(setq load-path (cons (expand-file-name
+"/Applications/Emacs.app/Contents/Resources/site-lisp/yatex")
+load-path))
+;; use utf-8 on yatex mode
+(setq YaTeX-kanji-code 4)
+~~~
+
+また, load path を ~/.emacs.d/ 以下に通してる身としては, ~/.emacs.d/etc/ 以下に以下のようにシンボリックリンクを貼った.
+
+~~~
+$ ln -s /Applications/Emacs.app/Contents/Resources/site-lisp/yatex ./yatex
+~~~
+
+Emacs を再起動して, .tex なるファイルを開き, 右下に「やてふ」なる文字が表示されてれば成功.
+
+### YaTeX の設定
+
+「やてふ」中に C-c のキーバインドで基本的な動作についてはガイドが表示される. よく使うのは
+* C-c t j ... コンパイル
+* C-c t p ... プレビュー
+の 2 つ. ただし, プレビューのコマンドが xdvi -geo +0+0 -s 4 になっているので, いちいち消して open を打ち直すのは面倒なので, init.el に次の記述を加える.
+
+~~~
+;; preview
+(setq dvi2-command "open -a Preview")
+(defvar YaTeX-dvi2-command-ext-alist
+  '(("xdvi" . ".dvi")
+    ("ghostview\\|gv" . ".ps")
+    ("acroread\\|pdf\\|Preview\\|open" . ".pdf")))
+~~~
+これで, プレビューするファイルも .pdf になって使いやすくなった. 一度プレビューしたら, コンパイルすれば自動的に反映してくれるのも嬉しい.
+
+## (2015/11/06 追記)
+
+新しい MacBookAir (OS X El Capitan) に YaTeX を導入しようとしたら上記の方法ではうまくいかなかった(Emacs を Emacs Mac Port 版にしたからかもしれない). で, うまくいった方法は以下のとおり;
+
+* YaTeX の最新版を [http://www.yatex.org/](http://www.yatex.org/) から取得
+* 解凍して, `~/.emacs.d/lisp/yatex` に置く
+* init.el に以下を記述
+
+  ~~~
+  ;; ---------------------------------------------------------
+  ;; YaTeX の設定
+  ;; ---------------------------------------------------------
+   
+  ;; Add library path
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/yatex1.78.4")
+  ;; YaTeX mode
+  (setq auto-mode-alist
+      (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+  (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+  (setq tex-command "platex")
+  (setq dviprint-command-format "dvipdfmx %s")
+  ;; use Preview.app
+  (setq dvi2-command "open -a Preview")
+  (defvar YaTeX-dvi2-command-ext-alist    
+    '(("xdvi" . ".dvi")                   
+        ("ghostview\\|gv" . ".ps")
+        ("acroread\\|pdf\\|Preview\\|open" . ".pdf")))
+  ~~~
+
+## 参考
+
+* [Mac OS Mmavericks 10.9 に emacs + yatex を導入して爆速で tex を書こう](http://tb-lab.hatenablog.jp/entry/2013/12/27/125423)

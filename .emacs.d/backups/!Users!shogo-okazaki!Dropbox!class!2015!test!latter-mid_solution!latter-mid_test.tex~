@@ -1,0 +1,667 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Style  Setting             %%%%%%%%
+% フォント: 12point (最大), 片面印刷
+\documentclass[b5j,papersize,12pt,openbib,twoside]{jsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Package Include            %%%%%%%%
+%---------- emath ----------
+\usepackage{color}
+\usepackage{emathPh}
+\usepackage{emathPk}
+\usepackage{emathMw}
+\usepackage{emathCap}
+\usepackage{emathQf}
+\usepackage{EMproof}
+\usepackage{EMxymatrix}
+\usepackage{EMboutyuu}
+\usepackage{EMminipages}
+\usepackage{emathEy}
+\usepackage{ulem}
+\usepackage{hako}
+\usepackage{empheq}
+\usepackage{emathPl}
+\usepackage{emathPp}
+\usepackage{emathZ}
+%----------------------------
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{latexsym}
+\usepackage{multicol}
+% ----- 定理環境の設定 -----
+\newtheorem{sol}{解答}
+
+%\usepackage{multido}
+\resettagform
+
+\renewcommand{\labelenumii}{(\arabic{enumii})}
+\newenvironment{tagcases}[1][]
+  {\empheq[left={#1\empheqlbrace}]{alignat=2}}
+  {\endempheq}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% タイトル・日付など %%%%%%%%%%%%%%%
+\title{2年生数学 後期中間考査 解答・解説と講評}
+\date{2015/12/15}
+\author{岡崎正悟}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set Header & Footer %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2.5pt}
+\renewcommand{\footrulewidth}{0.8pt}
+\setlength{\footskip}{30pt}
+\lhead[2 年生 数学]{No.\thepage}
+\chead{2015 年後期 中間考査 解答・解説・講評}
+\rhead[No.\thepage]{2 年生 数学}
+\lfoot[担当 : 大木谷 / 阿部 / 岡崎]{}
+\cfoot{}
+\rfoot[]{担当：大木谷 / 阿部 / 岡崎}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%       問題番号を出力するための設定      %%%%%%%%
+\renewcommand{\labelenumi}{{\preitem\large\fbox{\protect\makebox[1.2em][c]{\bfseries\ {\arabic{enumi}}\ }}}}%
+\renewcommand{\labelenumii}{\preitem(\arabic{enumii})\ }%
+\renewcommand{\labelenumiii}{{\preitem{\small(\protect\makebox[0.8em][c]{\roman{enumiii}})}}}%
+\let\theenumi\labelenumi%
+\let\theenumii\labelenumii%
+\let\theenumiii\labelenumiii%
+\def\ToNextPage{\hfill{}\Kakko{次のページに続く}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%             Text Start                 %%%%%%%%
+\begin{document}
+
+\maketitle
+
+\noindent
+\fbox{\textbf{総評}}
+\begin{itemize}
+ \item 基本データ
+       \begin{itemize}
+        \item 全体の平均点:  44.8 / 100 点
+        \item 観点別平均点:
+              \begin{itemize}
+               \item 見方・考え方: 9.5 / 28 点 
+               \item 技能: 19.8 / 46 点
+               \item 知識・理解: 14.4 / 26 点
+              \end{itemize}
+       \end{itemize}
+\end{itemize}
+
+\begin{enumerate}
+ % 大問1
+ \item 平均点: 2.7 / 4 点
+       \begin{screen}
+        数学$\alpha$のリーダー学習で出題してもらった問題. 非
+        常に基本的な 問題から出題しているし, 一度やったような問題ばかり
+        なので, 当然満点をとって欲しかった. 毎時間の最初の 5 分間はほとん
+        どが前回の授業の確認などになっているので, 普段からマジ
+        メに取り組めば, 良い復習になるはずであるが, どうもリーダー学習の
+        時間を軽視している人がいるように思われるのが非常に残念.  
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item 同類項をまとめるのを忘れている人が多かった. 公式は使えない
+              ので普通に展開する. 
+             \begin{align*}
+               (3x-2y+4)(5x-y)&=15x^2-3xy-10xy+2y^2+20x-4y\\
+               &=\underline{15x^2-13xy+2y^2+20x-4y}
+             \end{align*}
+        \item \underline{2元1次方程式の解} ... 「方程式の解」, 「1次関数
+              の式の解」なども可とした. 単に, 「解」とだけ書いてあったり,
+              「1 次関数の解」としたものは$\times$にした. 
+        \item 切片が 2 なので, 1 次関数の式は, $y=ax+2$ とおける. これが,
+              $(4,1)$ を通るので, 
+              \[
+               1 = 4a+2 \hspace{5pt}\Leftrightarrow\hspace{5pt} a=-\frac{1}{4}
+              \]
+              よって, 求める 1 次関数の式は, \underline{$\displaystyle y=-\frac{1}{4}x+2$}
+       \end{enumerate}
+ % 大問2
+ \item 平均点: 7.0 /
+       \begin{screen}
+        2 元 1 次方程式とグラフに関する基本問題. 流石に比較的出来は良かっ
+        た. (1) はグラフをかく問題. $y=\ldots$ や $x=\ldots$ の形にすれ
+        ば, 切片などがわかりやすくなり, グラフがかける. (2) はそれぞれの
+        直線の式を連立させて解けば, グラフの交点が求まる. (3) はグラフか
+        ら切片と傾きを読み取ってグラフの式を立てて, (2) と同様に連立方程
+        式を解いて交点を求める.
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item (ア) は $\displaystyle y=-\frac{1}{3}x+2$, (イ) は
+              $x=4$. グラフ中にどちらのグラフが (ア) なのか (イ) なのか
+              を書いてない場合は $1$ 点減点している.
+
+              \begin{zahyou}[%
+               ul=10pt,%
+               zikusensyu=\thicklines\arrowdrawline,%
+               arrowheadsize=2]
+               (-7,7)(-7,7)%
+               \zahyouMemori[g][n]%
+               \def\Fx{-X/3+2}
+               \def\Gx{4}
+               \YGraph<hidariM=[w]{(ア)}>\Fx
+               \XGraph<migiM=[e]{(イ)}>\Gx
+               \xmemori{5}
+               \xmemori{-5}
+               \ymemori{5}
+               \ymemori{-5}
+              \end{zahyou}
+        \item \begin{enumerate}[(ア)]
+               \item 連立方程式
+                     \begin{eqnarray*}
+                      \begin{cases}
+                       y=x+2 & \\
+                       y=-3x+6 &
+                      \end{cases}
+                     \end{eqnarray*}
+                     を解くと, $x=1, y=3$ なので, 交点の座標は,
+                     \underline{$(1,3)$}. 
+               \item 連立方程式
+                     \begin{eqnarray*}
+                      \begin{cases}
+                       2x-y=8 & \\
+                       x+3y=11 &
+                      \end{cases}
+                     \end{eqnarray*}
+                     を解くと, $x=5, y=2$ なので, 交点の座標は,
+                     \underline{$(5,2)$}.
+              \end{enumerate}
+        \item グラフから, 直線の式はそれぞれ
+              \begin{align*}
+               l: y=-\frac{1}{2}x+4\\
+               m: y=2x+2
+              \end{align*}
+              とわかるので, これらを連立して解くと, $\displaystyle
+              x=\frac{4}{5}, y=\frac{18}{5}$ となる. よって, 交点の座標
+              は \underline{$\displaystyle \left(\frac{4}{5},
+              \frac{18}{5}\right)$}. 
+       \end{enumerate}
+
+% 大問3
+ \item 平均点: 2.9 / 6 点
+       \begin{screen}
+        店の移動と図形に関する問題. 授業や問題集で扱ったパターンとは少し
+        異なる問題. キーポイントは, $6 \leqq x \leqq 9$ のときの $y$ と
+        $x$ の関係式. 授業中でも度々言ったように, その時の図を自分でかい
+        て, わかるところをしっかり整理すれば, 答えは見えてきたはずである.
+        せめて, (1) くらいは難なく正解して欲しかったところである.
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item 5 秒後のとき, $\sankaku{ABP}$ は 底辺 BP$=5$ cm, 高さ
+              CD$=3$ cm の三角形であるから,
+              \[
+               \sankaku{ABP}=\frac{1}{2}\times5\times3=\underline{\frac{15}{2}
+              (\mathrm{cm}^2) }
+              \]
+        \item 定義域が $6\leqq x\leqq 9$ のときの様子は下のようになる;
+
+              \begin{zahyou*}[%
+                 ul=20pt]
+                 (0,4)(0,5)%
+                 \def\B{(0,0)}
+                 \def\A{(4,3)}
+                 \def\C{(6,0)}
+                 \def\D{(6,3)}
+                 \Put\A[nw]{A}
+                 \Put\B[sw]{B}
+                 \Put\C[s]{C}
+                 \Put\D[ne]{D}
+                 \Drawline{\A\B\C\D\A}
+                 \def\P{(6,2)}
+                 \Drawline{\P\A}
+                 \Drawline{\B\P}
+                 \Kuromaru\P
+                 \Put\P[e]{P}
+                 \HenKo[*]<henkoH=4ex>\A\B{5 cm}
+                 \HenKo[*]<henkoH=2ex>\B\C{6 cm}
+                 \HenKo[*]\D\A{2 cm}
+                 \HenKo<henkoH=6ex,henkotype=parallel,yazirusi=b,henkosidet=-0.1,henkosideb=1.5>\C\P{$x-6$ cm}
+                 \HenKo<henkoH=6ex,henkotype=parallel,yazirusi=b,henkosidet=-0.1,henkosideb=1.5>\P\D{$9-x$ cm}
+                 \Nuritubusi*{\P\A\B\P}
+                 \def\U{(6.5,1.75)}
+                 \def\V{(6.5,2.25)}
+                 \Tyokkakukigou\B\C\D
+                 \Tyokkakukigou\C\D\A
+                 \ArrowLine\U\V
+              \end{zahyou*}\vspace{20pt}
+              
+              よって,
+              \begin{align*}
+               \sankaku{ABP}&=\underbrace{\frac{1}{2}\times(2+6)\times
+               3}_{=\mathrm{台形
+               ABCD}}-\left(\underbrace{\frac{1}{2}\times 6
+               \times(x-6)}_{\sankaku{BCP}}+\underbrace{\frac{1}{2}\times2\times(9-x)}_{\sankaku{ADP}}\right) \\
+               &= 
+              \end{align*}
+        \item \begin{itemize}
+               \item $0\leqq x \leqq 6$ のとき, $\displaystyle y=\frac{3}{2}x$
+               \item $6\leqq x \leqq 9$ のとき, $y=-2x+21$
+               \item $9\leqq x \leqq 11$ のとき, $\displaystyle y=-\frac{3}{2}x+\frac{33}{2}$
+              \end{itemize}
+              以上より, グラフは以下のようになる;
+              
+              \begin{center}
+               \begin{zahyou}[%
+                ul=10pt,%
+                zikusensyu=\thicklines\arrowdrawline,%
+                arrowheadsize=2]
+                (0,13)(0,11)%
+                \zahyouMemori[g][n]%
+                \def\A{(0,0)}
+                \def\B{(6,9)}
+                \def\C{(9,3)}
+                \def\D{(11,0)}
+                \Drawline{\A\B\C\D}
+                \def\P{(0,5)}
+                \Put\P[w]{5}
+                \def\Q{(5,0)}
+                \Put\Q[s]{5}
+                \def\R{(10,0)}
+                \Put\R[s]{10}
+               \end{zahyou}
+              \end{center}
+              
+       \end{enumerate}
+
+% 大問4
+ \item 平均点: 0.3 / 4 点
+       \begin{screen}
+        ほとんどの人が解くのを諦めていた問題. (1) は問題集の問題と同様に,
+        D の$x$座標を$t$などの文字でおいて, $t$で E, F, G の座標を表す.
+        そのとき, 2DE$=$EF に注意する. (2) も同様に, D の$x$座標を文字で
+        おき, 条件に合うように座標を求めればよいが, $\displaystyle
+        \sankaku{CGA}+\sankaku{DCA}=\frac{1}{2}\sankaku{ABC}$ より,
+        BG$+$CD$=\displaystyle\frac{1}{2}$BC となれば良いことを利用しよ
+        う.
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item 点 D の座標を $(t,0)$ とおくと,
+              \begin{itemize}
+               \item 点 E: $(t,-t+4)$
+               \item 点 F: $(-2t,-t+4)$
+               \item 点 G: $(-2t,0)$
+              \end{itemize}
+              とおける. よって, DE $=-t+4$, EF $=3t$ となるので, 条件より,
+              \[
+               -t+4=3t\,\Leftrightarrow\, t=1
+              \]
+              となるので, 点 D の座標は \underline{$(1,0)$}
+        \item 問題の三角形の面積はそれぞれ
+             \begin{align*}
+               \sankaku{ABC}=&\frac{1}{2}\times\mathrm{BC}\times\mathrm{OA}=\frac{1}{2}\times(\mathrm{BG}+\mathrm{GD}+\mathrm{DC})\times\mathrm{OA} \\
+               \sankaku{BGA}+\sankaku{DCA}=&\frac{1}{2}\times\mathrm{BG}\times\mathrm{OA}+\frac{1}{2}\times\mathrm{CD}\times\mathrm{OA} \\
+               =& \frac{1}{2}\times\mathrm{OA}\times(\mathrm{BG}+\mathrm{CD})
+             \end{align*}
+              で求められる. 問題の条件
+              $\sankaku{BGA}+\sankaku{DCA}=\sankaku{ABC}$ と上の式より,
+              BG+DC$=\displaystyle\frac{1}{2}\mathrm{BC}\,\Leftrightarrow\,\mathrm{GD}=\frac{1}{2}\mathrm{BC}$
+              である. つまり,
+              \[
+               3t=6 \,\Leftrightarrow\, t=2
+              \]
+              よって, 点 D の座標は, \underline{$(2,0)$}
+       \end{enumerate}
+
+% 大問5
+ \item 平均点: 3.8 / 10 点
+       \begin{screen}
+        速さと 1 次関数が関連した問題. (1) はサービス問題. (2) 以降は蔵
+        之介くんの進行の様子をきちんと整理でき, かつ, グラフにすることが
+        できたかがポイントである.
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item 蔵之介くんの歩く速さは時速 4 km で, 自宅から学校まで 4 km
+              なので, 登校するのに 1 時間, つまり, \underline{60 分間}
+              かかる.
+        \item 蔵之介くんがこの日に学校に着いたのは自宅を出てから 90 分後,
+              忘れ物に気づいたのは自宅を出てから($(4\div2)\div 4=0.5\,時間
+              後=$)30 分後である. つまり, 忘れ物に気づいてから 60 分間で
+              学校に登校した. その間に進んだ距離は, (忘れ物に気づいた地
+              点から自宅まで)$+$(自宅から学校まで)$=2+4=6$ km なので, 蔵之
+              介くんの早足の速さは
+              \[
+               6\div1 = \underline{6\,\mathrm{km/時}}
+              \]
+              である.
+        \item (2) で考察した進行の様子をグラフにすると, 以下のようになる;
+
+              \vspace{5pt}
+              \begin{zahyou}[%
+               ul=10pt,%
+               zikusensyu=\thicklines\arrowdrawline,%
+               arrowheadsize=2]
+               (0,20)(0,10)%
+               \zahyouMemori[g][n]%
+               \def\A{(0,0)}
+               \def\B{(6,4)}
+               \def\C{(10,0)}
+               \def\D{(18,8)}
+               \Drawline{\A\B\C\D}
+               \def\P{(0,4)}
+               \Put\P[w]{2}
+               \def\Q{(0,8)}
+               \Put\Q[w]{4}
+               \def\R{(6,0)}
+               \Put\R[s]{30}
+               \def\R{(12,0)}
+               \Put\R[s]{60}
+               \def\R{(18,0)}
+               \Put\R[s]{90}
+              \end{zahyou}\vspace{10pt}
+              
+        \item 忘れ物に気づいた時点から 30 分間(= 0.5 時間)で 6 km 進む速さで移動す
+              れば良い. よって答えは,
+              \[
+               6 \div 0.5 = \underline{12\,\mathrm{km/時}}
+              \]
+        \item 弟は, 自宅を出てから ($\displaystyle
+              4\div3=\frac{4}{3}\,\mathrm{時間後}=$)80 分後に学校に到着
+              する. 弟の進行の様子を (3) のグラフに書き加えると以下のよ
+              うになる;
+
+              \vspace{5pt}
+              \begin{zahyou}[%
+               ul=10pt,%
+               zikusensyu=\thicklines\arrowdrawline,%
+               arrowheadsize=2]
+               (0,20)(0,10)%
+               \zahyouMemori[g][n]%
+               \def\A{(0,0)}
+               \def\B{(6,4)}
+               \def\C{(10,0)}
+               \def\D{(18,8)}
+               \def\E{(3,0)}
+               \def\F{(19,8)}
+               \Drawline{\A\B\C\D}
+               \Drawline{\E\F}
+               \Put\D[w]{蔵之介くん}
+               \Put\F[e]{弟}
+               \def\P{(0,4)}
+               \Put\P[w]{2}
+               \def\Q{(0,8)}
+               \Put\Q[w]{4}
+               \def\R{(6,0)}
+               \Put\R[s]{30}
+               \def\R{(12,0)}
+               \Put\R[s]{60}
+               \def\R{(18,0)}
+               \Put\R[s]{90}
+              \end{zahyou} \vspace{5pt}
+
+              よって, グラフより, 2 人が 2 回目に出会ったのは自宅から
+              3.5 km の地点, つまり, 学校まで残り\underline{500 m} の地
+              点.
+       \end{enumerate}
+
+% 大問6
+ \item 平均点: 6.3 / 8 点
+       \begin{screen}
+        展開の計算問題. (5), (6) で公式を間違えて覚えて適用している人が
+        いくらか見受けられた. 
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       計算過程は省略.
+       \begin{edaenumerate}<2>[(1)]
+        \item $ab+2a+6b+12$
+        \item $7a^2-22ab+3b^2+5a-15b$
+        \item $x^2+3x-4$
+        \item $4a^2-15a-21$
+        \item $x^2+10x+25$
+        \item $9x^2+12xy+4y^2$
+        \item $y^2-36$
+        \item $25x^2-81y^2$
+       \end{edaenumerate}
+
+% 大問7
+ \item 平均点: 1.6 / 6 点
+       \begin{screen}
+        1 次関数を利用した応用問題. (1) は $x$ 軸や $y$軸と平衡な直線を
+        利用してしまえば簡単に解けた人も多くいただろう. (2) は特殊な連立
+        方程式の特徴をキチンと覚えていたかがポイント.
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item 解答例(グラフと面積は省略);
+              \begin{itemize}
+               \item $x=0,\, y=0,\, y=-x+4$
+               \item $\displaystyle y=\frac{5}{2}x,\, y=\frac{5}{3}x,\, y=-\frac{3}{2}x+\frac{19}{2}$
+              \end{itemize}
+        \item (ア) は下の式の両辺に 10 をかけると, 上の式と全く同じにな
+              る. つまり, この連立方程式は不定. また, (イ) は上の式と下
+              の式で切片は異なるが傾きは同じ. つまり, この連立方程式は不
+              能. まとめると, \underline{(ア) は解が 1 つに決まらない不
+              定で, (イ) は解が存在しない不能である.} 
+       \end{enumerate}
+
+% 大問8
+ \item 平均点: 1.7 / 4 点
+       \begin{screen}
+        数学$\beta$ の範囲でリーダー学習で出題してもらった問題. どちらも
+        基本的な問題ではあるが, (2) で 5 人が一列に並ぶ場合の数を求める
+        計算が間違えた人が多かった...?
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item 辺 AB, BC, CA の向かいにある角はそれぞれ $\kaku{C},\,
+              \kaku{A},\, \kaku{B}$ で, 辺の長さの大小関係は,
+              $\mathrm{CA}>\mathrm{AB}>\mathrm{BC}$ なので, 各の大きさの
+              大小関係は, \underline{$\kaku{B}>\kaku{C}>\kaku{A}$}.
+        \item 5 人を一列に並べる方法は,
+              $5\times4\times3\times2\times1=120$ 通りある. このうち,
+              一番左端に A, 右端に B がくる並べ方は, $3\times2\times1=6$
+              通り. よって, 求める確率は, \underline{$\displaystyle \frac{1}{20}$}.
+       \end{enumerate}
+
+% 大問9
+ \item 平均点: 3.9 / 8 点
+       \begin{screen}
+        (1) は命題の真偽を答える問題. 「真偽を答えなさい」と問われているので,
+        「真」か「偽」かは必ず答えなくてはならない. (2) は特徴を 1 つし
+        か答えられなかった人が多くいた. (3) は簡単な図をかいて確かめてみ
+        れば良い問題. 
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item \begin{enumerate}[(ア)]
+               \item 長方形は, 向かい合う 2 組の辺は平行なので, 平行四辺
+                     形である. よってこの命題は\underline{真}.
+               \item ひし形であっても, \underline{すべての角が 90 $^\circ$ でない
+                     もの}$_{これが反例}$は存在する. よって, この命題は
+                     \underline{偽}.
+              \end{enumerate}
+        \item \underline{2本の対角線は直交し, その 2 本長さは等しい.}
+        \item 条件より,
+              $\kaku{B}=180\,^{\circ}-(75\,^{\circ}+90\,^{\circ})=15\,^{\circ}$. よ
+              って, $\kaku{B}$ と向かい合う辺の長さが最も小さい. つまり,
+              \underline{辺 AC}.
+       \end{enumerate}
+
+% 大問10
+ \item 平均点: 4.9 / 12 点
+       \begin{screen}
+        平行四辺形や等積変形に関する問題. 秋学期の最初の方に扱った問題なので, 忘れ
+        てしまった人が多くいたようである. (2) はよーく見ないと見逃してし
+        まう三角形がある. (3) は等積変形をうまく使えたかどうかがポイント.
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item  \begin{enumerate}[(ア)]
+                \item ABCD は平行四辺形なので, AB=CD, AD=BC である. よっ
+                      て, 条件より, AB=BC=DA=CD. つまり, すべての辺の長
+                      さが等しいので, ABCD は\underline{ひし形}である.
+                \item 平行四辺形において, 対角線が直行しているので, この
+                      四角形は\underline{ひし形}である.
+                \item CD=DA より, (ア) と同様の考え方により, ABCD はひし
+                      形. さらに, $\kaku{A}=90{^\circ}$ より,
+                      $\kaku{C}=90^{\circ}$. 残りの角については,
+                      $\kaku{B}=\kaku{D}$ より,
+                      $\kaku{B}=\kaku{D}=\{360^{\circ}-(90^{\circ}\times2)\}\div2=90^{\circ}$. よ
+                      って, 4 つの角の大きさは全て $90^{\circ}$ なので,
+                      この四角形は\underline{正方形}.
+               \end{enumerate}
+        \item 答えは,
+              \begin{itemize}
+               \item $\sankaku{BCF}$...底辺 CF が共通で, 高さも同じ.
+               \item $\sankaku{ABE}$...底辺 AE が共通で, 高さも同じ.
+               \item $\sankaku{ACE}$...底辺 AC が共通で, 高さも同じ.
+              \end{itemize}
+        \item いずれも, 下図のように, $\sankaku{ABC}$ を辺 AC を底辺として
+              高さが同じ三角形で等積変形する. 問題の条件に合うように形を
+              考える.
+             \begin{enumerate}[(ア)]
+              \item \ \\ \includegraphics[width=150pt]{problem10-1.pdf}
+              \item \ \\ \includegraphics[width=150pt]{problem10-2.pdf}
+             \end{enumerate}
+       \end{enumerate}
+
+% 大問11
+ \item 平均点: 7.6 / 16 点
+       \begin{screen}
+        確率の問題. 半分もできなかった人が多くいたのは少し驚いた. 排反事
+        象や積の法則がうまく使えなかった人がいくらかいたようにも見受けら
+        れた. もう少し出来が良いことを期待していたが...
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+       \begin{enumerate}
+        \item 目の出方は全部で 6 通りなので, 3 の目が出る確率は
+              \underline{$\displaystyle \frac{1}{6}$}.
+        \item 3 枚の硬貨の裏表の出方は全部で $2\times2\times2=8$ 通り.
+              そのうち, 15 円以上になるのは, 表になる硬貨が《5 円と 10
+              円》の場合と《1 円と 5 円と 10 円》の場合の 2 通り. よって,
+              求める確率は, $\displaystyle
+              \frac{2}{8}=\underline{\frac{1}{4}}$.
+        \item 2 回のサイコロの目の出方とそれらの積を表にまとめると以下の
+              通り(一番左端が 1 回目のサイコロの目, 一番上が 2 回目のサ
+              イコロの目であるとする); \\
+               \begin{table}[h]
+                \centering
+                \begin{tabular}{|c||c|c|c|c|c|c|} \hline
+                 & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline\hline
+                 1& 1 & 2 & 3 & 4 & 5 & 6  \\ \hline
+                 2& 2 & 4 & 6 & 8 & 10 & 12 \\ \hline
+                 3& 3 & 6 & 9 & 12 & 15 & 18 \\ \hline
+                 4& 4 & 8 & 12 & 16 & 20 & 24 \\ \hline
+                 5& 5 & 10 & 15 & 20 & 25 & 30 \\ \hline
+                 6& 6 & 12 & 18 & 24 & 30 & 36 \\ \hline
+                \end{tabular}
+               \end{table}\\
+              これより, 出た目の積が 12 の倍数になる確率は,
+              $\displaystyle \underline{\frac{5}{36}}$.
+        \item 3 人の手の出し方は全部で$2\times2\times2=$\underline{$8$ 通
+              り}. 
+        \item 2 つのサイコロの目の出方は全部で$6\times6=36$ 通り. 1 次方程式の解は
+              \[
+               ax+b=2\,\Leftrightarrow\, x=-\frac{2b}{a}
+              \]
+              である. つまり, 解が $-1$ になるためには, $a=2b$ とならな
+              くてはならない. このような $a,b$ の組み合わせとして考えら
+              れるものは, $(a,b)=(1,2),(2,4),(3,6)$ の 3 通り. よって,
+              求める確率は, $\displaystyle
+              \frac{3}{36}=\underline{\frac{1}{12}}$.
+        \item 排反事象の考え方を用いて求める; トランプの中に A のカード
+              は全部で 4 枚あるので, 52 枚のトランプから 1 枚のカードを
+              引いた時に A が\.出\.る確率は $\displaystyle
+              \frac{4}{52}=\frac{1}{13}$. よって, A が\.出\.な\.い確率は,
+              \[
+               1-\frac{1}{13} = \underline{\frac{12}{13}}.
+              \]
+        \item $x,y$ が反比例$\displaystyle y=\frac{x}{4}$ のグラフ上にあ
+              るということは, $x$と$y$は$xy=4$の関係式を満たしているとい
+              うことである. よって, 考えられる$x,y$の組み合わせは,
+              $(x,y)=(1,4),(2,2),(4,1)$の 3 通りなので, 求める確率は,
+              $\displaystyle \frac{3}{36}=\underline{\frac{1}{12}}$. 
+        \item 排反事象の考え方を用いる; A, B, C の目の出方は全部で
+              $6\times6\times6=216$ 通りある. 3 個のサイコロの目の積が 4
+              の倍数になる目の出方は, 樹形図を用いて調べると以下のように
+              なる;\\
+              1
+              \begin{zyukeizu}
+               \Eda{1}{\Eda{4}{}}
+               \Eda{2}{
+               \Eda{2}{}
+               \Eda{4}{}
+               \Eda{6}{}}
+               \Eda{3}{\Eda{4}{}}
+               \Eda{4}{
+               \Eda{1}{}
+               \Eda{2}{}
+               \Eda{3}{}
+               \Eda{4}{}
+               \Eda{5}{}
+               \Eda{6}{}}
+               \Eda{5}{\Eda{4}{}}
+               \Eda{6}{
+               \Eda{2}{}
+               \Eda{4}{}
+               \Eda{6}{}}
+              \end{zyukeizu}
+              1
+              \begin{zyukeizu}
+               \Eda{1}{\Eda{4}{}}
+               \Eda{2}{
+               \Eda{2}{}
+               \Eda{4}{}
+               \Eda{6}{}}
+               \Eda{3}{\Eda{4}{}}
+               \Eda{4}{
+               \Eda{1}{}
+               \Eda{2}{}
+               \Eda{3}{}
+               \Eda{4}{}
+               \Eda{5}{}
+               \Eda{6}{}}
+               \Eda{5}{\Eda{4}{}}
+               \Eda{6}{
+               \Eda{2}{}
+               \Eda{4}{}
+               \Eda{6}{}}
+              \end{zyukeizu}
+       \end{enumerate}
+
+% 大問12
+ \item 平均点: 1.7 / 6 点
+       \begin{screen}
+        確率と 1 次関数のグラフの融合問題. しっかり問題を読んで解けば,
+        (1) と (2) は難しくない. (3) は時間がかかるため, 解かなかった人
+        も多くいるのではないか.
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+
+% 大問13
+ \item 平均点: 0.3 / 4 点
+       \begin{screen}
+        確率の応用問題. もはやここまでたどり着かなかった人もいるのではな
+        いかという気はする. (1) はサイコロを 2 回投げて場合の数が 12 通
+        りになる事象を書けばよい. そのとき, 6$\times$6 の表を使って整理
+        すれば早く解けただろう. (2) は記述を重点的に見て採点した. 2 つの
+        事象のそれぞれの確率や場合の数を書いて比較していないと減点した.
+       \end{screen}
+       \noindent
+       \textbf{【解答】}
+\end{enumerate}
+
+\end{document}

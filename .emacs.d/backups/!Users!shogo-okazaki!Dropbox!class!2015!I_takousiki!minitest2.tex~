@@ -1,0 +1,68 @@
+\documentclass[a4j,12pt]{jarticle}
+\usepackage[arydshln]{emathT}
+\usepackage{emathLb}
+\usepackage{EMminipages}
+\usepackage[landscape]{geometry}
+%ページのレイアウト枠を表示するには，上の1行を次と差し替える。
+%\usepackage[showframe,landscape]{geometry}
+\usepackage[dvipdfmx]{graphicx,color}
+\usepackage{remreset}
+\usepackage{emathOld}
+\usepackage{hako}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 解答をマスクする。すなわち解答は印刷しない
+\usepackage[maskAnstrue]{emathAe}
+\maskhakotrue
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 解答をマスクしない。すなわち解答は印刷する
+%\usepackage[maskAnsfalse]{emathAe}
+%\maskhakofalse
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{center}
+\textbf{数学$\alpha$ 小テスト 2 (展開の計算)}
+\end{center}
+\hfill 2年 \underline{\hspace{2zw}} 組 \underline{\hspace{4zw}}
+  番 氏名 \underline{\hspace{12zw}}
+\smallskip
+
+\begin{EMminipages}{*,.4\textwidth}
+ \begin{itemize}
+  \item 次の式を展開しなさい.
+  \begin{enumerate}[\large (1)]
+   \setlength{\itemsep}{4zw} % 項目間
+   \item $(x+a)^2$
+   \item $(x-5)(x-9)$
+   \item $\displaystyle (3x^2+9x) \div 3x$
+   \item $(3x+5y)(3x-5y)$
+   \item $(x+y+z)^2$
+  \end{enumerate}
+ \end{itemize}
+ 
+ \EMminipagesbreak
+ 
+ \begin{center}
+  \textbf{【解答欄】}
+ \end{center}
+ \def\arraystretch{2.5}
+ \centering
+ $\begin{array}[t]{|c|C{20zw}|}\hline
+  \ifmaskAns 
+   (1)& \\ \hline
+   (2)& \\ \hline
+   (3)& \\ \hline
+   (4)& \\ \hline
+   (5)& \\ \hline
+ \else
+   (1)& x^2+2ax+a^2 \\ \hline
+   (2)& x^2-14x+45\\ \hline
+   (3)& x+3 \\ \hline
+   (4)& 9x^2-25y^2\\ \hline
+   (5)& x^2+y^2+z^2+2xy+2yz+2xz\\ \hline
+   \fi
+  \end{array}$
+ 
+\end{EMminipages}%
+\end{document}

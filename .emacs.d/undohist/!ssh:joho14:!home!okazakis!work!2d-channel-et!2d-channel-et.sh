@@ -1,0 +1,2 @@
+
+((digest . "9dd88079e6041aa2fa44d5ebda49a2ff") (undo-list nil (#("0" 0 1 (fontified t face sh-heredoc)) . -3041) nil (3035 . 3037) nil (#("4" 0 1 (fontified t face sh-heredoc)) . -3035) nil (3035 . 3036) nil (#("1" 0 1 (fontified t face sh-heredoc)) . -3035) nil (3017 . 3020) nil (#("1" 0 1 (fontified t face sh-heredoc)) . -3017) nil (#("." 0 1 (fontified t face sh-heredoc)) . -3018) nil (#("0" 0 1 (fontified t face sh-heredoc)) . -3019) (t 22113 37513 0 0)))

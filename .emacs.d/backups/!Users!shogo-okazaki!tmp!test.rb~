@@ -1,0 +1,6 @@
+km = 5
+kn = -km
+for k in -1..km
+  sum = sum + k
+end
+put sum

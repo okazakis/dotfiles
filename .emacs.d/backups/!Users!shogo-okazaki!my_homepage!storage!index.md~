@@ -1,0 +1,80 @@
+---
+layout: page
+title: 物置き
+permalink: /storage/
+group: navigation
+header: storage
+---
+
+メモや成果物の置き場です.
+
+## 成果物
+
+
+
+## 計算機・コンピュータ関連のメモ
+
+## McWilliams (1990) の再現
+
+[2015 年 7 月 2 日 の大気セミナー](http://www.gfd-dennou.org/arch/prepri/2015/kobe-u/150702_epasemi_okazakis/pub/)で行なった計算を修正して行なった結果.
+
+### 計算概要
+
+* 支配方程式: 重調和超粘性拡散を伴う, 2 次元の渦度方程式
+{% math %}
+\frac{\partial \zeta}{\partial t}+\mathbf{v}\cdot\nabla\zeta = -\nu\nabla^4\zeta
+{% endmath %}
+  * 超粘性係数は 3×10^{-8}
+* 二重周期境界の正方領域モデル
+  * 格子点数: 256×256
+  * 切断波数: 128
+* 初期条件として, エネルギースペクトルは
+{% math %}
+E(k)\propto \frac{k^{30}}{(k+k_0)^{60}}
+{% endmath %}
+  * k_0 はエネルギースペクトルの最大値を与える波数で, 今回は 30 として計算.
+* 計算を 3 種類実行
+  * run1: t=0 から t=30 までそのまま時間積分
+  * run2: t=0 から t=10 まで積分し, t=10 で位相をかき混ぜた後, t=30 まで積分
+  * run2: t=0 から t=20 まで積分し, t=20 で位相をかき混ぜた後, t=30 まで積分
+  * 位相のかき混ぜは, スペクトルの形を変えないように行う
+
+* 計算には, [地球流体電脳倶楽部](http://www.gfd-dennou.org/) の [SPMODEL](http://www.gfd-dennou.org/library/spmodel/) を用いた.
+  * 竹広 真一, 佐々木 洋平, 石岡 圭一, 小高 正嗣, 高橋 芳幸, 中島 健介, 石渡 正樹, 林 祥介, spmodel 開発グループ, 2013: 階層的地球流体力学スペクトルモデル集 (SPMODEL), http://www.gfd-dennou.org/library/spmodel/, 地球流体電脳倶楽部. 
+* 結果の描画には, [地球流体電脳倶楽部](http://www.gfd-dennou.org/) の [Gphys](http://www.gfd-dennou.org/library/ruby/products/gphys/) を用いた.
+
+### 結果
+
+#### 全エネルギーと全エンストロフィーの比較
+
+実線が run1, 破線が run2, 点線が run3 の結果
+
+* エネルギー [[pdf]]({{ site.baseurl }}/deliverable/McWilliams_1990/ektot.pdf)
+
+![エネルギー]({{ site.baseurl }}/deliverable/McWilliams_1990/ektot.png)
+
+* エンストロフィー [[pdf]]({{ site.baseurl }}/deliverable/McWilliams_1990/enstot.pdf)
+
+![エンストロフィー]({{ site.baseurl }}/deliverable/McWilliams_1990/enstot.png)
+
+#### 渦度とエネルギースペクトルの変化
+
+* run1 [[pdf]]({{ site.baseurl }}/deliverable/McWilliams_1990/run1-vor_and_eksp/run1-vor&eksp.pdf)
+  ![run1-ek]({{ site.baseurl }}/deliverable/McWilliams_1990/run1-vor_and_eksp/run1-vor_and_eksp.gif)
+
+* run2 [[pdf]]({{ site.baseurl }}/deliverable/McWilliams_1990/run2-vor_and_eksp/run2-vor&eksp.pdf)
+  ![run2-ek]({{ site.baseurl }}/deliverable/McWilliams_1990/run2-vor_and_eksp/run2-vor_and_eksp.gif)
+
+* run3 [[pdf]]({{ site.baseurl }}/deliverable/McWilliams_1990/run3-vor_and_eksp/run3-vor&eksp.pdf)
+  ![run3-ek]({{ site.baseurl }}/deliverable/McWilliams_1990/run3-vor_and_eksp/run3-vor_and_eksp.gif)
+
+#### 渦度とエンストロフィースペクトルの変化
+
+* run1 [[pdf]]({{ site.baseurl }}/deliverable/McWilliams_1990/run1-vor_and_enssp/run1-vor&enssp.pdf)
+  ![run1-ens]({{ site.baseurl }}/deliverable/McWilliams_1990/run1-vor_and_enssp/run1-vor_and_enssp.gif)
+
+* run2 [[pdf]]({{ site.baseurl }}/deliverable/McWilliams_1990/run2-vor_and_enssp/run2-vor&enssp.pdf)
+  ![run2-ens]({{ site.baseurl }}/deliverable/McWilliams_1990/run2-vor_and_enssp/run2-vor_and_enssp.gif)
+
+* run3 [[pdf]]({{ site.baseurl }}/deliverable/McWilliams_1990/run3-vor_and_enssp/run3-vor&enssp.pdf)
+  ![run3-ek]({{ site.baseurl }}/deliverable/McWilliams_1990/run3-vor_and_enssp/run3-vor_and_enssp.gif)

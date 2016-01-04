@@ -1,0 +1,65 @@
+\documentclass[b5paper,landscape]{jarticle}
+\usepackage[arydshln]{emathT}
+\usepackage{emathLb}
+\usepackage{EMminipages}
+\usepackage[landscape]{geometry}
+%ページのレイアウト枠を表示するには，上の1行を次と差し替える。
+%\usepackage[showframe,landscape]{geometry}
+
+\begin{document}
+\begin{center}
+\textbf{数学I 学年末考査}
+\end{center}
+\hfill 1年 \underline{\hspace{2zw}} 組 \underline{\hspace{4zw}}
+  番 氏名 \underline{\hspace{12zw}}
+\smallskip
+
+\nokoritakasa\tkaitouran%   解答欄の縦幅
+\dimenref{Wktr}\wkaitouran% 解答欄の横幅
+\setlength{\columnsep}{4zw}%問題欄と解答欄の横間隔
+\begin{EMminipages}<tate=\tkaitouran>{*,\wkaitouran}
+\begin{enumerate}[\large 1.~]
+  \item ..... を解け。
+\vfill
+
+  \item 次の計算をせよ。分数はすべて既約分数で表わし，
+    根号の中の平方数は，根号の外に出して簡略化せよ。
+    \begin{enumerate}[(1)]
+      \item .....
+      \item .....
+      \item .....
+    \end{enumerate}
+\vfill
+
+  \item 次の問いに答えよ。
+    \begin{enumerate}[(1)]
+      \item .....
+      \item .....
+    \end{enumerate}
+\vfill
+
+  \item ..... を求めよ。
+\vfill
+
+\end{enumerate}
+
+\EMminipagesbreak
+
+\begin{center}
+  \textbf{【解答欄】}
+\end{center}
+\def\arraystretch{2.7}% 縦幅いっぱいになるよう調整
+\dashlinedash1.6pt\dashlinegap2pt
+\getWHD{ktr}{% 解答欄の計測
+  \begin{tabular}{Ic|c:L{12zw}I}\hlineb
+    \large 1&\multicolumn{2}{cI}{}\\ \hline
+             &(1)& \\\cdashline{2-3}
+    \large 2&(2)& \\\cdashline{2-3}
+             &(3)& \\\hline
+    \large 3&(1)& \\\cdashline{2-3}
+             &(2)& \\\hline
+    \large 4&\multicolumn{2}{cI}{}\\ \hlineb
+  \end{tabular}%
+}%
+\end{EMminipages}%
+\end{document}

@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <15/10/30 09:22:18 /Users/shogo-okazaki/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <15/12/24 22:03:04 /Users/shogo-okazaki/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -39,6 +39,25 @@
   ("gid-integer" 1244)
   ("readlink" "\\readlink")
   ("gid-string" "okazakis"))
+ (["ssh" nil "joho01" nil nil]
+  ("locale" "LC_ALL=C")
+  ("uname" "Linux 3.16.0-4-amd64")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("file-exists" "test -e")
+  ("readlink" "\\readlink")
+  ("stat" "\\stat")
+  ("ls" "/bin/ls --color=never")
+  ("git" nil)
+  ("id" "/usr/bin/id")
+  ("gid-string" "okazakis")
+  ("gid-integer" 1003)
+  ("uid-integer" 1003))
  (["ssh" nil "joho14" nil nil]
   ("locale" "LC_ALL=C")
   ("uname" "Linux 3.16.0-4-amd64")
@@ -46,14 +65,19 @@
   ("remote-path"
    ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
   ("remote-shell" "/bin/sh")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 1000)
+  ("stat" "\\stat")
   ("file-exists" "test -e")
+  ("gid-string" "okazakis")
+  ("readlink" "\\readlink")
   ("perl-file-spec" t)
   ("perl-cwd-realpath" t)
   ("perl" "\\perl")
+  ("~" "/home/okazakis")
   ("ls" "/bin/ls --color=never")
   ("ls-dired" t)
-  ("stat" "\\stat")
-  ("id" "/usr/bin/id")
-  ("gid-integer" 1000)
-  ("readlink" "\\readlink")
-  ("gid-string" "okazakis")))
+  ("git" "\\git")
+  ("uid-integer" 1000))
+ (["ssh" nil "ssh" nil nil]
+  nil))

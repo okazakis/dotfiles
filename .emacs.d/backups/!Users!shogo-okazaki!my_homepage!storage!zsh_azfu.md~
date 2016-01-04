@@ -1,0 +1,99 @@
+---
+layout: post
+title: auto-fu.zsh の導入
+categories: メモ
+tags: コンピュータ zsh azfu
+---
+
+研究室の先輩が使ってて便利そう & カッコ良かったので, zsh で自動補完をやってくれちゃう auto-fu.zsh を導入してみた. 少しめんどくさいこともあるが, 概ね満足.
+
+## auto-fu.zsh の入手
+
+私の場合は, ホームディレクトリ内に 「.zsh」なるディレクトリを作ってそこに入れている. GitHub から clone する.
+
+~~~
+$ mkdir .zsh
+$ cd .zsh
+$ git clone git://github.com/hchbaw/auto-fu.zsh.git
+~~~
+
+このままでは, zsh 起動時に
+
+~~~
+Cannot rebind backward-kill-word: user:backward-kill-word-match
+Cannot rebind kill-word: user:kill-word-match
+~~~
+
+のようなエラーが表示されてしまう. GitHub でも [ Errors after sourcing #24 ](https://github.com/hchbaw/auto-fu.zsh/issues/24)で報告されており,  thb か pu ブランチに切り替えると良い.
+
+~~~
+$ cd ~/.zsh/auto-fu.zsh
+$ git checkout -b pu origin/pu
+~~~
+
+## 設定
+
+$HOME/.zshrc に以下の設定を追加する.
+
+~~~
+if [ -d "$HOME/.zsh" ]; then
+	if [ -d "$HOME/.zsh/git/auto-fu.zsh" ]; then
+		source "$HOME/.zsh/git/auto-fu.zsh/auto-fu.zsh"
+		function zle-line-init ()
+		{
+			auto-fu-init
+		}
+		zle -N zle-line-init
+		zstyle ':completion:*' completer _oldlist _complete
+	fi
+fi
+~~~
+
+また, [zshの設定，zshrc](http://yuyunko.hatenablog.com/entry/20101112/1289551129) を参考に, 保管項を矢印キーで選択できるようにしたり, 動作を少し変えるパッチを当ててみた.
+
+~~~
+# 補完候補を矢印キーなどで選択出来るようにする。
+zstyle ':completion:*:default' menu select
+
+# auto-fu.zsh での動作をちょっと変えるパッチ
+# delete unambiguous prefix when accepting line
+function afu+delete-unambiguous-prefix () {
+    afu-clearing-maybe
+    local buf; buf="$BUFFER"
+    local bufc; bufc="$buffer_cur"
+    [[ -z "$cursor_new" ]] && cursor_new=-1
+    [[ "$buf[$cursor_new]" == ' ' ]] && return
+    [[ "$buf[$cursor_new]" == '/' ]] && return
+    ((afu_in_p == 1)) && [[ "$buf" != "$bufc" ]] && {
+        there are more than one completion candidates
+        zle afu+complete-word
+        [[ "$buf" == "$BUFFER" ]] && {
+            the completion suffix was an unambiguous prefix
+            afu_in_p=0; buf="$bufc"
+        }
+        BUFFER="$buf"
+        buffer_cur="$bufc"
+    }
+}
+zle -N afu+delete-unambiguous-prefix
+function afu-ad-delete-unambiguous-prefix () {
+    local afufun="$1"
+    local code; code=$functions[$afufun]
+    eval "function $afufun () { zle afu+delete-unambiguous-prefix; $code }"
+}
+afu-ad-delete-unambiguous-prefix afu+accept-line
+afu-ad-delete-unambiguous-prefix afu+accept-line-and-down-history
+afu-ad-delete-unambiguous-prefix afu+accept-and-hold
+~~~
+
+実は, 色の設定とかができてなかったりしてたので, こっそり設定し直してたりするのだが.
+
+## auto-fu を一時的にキャンセル
+
+補完機能が鬱陶しい場合は, `C-c C-c` を打てば, 一時的に無効にできる. Enter を押せばまた有効になる.
+
+## 参考資料
+
+* [auto-fu.zshを導入してみた](http://hico-horiuchi.hateblo.jp/entry/20130726/161224)
+* [zshの設定，zshrc](http://yuyunko.hatenablog.com/entry/20101112/1289551129)
+* [zsh で自動補完する auto-fu](http://kaworu.jpn.org/kaworu/2012-04-21-1.php)

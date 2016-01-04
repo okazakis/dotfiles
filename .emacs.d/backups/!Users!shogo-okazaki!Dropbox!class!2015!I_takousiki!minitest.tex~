@@ -1,0 +1,203 @@
+\documentclass[a4j,12pt]{jarticle}
+\usepackage[arydshln]{emathT}
+\usepackage{emathLb}
+\usepackage{EMminipages}
+\usepackage[landscape]{geometry}
+%ページのレイアウト枠を表示するには，上の1行を次と差し替える。
+%\usepackage[showframe,landscape]{geometry}
+\usepackage[dvipdfmx]{graphicx,color}
+\usepackage{remreset}
+\usepackage{emathOld}
+\usepackage{hako}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 解答をマスクする。すなわち解答は印刷しない
+\usepackage[maskAnstrue]{emathAe}
+\maskhakotrue
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 解答をマスクしない。すなわち解答は印刷する
+%\usepackage[maskAnsfalse]{emathAe}
+%\maskhakofalse
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{center}
+\textbf{数学$\alpha$ 小テスト 1 (展開の計算)}
+\end{center}
+\hfill 2年 \underline{\hspace{2zw}} 組 \underline{\hspace{4zw}}
+  番 氏名 \underline{\hspace{12zw}}
+\smallskip
+
+\begin{EMminipages}{*,.4\textwidth}
+ \begin{itemize}
+  \item 次の式を展開しなさい.
+  \begin{enumerate}[\large (1)]
+   \setlength{\itemsep}{4zw} % 項目間
+   \item $(x-4)(x+4)$
+   \item $(x-a)^2$
+   \item $(x-3)(x-5)$
+   \item $(2x+3)(3x+1)$
+   \item $(x+y+1)(x+2)$
+  \end{enumerate}
+ \end{itemize}
+ 
+ \EMminipagesbreak
+ 
+ \begin{center}
+  \textbf{【解答欄】}
+ \end{center}
+ \def\arraystretch{2.5}
+ \centering
+ $\begin{array}[t]{|c|C{20zw}|}\hline
+  \ifmaskAns 
+   (1)& \\ \hline
+   (2)& \\ \hline
+   (3)& \\ \hline
+   (4)& \\ \hline
+   (5)& \\ \hline
+ \else
+   (1)& x^2-16\\ \hline
+   (2)& x^2-2ax+a^2\\ \hline
+   (3)& x^2-8x+15 \\ \hline
+   (4)& 6x^2+11x+3 \\ \hline
+   (5)& x^2+3x+xy+2y+2y+2\\ \hline
+   \fi
+  \end{array}$
+\end{EMminipages}%
+
+ \newpage
+ \begin{center}
+  \textbf{数学$\alpha$ 小テスト 2 (展開の計算)}
+ \end{center}
+ \hfill 2年 \underline{\hspace{2zw}} 組 \underline{\hspace{4zw}}
+  番 氏名 \underline{\hspace{12zw}}
+  \smallskip
+  \begin{EMminipages}{*,.4\textwidth}
+   \begin{itemize}
+    \item 次の式を展開しなさい.
+          \begin{enumerate}[\large (1)]
+           \setlength{\itemsep}{4zw} % 項目間
+           \item $(x+a)^2$
+           \item $(x-5)(x-9)$
+           \item $\displaystyle (3x^2+9x) \div 3x$
+           \item $(3x+5y)(3x-5y)$
+           \item $(x+y+z)^2$
+          \end{enumerate}
+   \end{itemize}
+   
+   \EMminipagesbreak
+  
+   \begin{center}
+    \textbf{【解答欄】}
+   \end{center}
+   \def\arraystretch{2.5}
+   \centering
+   $\begin{array}[t]{|c|C{20zw}|}\hline
+    \ifmaskAns 
+     (1)& \\ \hline
+     (2)& \\ \hline
+     (3)& \\ \hline
+     (4)& \\ \hline
+     (5)& \\ \hline
+     \else
+     (1)& x^2+2ax+a^2 \\ \hline
+     (2)& x^2-14x+45\\ \hline
+     (3)& x+3 \\ \hline
+     (4)& 9x^2-25y^2\\ \hline
+     (5)& x^2+y^2+z^2+2xy+2yz+2xz\\ \hline
+     \fi
+    \end{array}$
+  \end{EMminipages}%
+  
+  \newpage
+  
+  \begin{center}
+   \textbf{数学$\alpha$ 小テスト 3 (展開の計算)}
+  \end{center}
+  \hfill 2年 \underline{\hspace{2zw}} 組 \underline{\hspace{4zw}}
+  番 氏名 \underline{\hspace{12zw}}
+  \smallskip
+  
+  \begin{EMminipages}{*,.4\textwidth}
+   \begin{itemize}
+    \item 次の式を展開しなさい.
+          \begin{enumerate}[\large (1)]
+           \setlength{\itemsep}{4zw} % 項目間
+           \item $(x-11)(x+11)$
+           \item $3xy(x-4)$
+           \item $(3x-5y)^2$
+           \item $(a+1)(b+1)$
+           \item $(a+b+3)^2$
+          \end{enumerate}
+   \end{itemize}
+   
+   \EMminipagesbreak
+   
+   \begin{center}
+    \textbf{【解答欄】}
+   \end{center}
+   \def\arraystretch{2.5}
+   \centering
+   $\begin{array}[t]{|c|C{20zw}|}\hline
+    \ifmaskAns 
+     (1)& \\ \hline
+     (2)& \\ \hline
+     (3)& \\ \hline
+     (4)& \\ \hline
+     (5)& \\ \hline
+     \else
+     (1)& x^2-121 \\ \hline
+     (2)& 3x^2 y-12xy\\ \hline
+     (3)& 9x^2-30xy+25y^2 \\ \hline
+     (4)& ab+a+b+1\\ \hline
+     (5)& a^2+b^2+2ab+6a+6b+9\\ \hline
+     \fi
+    \end{array}$
+  \end{EMminipages}%
+
+  \newpage
+
+  \begin{center}
+\textbf{数学$\alpha$ 小テスト 4 (展開の計算)}
+\end{center}
+\hfill 2年 \underline{\hspace{2zw}} 組 \underline{\hspace{4zw}}
+  番 氏名 \underline{\hspace{12zw}}
+\smallskip
+
+\begin{EMminipages}{*,.4\textwidth}
+ \begin{itemize}
+  \item 次の式を展開しなさい.
+  \begin{enumerate}[\large (1)]
+   \setlength{\itemsep}{4zw} % 項目間
+   \item $(x+3)^2$
+   \item $\displaystyle \frac{2}{3x}(9x^2+12x)$
+   \item $(x+y)(x+1)$
+   \item $(2x-3)(5y+1)$
+   \item $(2x+3y+1)^2$
+  \end{enumerate}
+ \end{itemize}
+ 
+ \EMminipagesbreak
+ 
+ \begin{center}
+  \textbf{【解答欄】}
+ \end{center}
+ \def\arraystretch{2.5}
+ \centering
+ $\begin{array}[t]{|c|C{20zw}|}\hline
+  \ifmaskAns 
+   (1)& \\ \hline
+   (2)& \\ \hline
+   (3)& \\ \hline
+   (4)& \\ \hline
+   (5)& \\ \hline
+ \else
+   (1)& x^2+6x+9 \\ \hline
+   (2)& 6x+8 \\ \hline
+   (3)& x^2+xy+x+y \\ \hline
+   (4)& 10xy+2x-15y-3\\ \hline
+   (5)& 4x+9y^2+12xy+4x+6y+1\\ \hline
+   \fi
+  \end{array}$
+\end{EMminipages}%
+\end{document}

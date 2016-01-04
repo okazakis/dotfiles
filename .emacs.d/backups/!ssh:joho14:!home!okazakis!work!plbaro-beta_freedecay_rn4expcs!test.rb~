@@ -1,0 +1,57 @@
+# coding: utf-8
+require "numru/ggraph"
+include NumRu
+require "narray"
+require "numru/dcl"
+include Math
+
+##< コマンドラインオプション >
+file = ARGV[0].to_s            # ファイル名
+iws = ( ARGV[1] || 1 ).to_i    # 第1引数は装置番号 (1,2,or 4)
+#tsleep = [ ( ARGV[2] || 0.5 ).to_f, 0.0 ].max  # 第2引数は描画間隔(秒)
+#wait = ( tsleep <= 0.0 )       #->true/false; 0以下(true)ならマウスクリックを待つ
+#fsec = ( ARGV[3] ||  0 ).to_i  # 第3引数は最初の日付(1月何日か)
+#lsec = ( ARGV[4] || 30 ).to_i  # 第4引数は最後の日付(1月何日か)
+
+#< 使用データ >
+vorsp = (GPhys::IO.open file, 'vorsp').val # 渦度
+k = (GPhys::IO.open file, 'k').val.size # x方向波数
+xwn = (GPhys::IO.open file, 'k').val # x方向波数
+l = (GPhys::IO.open file, 'l').val.size # y方向波数
+ywn = (GPhys::IO.open file, 'l').val # y方向波数
+time = (GPhys::IO.open file, 't').val.size # 時間
+
+km = xwn.max
+lm = ywn.max
+wn = sqrt(km**2+lm**2).round
+eksp = NArray.float(wn+1,time)
+
+#for t in 0..time-1
+  for i in 0..k-1
+    for j in 0..l-1
+      n = sqrt((xwn[i])**2 + (ywn[j])**2).round
+      if n == 0
+        next
+      end
+#      eksp[n,t] = eksp[n,t] + vorsp[i,j,t]**2 / ((xwn[i])**2 + (ywn[j])**2)
+      eksp[n,0] = eksp[n,0] + vorsp[i,j,0]**2 / ((xwn[i])**2 + (ywn[j])**2)
+#      print "i=",i,",j=",j,",xwn=",xwn[i],",ywn=",ywn[j],",n=",n,",eksp=",eksp[n,0],"\n"
+    end
+  end
+#end
+
+x = NArray.float(wn+1)
+y = eksp
+
+for i in 0..wn-1
+  x[i+1] = x[i] + 1.0
+  y[i+1] = eksp[i,0]
+end
+
+DCL::gropn iws
+DCL::grfrm
+
+DCL::usgrph(x, y)
+
+DCL::grcls
+

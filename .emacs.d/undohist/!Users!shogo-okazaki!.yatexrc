@@ -1,5 +1,11 @@
 
-((digest . "fc67cde67f93e9e1311b5a1e7ad07f3a") (undo-list ("
+((digest . "f9fba7909dfb92b0721bf1690b12b444") (undo-list ("
+" . 73) (1 . 74) ("
+" . 1) ("(setq user-env-table '(
+(\"edaenumerate\")
+(\"exe\")
+(\"exm\")
+))" . -1) (t 22083 11943 0 0) ("
 " . 61) (1 . 62) ("
 " . 1) ("(setq user-env-table '(
 (\"exe\")

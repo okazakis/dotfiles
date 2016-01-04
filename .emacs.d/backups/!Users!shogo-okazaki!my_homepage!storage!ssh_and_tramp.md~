@@ -1,0 +1,51 @@
+---
+layout: post
+title: Emacs の設定 -- tramp 編 --
+---
+
+リモートの計算機にわざわざ ssh してファイルを編集するのがめんどくさくなってきたので, Emacs から直接ファイルを編集できる tramp を導入してみた. ついでに, 多段 ssh の設定もした.
+
+## 多段 ssh の設定
+
+現在の計算機環境では, 自分が管理する計算機へのログインは, ITPASS サーバにからのみログインできる. 手元のローカル環境から ITPASS サーバへのログインは公開鍵認証, ITPASS サーバからリモートの計算機へのログインはパスワード認証である. 手元のローカル環境から直接, リモートの計算機に ssh するためには, `~/.ssh/config` に以下のように記述する;
+
+~~~
+Host server                             # ssh するサーバの名前(任意)
+     Hostname           server.com      # サーバのホスト名
+     User               username1       # ログインユーザ名
+     IdentityFile       ~/.ssh/id_rsa   # 秘密鍵のへのパス
+
+Host remote                                     # リモート計算機の名前(任意)
+     Hostname           remote.co.jp            # リモートの計算機のホスト名
+     User               username2               # ログインユーザ名
+     ProxyCommand       ssh server -W %h:%p     # リモート計算機に接続する前に
+                                                # 実行するコマンドの指定
+                                                # (詳細後述)
+~~~
+
+* ProxyCommand はサーバーに接続するときに利用されるコマンドを指定する.
+* `ssh -W` を使うとクライアントの入出力を指定したホストに送る事が出来る.
+* `~/.ssh/config` の中では `%h` が HostName, `%p` が Port(上の場合は指定がないので通常の22) に変換される.
+* 上の例では server に ssh で接続して, そこから remote へ入出力を飛ばす, という形になる.
+
+上記の設定をすれば, server.com に ssh したいときは, `ssh server` でいける. scp や rsync コマンドも同様にできる. 複数のサーバを踏み台にする場合も簡単になる.
+
+## tramp を使う
+
+tramp は ssh 経由でリモートサーバのファイルを編集することが出来る Emacs の機能. 機能を有効にするには, init.el などに
+
+~~~
+(require 'tramp)
+(setq tramp-default-method "ssh")
+~~~
+
+を記述すれば良い. ファイルを開く際に, `C-x C-f /ssh:user@hoge.com:(ファイルのパス)` とすれば良い. 上記のように `.ssh/config` を設定していれば, `C-x C-f /ssh:server:(ファイルのパス)` で使える.
+
+ssh のプロトコルが新しい場合, scp や scpc という指定を使ったほうが早いという話もある. 私の手元では試していない.
+
+## 参考資料
+
+* [サルでも分かる多段ssh](http://d.hatena.ne.jp/tkng/20110225/1298596697)
+* [多段SSHやポートフォワーディングを '.ssh/conig' に書く](http://qiita.com/lasta/items/41e95a2fdded18c34dae)
+* [trampでリモートサーバのファイルをSSH経由で編集 ](http://qiita.com/muyuu/items/63a82c819bbbe65d37a2)
+* [TRAMPで/ssh:ではなく/scp:を使うようにしたらファイル転送速度が100倍になった](http://qiita.com/l3msh0/items/cd5adb4cf7d65e528a25)
