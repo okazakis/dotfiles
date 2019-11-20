@@ -6,11 +6,11 @@ export PATH=$PATH:/usr/local/texlive/2014basic/bin/x86_64-darwin
 
 # emacs のための設定
 # alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
-alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
-alias e='emacsclient -n'
-alias emacs='emacsclient -nw'
-export EDITOR=emacsclient
-export VISUAL=emacsclient
+# alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
+# alias e='emacsclient -n'
+# alias emacs='emacsclient -nw'
+# export EDITOR=emacsclient
+# export VISUAL=emacsclient
 
 # Emacs デーモンの利用
 # alias E='emacsclient -t -a'
