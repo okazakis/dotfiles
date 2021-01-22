@@ -1,5 +1,0 @@
-# -*- coding: utf-8 -*-
-require File.expand_path("~/irbrc_ggraph.rb")   # irb用スタートアップファイル
-tmp = gpopen 'result1.nc'
-tone tmp
-DCL.grcls      # 描画終了処理．末尾に必ずよぶ

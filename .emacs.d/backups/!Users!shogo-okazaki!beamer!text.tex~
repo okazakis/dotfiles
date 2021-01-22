@@ -1,7 +1,0 @@
-\documentclass[dvipddfm]{beamer}
-\begin{document}
- \begin{frame}{フレームタイトル}
-  \frametitle
-  テキスト
- \end{frame}
-\end{document}

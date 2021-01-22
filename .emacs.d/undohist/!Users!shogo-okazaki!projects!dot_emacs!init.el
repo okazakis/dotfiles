@@ -1,2 +1,0 @@
-
-((digest . "fd4bbfa1393b31eca48cf2058657c506") (undo-list nil (1605 . 1606) nil (#(" " 0 1 (fontified t)) . -1605) nil (#(" " 0 1 (fontified t)) . -1606) nil (1602 . 1607) nil (1601 . 1602) nil (1589 . 1601) (#("server-star" 0 11 (fontified t)) . -1589) nil (1595 . 1600) nil (1589 . 1595) (#("serve" 0 5 (fontified t)) . -1589) nil (1592 . 1594) nil (1588 . 1592) nil (1583 . 1588) nil (1577 . 1583) nil (1574 . 1577) (t 21786 3614 0 0)))

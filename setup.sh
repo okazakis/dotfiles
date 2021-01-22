@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOT_FILES=(.zlogin .zplofile .zsh_history .zshenv .zshrc)
+DOT_FILES=(.zlogin .zplofile .zshenv .zshrc .zsh)
 
 for file in ${DOT_FILES[@]}
 do

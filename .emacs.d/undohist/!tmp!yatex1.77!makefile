@@ -1,2 +1,0 @@
-
-((digest . "b1d612715c67f19d243117c9eae3c82c") (undo-list nil (#("#" 0 1 (fontified t face font-lock-comment-delimiter-face)) . -499) ((marker . 499) . -1) ((marker . 665) . -1) nil (#("#" 0 1 (fontified t face font-lock-comment-delimiter-face)) . -447) ((marker . 447) . -1) ((marker . 665) . -1) nil (#("#" 0 1 (fontified t face font-lock-comment-delimiter-face)) . -394) (t 20825 37135 0 0) ((marker . 394) . -1) ((marker . 665) . -1)))

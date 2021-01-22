@@ -1,7 +1,0 @@
-program random
-  implicit none
-  integer,parameter :: n = 4
-  real :: x(n)
-  call random_number(x)
-  print *, x
-end program random
