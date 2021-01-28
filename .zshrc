@@ -54,7 +54,6 @@ export NVM_DIR="$HOME/.nvm"
 # 補完
 # for zsh-completions
 ########################################
-
 fpath=(/usr/local/share/zsh-completions $fpath)
 
 # 補完機能を有効にする
@@ -76,8 +75,6 @@ zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
 # 補完候補を矢印キーなどで選択出来るようにする。'select=3'のように指定した場合は、補完候補が3個以上ある時に選択出来るようになる。
 zstyle ':completion:*:default' menu select
-
-
 
 #=============================
 # source auto-fu.zsh
@@ -121,11 +118,9 @@ afu-ad-delete-unambiguous-prefix afu+accept-line
 afu-ad-delete-unambiguous-prefix afu+accept-line-and-down-history
 afu-ad-delete-unambiguous-prefix afu+accept-and-hold
 
- 
 ########################################
 # vcs_info
 ########################################
-
 autoload -Uz vcs_info
 autoload -Uz add-zsh-hook
  
@@ -137,12 +132,22 @@ LANG=en_US.UTF-8 vcs_info
 RPROMPT="${vcs_info_msg_0_}"
 }
 add-zsh-hook precmd _update_vcs_info_msg
- 
- 
+
+########################################
+# zplug
+########################################
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-autosuggestions", defer:2
+
+# コマンドをリンクして、PATH に追加し、プラグインは読み込む
+zplug load --verbose
+
 ########################################
 # オプション
 ########################################
-
 # 日本語ファイル名を表示可能にする
 setopt print_eight_bit
  
@@ -182,14 +187,12 @@ setopt extended_glob
 ########################################
 # キーバインド
 ########################################
-
 # ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
 bindkey '^R' history-incremental-pattern-search-backward
  
 ########################################
 # エイリアス
 ########################################
-
 alias la='ls -a'
 alias ll='ls -l'
  
@@ -222,7 +225,6 @@ fi
 ########################################
 # OS 別の設定
 ########################################
-
 case ${OSTYPE} in
 darwin*)
 #Mac用の設定
@@ -234,10 +236,6 @@ linux*)
 alias ls='ls -F --color=auto'
 ;;
 esac
- 
-# vim:set ft=zsh:
-
-alias irb_ggraph="irb -r ~/irbrc_ggraph.rb"
 
 #########################################
 # autojump
